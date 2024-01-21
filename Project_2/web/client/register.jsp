@@ -53,13 +53,43 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 font-size: 80%;
                 color: #dc3545;
             }
+            .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+            }
+            .popup {
+                display: none;
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #E8E8E8;  /*Mau popup*/
+                padding: 20px;
+                border: 1px solid red; /* màu viền xung quanh popup */
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            .overlay {
+                display: none; /* Ẩn lớp phủ ban đầu */
+                position: fixed; /* Phủ kín toàn bộ trang */
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+                z-index: 999; /* Đảm bảo lớp phủ nằm dưới popup */
+            }
+
         </style>
     </head>
     <body>
         <%  String error = (String)request.getAttribute("error"); 
         %>
         <div class="login-form">
-            <!--<form id="registrationForm">-->
                 <form action="/Project_2/register" method="post">
 <!--                    <input type="hidden" name="service" value="create">-->
                     <h2 class="text-center">Create new Account</h2>       
@@ -72,9 +102,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Email" name="email" required="required">
                     </div>
+                    <div id="myPopup" class="popup">
+                        <!-- Nội dung popup -->
+                        <p>
+                            We sent code to confirm email. Please check email!
+                        </p>
+                        <div class="form-group">
+                            <!--<input type="text" class="form-control" placeholder="Enter code" required="required">-->
+                        </div>
+                        <!-- Nút đóng popup -->
+                        <button class="btn-primary" onclick="closeForm()">Close</button>
+                    </div>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Username" name="username" required="required">
-                        <span style="color: red">$error</span>
+                        <span style="color: red">${error}</span>
                     </div>
 
                     <!-- Trường Mật khẩu -->
@@ -96,7 +137,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                             var password = document.getElementById("password");
                             var confirmPassword = document.getElementById("confirmPassword");
                             var feedback = document.getElementById("passwordFeedback");
-
+                            var fullname = document.getElementsByName("name")[0];
+                            var phone = document.getElementsByName("phone")[0];
+                            var email = document.getElementsByName("email")[0];
+                            var username = document.getElementsByName("username")[0];
+                            var password = document.getElementsByName("password")[0];
+                            var confirmPassword = document.getElementsByName("confirmPass")[0];
+                            
+                            if(fullname && phone && email && username && password && confirmPassword) {
+                                openForm(); // Call the function to open the popup
+                            }
                             if (password.value === confirmPassword.value) {
                                 // Mật khẩu khớp
                                 password.classList.add("is-valid");
@@ -112,6 +162,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 confirmPassword.classList.add("is-invalid");
                                 feedback.textContent = 'Passwords do not match';
                             }
+                            function openForm() {
+                                document.getElementById("myPopup").style.display = "block";
+                                document.getElementById("overlay").style.display = "block";
+                            }
+
+                            function closeForm() {
+                                document.getElementById("myPopup").style.display = "none";
+                                document.getElementById("overlay").style.display = "none";
+                            }
                         }
 
                         // Thêm sự kiện kiểm tra mỗi khi người dùng nhập vào trường xác nhận mật khẩu
@@ -119,7 +178,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     </script>
                     <p class="text-center"><a href="login.jsp">Login</a></p>
                 </form>
-<!--            </form>-->
         </div>
     </body>
 </html>

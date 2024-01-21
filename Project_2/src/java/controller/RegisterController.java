@@ -35,7 +35,6 @@ public class RegisterController extends HttpServlet {
             url = "/client/register.jsp";
             request.setAttribute("error", "Username Invalid");
         } else {
-            
             String fullName = request.getParameter("name");
             String phone = request.getParameter("phone");
             String email = request.getParameter("email");
