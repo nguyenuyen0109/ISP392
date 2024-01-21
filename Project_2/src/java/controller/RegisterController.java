@@ -29,28 +29,12 @@ public class RegisterController extends HttpServlet {
             String fullName = request.getParameter("name");
             String phone = request.getParameter("phone");
             String email = request.getParameter("email");
-            //           String userName = request.getParameter("username");
             String passWord = request.getParameter("password");
-            String confirmPass = request.getParameter("confirmPass");
-            if (passWord.equals(confirmPass)) {
-                Account acc = new Account(0, username, 0, passWord,
-                        fullName, phone, email, null, true,
-                        null, null, null, true);
-                // dao.insertAccount(acc);
-                //String otp = generateRandomSixDigit();
-
-               // request.getSession().setAttribute(email + "_otp", otp);
-                request.getSession().setAttribute(email + "_info", acc);
-
-                //sendEmail(email, "Confirm register", "Your OTP: " + otp);
-
-                request.setAttribute("email", email);
-                url = "/client/confirmOTP.jsp";
-
-            } else {
-                url = "/client/register.jsp";
-                request.setAttribute("error1", "Password is not match");
-            }
+            Account acc = new Account(0, username, 0, passWord,
+                    fullName, phone, email, null, true,
+                    null, null, null, true);
+            dao.insertAccount(acc);
+            url = "/client/login.jsp";
 
         }
         request.getRequestDispatcher(url).forward(request, response);
