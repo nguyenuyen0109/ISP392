@@ -127,6 +127,7 @@ public class AccountDAO {
             System.out.println("Login Failed!");  
         System.out.println(accDAO.isAdmin(username));
     }
+    }
 
     public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
