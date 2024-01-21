@@ -1,10 +1,6 @@
-<%-- 
-    Document   : register
-    Created on : Jan 19, 2024, 8:02:47 AM
-    Author     : Admin
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -43,6 +39,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 font-size: 15px;
                 font-weight: bold;
             }
+            
             .is-valid {
                 border-color: #28a745;
             }
@@ -53,6 +50,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 font-size: 80%;
                 color: #dc3545;
             }
+            .open-button {
+                padding: 0 10px;
+                border: none;
+                background-color: #555;
+                cursor: pointer;
+                display: inline-block; /* Hiển thị cùng dòng với trường nhập */
+                vertical-align: middle; /* Căn giữa theo chiều dọc với trường nhập */
+                margin-left: 10px; /* Khoảng cách với trường nhập */
+            }  
+            /* The popup form - hidden by defulat */
             .form-popup {
             display: none;
             position: fixed;
@@ -61,6 +68,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             border: 3px solid #f1f1f1;
             z-index: 9;
             }
+            /*ChatGPT*/
             .popup {
                 display: none;
                 position: fixed;
@@ -73,6 +81,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
                 z-index: 1000;
             }
+
+            /* Add styles to the form container */
+            .form-container {
+            max-width: 300px;
+            padding: 10px;
+            background-color: white;
+            }
+
+            /* Set a style for the submit/login button */
+            .form-container .btn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom:10px;
+            opacity: 0.8;
+            }
+  
             .overlay {
                 display: none; /* Ẩn lớp phủ ban đầu */
                 position: fixed; /* Phủ kín toàn bộ trang */
@@ -83,12 +111,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
                 z-index: 999; /* Đảm bảo lớp phủ nằm dưới popup */
             }
-
         </style>
     </head>
     <body>
-        <%  String error = (String)request.getAttribute("error"); 
-        %>
+         <%  String error = (String)request.getAttribute("error");  %>
+        <%  String error1 = (String)request.getAttribute("error1"); %> 
         <div class="login-form">
                 <form action="/Project_2/register" method="post">
 <!--                    <input type="hidden" name="service" value="create">-->
@@ -100,7 +127,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         <input type="text" class="form-control" placeholder="Phone" name="phone" required="required">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Email" name="email" required="required">
+                        <input type="text" class="form-control" id="email" placeholder="Email" name="email" required="required">
+                        <!-- Nút để mở popup -->
                     </div>
                     <div id="myPopup" class="popup">
                         <!-- Nội dung popup -->
@@ -115,7 +143,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Username" name="username" required="required">
-                        <span style="color: red"><%=error%></span>
+                         <span style="color: red">${error}</span> 
                     </div>
 
                     <!-- Trường Mật khẩu -->
@@ -125,60 +153,66 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                     <!-- Trường Xác nhận Mật khẩu -->
                     <div class="form-group">
-                        <input type="password" class="form-control" id="confirmPassword" placeholder="Password again" required="required">
-                        <div id="passwordFeedback" class="validation-feedback"></div>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Password again" name="confirmPass" required="required">
+                        <span id="passwordFeedback" style="color: red">${error1}</span> 
                     </div>
+                    <div id="overlay" class="overlay"></div>
 
                     <div class="form-group">
-                        <button name="submit" type="" value="" class="btn btn-primary btn-block" onclick="validatePassword()">Create Account</button>
+                        <button type="submit" class="open-button - btn btn-primary btn-block " onclick="validatePassword()">Create Account</button>
                     </div>
-                    <script>
-                        function validatePassword() {
-                            var password = document.getElementById("password");
-                            var confirmPassword = document.getElementById("confirmPassword");
-                            var feedback = document.getElementById("passwordFeedback");
-                            var fullname = document.getElementsByName("name")[0];
-                            var phone = document.getElementsByName("phone")[0];
-                            var email = document.getElementsByName("email")[0];
-                            var username = document.getElementsByName("username")[0];
-                            var password = document.getElementsByName("password")[0];
-                            var confirmPassword = document.getElementsByName("confirmPass")[0];
-                            
-                            if(fullname && phone && email && username && password && confirmPassword) {
-                                openForm(); // Call the function to open the popup
-                            }
-                            if (password.value === confirmPassword.value) {
-                                // Mật khẩu khớp
-                                password.classList.add("is-valid");
-                                password.classList.remove("is-invalid");
-                                confirmPassword.classList.add("is-valid");
-                                confirmPassword.classList.remove("is-invalid");
-                                feedback.textContent = ''; // Không có thông báo lỗi
-                            } else {
-                                // Mật khẩu không khớp
-                                password.classList.remove("is-valid");
-                                password.classList.add("is-invalid");
-                                confirmPassword.classList.remove("is-valid");
-                                confirmPassword.classList.add("is-invalid");
-                                feedback.textContent = 'Passwords do not match';
-                            }
-                            function openForm() {
-                                document.getElementById("myPopup").style.display = "block";
-                                document.getElementById("overlay").style.display = "block";
-                            }
-
-                            function closeForm() {
-                                document.getElementById("myPopup").style.display = "none";
-                                document.getElementById("overlay").style.display = "none";
-                            }
-                        }
-
-                        // Thêm sự kiện kiểm tra mỗi khi người dùng nhập vào trường xác nhận mật khẩu
-                        document.getElementById("confirmPassword").onkeyup = validatePassword;
-                    </script>
                     <p class="text-center"><a href="login.jsp">Login</a></p>
                 </form>
         </div>
+        <script>
+                    function validatePassword() {
+                        var password = document.getElementById("password");
+                        var confirmPassword = document.getElementById("confirmPassword");
+                        var feedback = document.getElementById("passwordFeedback");
+                        var fullname = document.getElementsByName("name")[0];
+                        var phone = document.getElementsByName("phone")[0];
+                        var email = document.getElementsByName("email")[0];
+                        var username = document.getElementsByName("username")[0];
+                        var password = document.getElementsByName("password")[0];
+                        var confirmPassword = document.getElementsByName("confirmPass")[0];
+
+                        if(fullname && phone && email && username && password && confirmPassword) {
+                            //openForm(); // Call the function to open the popup
+                        }
+                        if (password.value === confirmPassword.value) {
+                            // Mật khẩu khớp
+                            password.classList.add("is-valid");
+                            password.classList.remove("is-invalid");
+                            confirmPassword.classList.add("is-valid");
+                            confirmPassword.classList.remove("is-invalid");
+                            feedback.textContent = ''; // Không có thông báo lỗi
+                        } else {
+                            // Mật khẩu không khớp
+                            password.classList.remove("is-valid");
+                            password.classList.add("is-invalid");
+                            confirmPassword.classList.remove("is-valid");
+                            confirmPassword.classList.add("is-invalid");
+                            feedback.textContent = 'Passwords do not match';
+                        }
+                        
+                        function openForm() {
+                        document.getElementById("myPopup").style.display = "block";
+                        document.getElementById("overlay").style.display = "block";
+                        }
+
+                        function closeForm() {
+                            document.getElementById("myPopup").style.display = "none";
+                              document.getElementById("overlay").style.display = "none";
+                        }
+//                        }
+
+                    // Thêm sự kiện kiểm tra mỗi khi người dùng nhập vào trường xác nhận mật khẩu
+                    document.getElementById("confirmPassword").onkeyup = validatePassword;
+                    
+                    
+                }
+                </script>
+              
     </body>
 </html>
 
