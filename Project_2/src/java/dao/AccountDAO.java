@@ -62,6 +62,7 @@ public class AccountDAO {
             }
         } catch (SQLException e) {
             System.out.println("Fail");
+<<<<<<< Updated upstream
         } 
 //        finally {
 //            // Đóng các tài nguyên
@@ -79,6 +80,9 @@ public class AccountDAO {
 //                System.out.println("FAIL");
 //            }
 //        }
+=======
+        }
+>>>>>>> Stashed changes
 
         return null;
     }
@@ -136,6 +140,7 @@ public class AccountDAO {
     
     public static void main(String[] args) {
         AccountDAO accDAO = new AccountDAO();
+<<<<<<< Updated upstream
 //        List<Account> accounts = accDAO.getAllAccounts();
 //        for (Account account : accounts) {
 //            System.out.println("Account ID: " + account.getIdAccount());
@@ -146,13 +151,16 @@ public class AccountDAO {
 //            System.out.println("-------------------------------------------");
 //        }
  
+=======
+>>>>>>> Stashed changes
         String username = "minimonie";
-        String password = "123456";
+        String password = "vZ7rb1lVvH0";
         Account acc = accDAO.findByUsernameAndPassword(username, password);
         if (acc!=null) {
             System.out.println("Successful!");
         } else {
             System.out.println("Login Failed!");
+<<<<<<< Updated upstream
         }
         // In thông tin của từng tài khoản
        /* for (Account account : accounts) {
@@ -175,6 +183,13 @@ public class AccountDAO {
       }
     
    public List<Account> getAllAccounts() {
+=======
+        }      
+        System.out.println(accDAO.isAdmin(username));
+    }
+
+    public List<Account> getAllAccounts() {
+>>>>>>> Stashed changes
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT * FROM account";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
@@ -275,6 +290,7 @@ public class AccountDAO {
         // Handle the exception appropriately in your application
         return false;
     }
+<<<<<<< Updated upstream
     
      public boolean isAdmin(String username) {
         // Giả sử bạn đã kết nối với cơ sở dữ liệu và có thể truy vấn thông tin người dùng
@@ -286,11 +302,40 @@ public class AccountDAO {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next(); // Nếu có kết quả, người dùng hợp lệ
+=======
+
+//    public boolean isAdmin(String username) {
+//        
+//        try {
+//            // Thực hiện truy vấn
+//            String role = "SELECT role_idrole FROM account WHERE username = ?";
+//            PreparedStatement preparedStatement = db.getConnection().prepareStatement(role);
+//            //ResultSet resultSet = preparedStatement.executeQuery();
+//           // int roleId = resultSet.getInt("roleIdrole");
+//           
+//            if(role.equalsIgnoreCase("1")){
+//                    return true;
+//                }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return false;
+//    }
+    public boolean isAdmin(String username) {
+        String query = "SELECT role_idrole FROM account WHERE username = ?";
+        try (PreparedStatement statement = db.getConnection().prepareStatement(query)) {
+            statement.setString(1, username);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int roleId = resultSet.getInt("role_idrole");
+                    return roleId == 1; // Assuming 1 is the roleId for admin
+                }
+>>>>>>> Stashed changes
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            e.printStackTrace(); // Handle exception appropriately
         }
+        return false;
     }
     
 
