@@ -91,13 +91,25 @@
                     <div class="form-group">
                         <span style="color: red">${error}</span>
                         </div>
+                        
+                        <script>
+                            function generateCaptcha() {
+                                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                                let result = '';
+                                const charactersLength = characters.length;
+                                for (let i = 0; i < 6; i++) {
+                                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                                }
+                                document.getElementById('captcha').textContent = result;
+                            }
+
+                            // Generate initial CAPTCHA on page load
+                            window.onload = generateCaptcha;
+                        </script>
                     </form>
                     <a href="#" class="forgetpass">Forgot Password?</a>
-
                     <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
-
                 </div>
             </body>
-
         </html>
 
