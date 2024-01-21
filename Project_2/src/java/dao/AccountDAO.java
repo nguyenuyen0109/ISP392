@@ -61,22 +61,6 @@ public class AccountDAO {
         } catch (SQLException e) {
             System.out.println("Fail");
         }
-//        finally {
-//            // Đóng các tài nguyên
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (pstmt != null) {
-//                    pstmt.close();
-//                }
-//                if (db.getConnection() != null) {
-//                    db.getConnection().close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("FAIL");
-//            }
-//        }
 
         return null;
     }
@@ -134,42 +118,14 @@ public class AccountDAO {
 
     public static void main(String[] args) {
         AccountDAO accDAO = new AccountDAO();
-//        List<Account> accounts = accDAO.getAllAccounts();
-//        for (Account account : accounts) {
-//            System.out.println("Account ID: " + account.getIdAccount());
-//            System.out.println("Username: " + account.getUsername());
-//            System.out.println("Amount: " + account.getAmount());
-//            // ... (in các thuộc tính khác tương tự)
-//            System.out.println("Role ID: " + account.getRoleIdRole());
-//            System.out.println("-------------------------------------------");
-//        }
-
         String username = "minimonie";
-        String password = "123456";
+        String password = "vZ7rb1lVvH0";
         Account acc = accDAO.findByUsernameAndPassword(username, password);
         if (acc != null) {
             System.out.println("Successful!");
         } else {
-            System.out.println("Login Failed!");
-        }
-        // In thông tin của từng tài khoản
-        /* for (Account account : accounts) {
-            System.out.println("Account ID: " + account.getIdAccount());
-            System.out.println("Username: " + account.getUsername());
-            System.out.println("Amount: " + account.getAmount());
-            // ... (in các thuộc tính khác tương tự)
-            System.out.println("Role ID: " + account.getRoleIdRole());
-            System.out.println("-------------------------------------------");
-        }*/
-
-        int n = accDAO.insertAccount(new Account(0, "minimonie19", 0, "123",
-                "Nguyen Uyen", "01234567", "uyn@gmail.com", null,
-                true, null, null, null, true));
-        if (n > 0) {
-            System.out.println("success");
-        } else {
-            System.out.println("fail");
-        }
+            System.out.println("Login Failed!");  
+        System.out.println(accDAO.isAdmin(username));
     }
 
     public List<Account> getAllAccounts() {
@@ -272,22 +228,21 @@ public class AccountDAO {
         // Handle the exception appropriately in your application
         return false;
     }
-
+      
     public boolean isAdmin(String username) {
-        // Giả sử bạn đã kết nối với cơ sở dữ liệu và có thể truy vấn thông tin người dùng
-        // Đây là một ví dụ giả định
-        String query = "SELECT role_idrole FROM users WHERE username = ?";
-        // Thực hiện truy vấn
-        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
-            preparedStatement.setString(1, username);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next(); // Nếu có kết quả, người dùng hợp lệ
+        String query = "SELECT role_idrole FROM account WHERE username = ?";
+        try (PreparedStatement statement = db.getConnection().prepareStatement(query)) {
+            statement.setString(1, username);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int roleId = resultSet.getInt("role_idrole");
+                    return roleId == 1; // Assuming 1 is the roleId for admin
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            e.printStackTrace(); // Handle exception appropriately
         }
+        return false;
     }
 
     public Account getAccount(Account acc) {

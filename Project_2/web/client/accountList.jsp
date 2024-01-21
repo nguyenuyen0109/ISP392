@@ -29,7 +29,9 @@
     </head>
     <body>
 
-        <%@ include file="header1.jsp" %>
+
+        <%@ include file="/navigator/header.jsp" %>
+
 
         <%-- Check for update success/failure and display alert messages --%>
         <c:if test="${param.updateSuccess ne null}">
