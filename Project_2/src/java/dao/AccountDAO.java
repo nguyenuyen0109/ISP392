@@ -62,30 +62,10 @@ public class AccountDAO {
             }
         } catch (SQLException e) {
             System.out.println("Fail");
-<<<<<<< Updated upstream
-        } 
-//        finally {
-//            // Đóng các tài nguyên
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (pstmt != null) {
-//                    pstmt.close();
-//                }
-//                if (db.getConnection() != null) {
-//                    db.getConnection().close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("FAIL");
-//            }
-//        }
-=======
-        }
->>>>>>> Stashed changes
-
-        return null;
+ 
     }
+        return null;
+   }
 
     public boolean validateUser(String username, String password) {
         String query = "SELECT * FROM account WHERE username = ? AND Password = ?";
@@ -140,19 +120,6 @@ public class AccountDAO {
     
     public static void main(String[] args) {
         AccountDAO accDAO = new AccountDAO();
-<<<<<<< Updated upstream
-//        List<Account> accounts = accDAO.getAllAccounts();
-//        for (Account account : accounts) {
-//            System.out.println("Account ID: " + account.getIdAccount());
-//            System.out.println("Username: " + account.getUsername());
-//            System.out.println("Amount: " + account.getAmount());
-//            // ... (in các thuộc tính khác tương tự)
-//            System.out.println("Role ID: " + account.getRoleIdRole());
-//            System.out.println("-------------------------------------------");
-//        }
- 
-=======
->>>>>>> Stashed changes
         String username = "minimonie";
         String password = "vZ7rb1lVvH0";
         Account acc = accDAO.findByUsernameAndPassword(username, password);
@@ -160,18 +127,7 @@ public class AccountDAO {
             System.out.println("Successful!");
         } else {
             System.out.println("Login Failed!");
-<<<<<<< Updated upstream
-        }
-        // In thông tin của từng tài khoản
-       /* for (Account account : accounts) {
-            System.out.println("Account ID: " + account.getIdAccount());
-            System.out.println("Username: " + account.getUsername());
-            System.out.println("Amount: " + account.getAmount());
-            // ... (in các thuộc tính khác tương tự)
-            System.out.println("Role ID: " + account.getRoleIdRole());
-            System.out.println("-------------------------------------------");
-        }*/
-        
+
         int n = accDAO.insertAccount(new Account(0, "minimonie19", 0, "123", 
                 "Nguyen Uyen", "01234567", "uyn@gmail.com", null, 
                 true, null, null, null, true));
@@ -182,14 +138,11 @@ public class AccountDAO {
         }
       }
     
-   public List<Account> getAllAccounts() {
-=======
-        }      
+        
         System.out.println(accDAO.isAdmin(username));
     }
 
     public List<Account> getAllAccounts() {
->>>>>>> Stashed changes
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT * FROM account";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
@@ -290,37 +243,8 @@ public class AccountDAO {
         // Handle the exception appropriately in your application
         return false;
     }
-<<<<<<< Updated upstream
     
-     public boolean isAdmin(String username) {
-        // Giả sử bạn đã kết nối với cơ sở dữ liệu và có thể truy vấn thông tin người dùng
-        // Đây là một ví dụ giả định
-        String query = "SELECT role_idrole FROM users WHERE username = ?";
-        // Thực hiện truy vấn
-        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
-            preparedStatement.setString(1, username);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next(); // Nếu có kết quả, người dùng hợp lệ
-=======
-
-//    public boolean isAdmin(String username) {
-//        
-//        try {
-//            // Thực hiện truy vấn
-//            String role = "SELECT role_idrole FROM account WHERE username = ?";
-//            PreparedStatement preparedStatement = db.getConnection().prepareStatement(role);
-//            //ResultSet resultSet = preparedStatement.executeQuery();
-//           // int roleId = resultSet.getInt("roleIdrole");
-//           
-//            if(role.equalsIgnoreCase("1")){
-//                    return true;
-//                }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
     public boolean isAdmin(String username) {
         String query = "SELECT role_idrole FROM account WHERE username = ?";
         try (PreparedStatement statement = db.getConnection().prepareStatement(query)) {
@@ -330,7 +254,7 @@ public class AccountDAO {
                     int roleId = resultSet.getInt("role_idrole");
                     return roleId == 1; // Assuming 1 is the roleId for admin
                 }
->>>>>>> Stashed changes
+
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle exception appropriately

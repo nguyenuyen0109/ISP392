@@ -74,7 +74,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Username" name="username" required="required">
-                        <span style="color: red"><%=error%></span>
+                        <span style="color: red">$error</span>
                     </div>
 
                     <!-- Trường Mật khẩu -->
