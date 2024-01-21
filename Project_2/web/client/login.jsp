@@ -93,9 +93,8 @@
                         </div>
                     </form>
                     <a href="#" class="forgetpass">Forgot Password?</a>
-
+                    
                     <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
-
                 </div>
             </body>
 
