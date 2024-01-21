@@ -6,35 +6,33 @@ package dao;
 
 import dal.DBContext;
 import model.Account;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.security.Timestamp;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author minimonie
  */
 public class AccountDAO {
+
     DBContext db;
-    
+
     public AccountDAO() {
         db = DBContext.getInstance();
     }
-    
-   public Account findByUsernameAndPassword(String username, String password) {
-       PreparedStatement pstmt = null;
-       ResultSet rs = null;
+
+    public Account findByUsernameAndPassword(String username, String password) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try {
             //System.out.println(db.getConnection());
             String sql = "SELECT * FROM account where username = ? and password  = ?";
-             pstmt = db.getConnection().prepareStatement(sql);
+            pstmt = db.getConnection().prepareStatement(sql);
 
             // Đặt các tham số cho PreparedStatement
             pstmt.setString(1, username);
@@ -62,27 +60,7 @@ public class AccountDAO {
             }
         } catch (SQLException e) {
             System.out.println("Fail");
-<<<<<<< Updated upstream
-        } 
-//        finally {
-//            // Đóng các tài nguyên
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (pstmt != null) {
-//                    pstmt.close();
-//                }
-//                if (db.getConnection() != null) {
-//                    db.getConnection().close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("FAIL");
-//            }
-//        }
-=======
         }
->>>>>>> Stashed changes
 
         return null;
     }
@@ -110,7 +88,7 @@ public class AccountDAO {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     int id = resultSet.getInt("idAccount");
-                    
+
                     String avatarUrl = resultSet.getString("avatarUrl");
                     String mobileNumber = resultSet.getString("Mobile_number");
                     String emailAddress = resultSet.getString("Email_address");
@@ -121,13 +99,13 @@ public class AccountDAO {
                     java.sql.Timestamp updatedAt = resultSet.getTimestamp("UpdateAt");
                     java.sql.Timestamp createdAt = resultSet.getTimestamp("CreateAt");
                     double amount = resultSet.getDouble("Amount");
-                   // String avatarUrl = resultSet.getString("avatarUrl");
+                    // String avatarUrl = resultSet.getString("avatarUrl");
                     boolean gender = resultSet.getBoolean("gender");
                     int roleId = resultSet.getInt("role_idrole");
 
-                    return new Account(id,username, amount,password,name,
-                            mobileNumber,emailAddress,address,isActive, 
-                            updatedAt,createdAt,avatarUrl,gender,
+                    return new Account(id, username, amount, password, name,
+                            mobileNumber, emailAddress, address, isActive,
+                            updatedAt, createdAt, avatarUrl, gender,
                             roleId);
                 }
             }
@@ -137,63 +115,23 @@ public class AccountDAO {
 
         return null;
     }
-    
+
     public static void main(String[] args) {
         AccountDAO accDAO = new AccountDAO();
-<<<<<<< Updated upstream
-//        List<Account> accounts = accDAO.getAllAccounts();
-//        for (Account account : accounts) {
-//            System.out.println("Account ID: " + account.getIdAccount());
-//            System.out.println("Username: " + account.getUsername());
-//            System.out.println("Amount: " + account.getAmount());
-//            // ... (in các thuộc tính khác tương tự)
-//            System.out.println("Role ID: " + account.getRoleIdRole());
-//            System.out.println("-------------------------------------------");
-//        }
- 
-=======
->>>>>>> Stashed changes
         String username = "minimonie";
         String password = "vZ7rb1lVvH0";
         Account acc = accDAO.findByUsernameAndPassword(username, password);
-        if (acc!=null) {
+        if (acc != null) {
             System.out.println("Successful!");
         } else {
-            System.out.println("Login Failed!");
-<<<<<<< Updated upstream
-        }
-        // In thông tin của từng tài khoản
-       /* for (Account account : accounts) {
-            System.out.println("Account ID: " + account.getIdAccount());
-            System.out.println("Username: " + account.getUsername());
-            System.out.println("Amount: " + account.getAmount());
-            // ... (in các thuộc tính khác tương tự)
-            System.out.println("Role ID: " + account.getRoleIdRole());
-            System.out.println("-------------------------------------------");
-        }*/
-        
-        int n = accDAO.insertAccount(new Account(0, "minimonie19", 0, "123", 
-                "Nguyen Uyen", "01234567", "uyn@gmail.com", null, 
-                true, null, null, null, true));
-        if(n>0){
-            System.out.println("success");
-        }else{
-            System.out.println("fail");
-        }
-      }
-    
-   public List<Account> getAllAccounts() {
-=======
-        }      
+            System.out.println("Login Failed!");  
         System.out.println(accDAO.isAdmin(username));
     }
 
     public List<Account> getAllAccounts() {
->>>>>>> Stashed changes
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT * FROM account";
-        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 int id = resultSet.getInt("idAccount");
                 String username = resultSet.getString("Username");
@@ -205,18 +143,17 @@ public class AccountDAO {
                 String address = resultSet.getString("Address");
                 boolean isActive = resultSet.getBoolean("IsActive");
                 java.sql.Timestamp updatedAt = resultSet.getTimestamp("UpdateAt");
-                    java.sql.Timestamp createdAt = resultSet.getTimestamp("CreateAt");
+                java.sql.Timestamp createdAt = resultSet.getTimestamp("CreateAt");
                 String avatarUrl = resultSet.getString("avatar_Url");
                 boolean gender = resultSet.getBoolean("gender");
                 int roleId = resultSet.getInt("role_idrole");
 
                 //Account account = new Account();
-                
                 Account account;
-                account = new Account(id,username, amount,password,name,
-                            mobileNumber,emailAddress,address,isActive, 
-                            updatedAt,createdAt,avatarUrl,gender,
-                            roleId);
+                account = new Account(id, username, amount, password, name,
+                        mobileNumber, emailAddress, address, isActive,
+                        updatedAt, createdAt, avatarUrl, gender,
+                        roleId);
                 accounts.add(account);
             }
         } catch (SQLException e) {
@@ -224,6 +161,7 @@ public class AccountDAO {
         }
         return accounts;
     }
+
     public int insertAccount(Account acc) {
         String username = acc.getUsername();
         int n = 0;
@@ -241,7 +179,7 @@ public class AccountDAO {
                     + "Amount,"
                     + "Avatar_Url,"
                     + "Gender,"
-                   + "Role_idrole"
+                    + "Role_idrole"
                     + ")"
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,2);";
 
@@ -257,7 +195,7 @@ public class AccountDAO {
                 ps.setDouble(8, acc.getAmount());
                 ps.setString(9, acc.getAvatarUrl());
                 ps.setBoolean(10, acc.isGender());
-              //  ps.setInt(11, acc.getRoleIdRole());
+                //  ps.setInt(11, acc.getRoleIdRole());
                 n = ps.executeUpdate();
                 System.out.println(sql);
             } catch (Exception ex) {
@@ -290,37 +228,7 @@ public class AccountDAO {
         // Handle the exception appropriately in your application
         return false;
     }
-<<<<<<< Updated upstream
-    
-     public boolean isAdmin(String username) {
-        // Giả sử bạn đã kết nối với cơ sở dữ liệu và có thể truy vấn thông tin người dùng
-        // Đây là một ví dụ giả định
-        String query = "SELECT role_idrole FROM users WHERE username = ?";
-        // Thực hiện truy vấn
-        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
-            preparedStatement.setString(1, username);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next(); // Nếu có kết quả, người dùng hợp lệ
-=======
-
-//    public boolean isAdmin(String username) {
-//        
-//        try {
-//            // Thực hiện truy vấn
-//            String role = "SELECT role_idrole FROM account WHERE username = ?";
-//            PreparedStatement preparedStatement = db.getConnection().prepareStatement(role);
-//            //ResultSet resultSet = preparedStatement.executeQuery();
-//           // int roleId = resultSet.getInt("roleIdrole");
-//           
-//            if(role.equalsIgnoreCase("1")){
-//                    return true;
-//                }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
+      
     public boolean isAdmin(String username) {
         String query = "SELECT role_idrole FROM account WHERE username = ?";
         try (PreparedStatement statement = db.getConnection().prepareStatement(query)) {
@@ -330,34 +238,127 @@ public class AccountDAO {
                     int roleId = resultSet.getInt("role_idrole");
                     return roleId == 1; // Assuming 1 is the roleId for admin
                 }
->>>>>>> Stashed changes
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle exception appropriately
         }
         return false;
     }
-    
 
+    public Account getAccount(Account acc) {
+        if (acc == null || acc.getUsername() == null || acc.getPassword() == null
+                || acc.getUsername().isEmpty() || acc.getPassword().isEmpty()) {
+            return null; // Or throw an IllegalArgumentException
+        }
+
+        String sql = "SELECT * FROM account WHERE username = ? AND password = ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setString(1, acc.getUsername());
+            ps.setString(2, acc.getPassword());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Account foundAccount = new Account();
+                    foundAccount.setIdAccount(rs.getInt("idAccount"));
+                    foundAccount.setUsername(rs.getString("username"));
+                    foundAccount.setAmount(rs.getDouble("amount"));
+                    foundAccount.setPassword(rs.getString("password"));
+                    foundAccount.setName(rs.getString("name"));
+                    foundAccount.setMobileNumber(rs.getString("Mobile_number"));
+                    foundAccount.setEmailAddress(rs.getString("Email_address"));
+                    foundAccount.setAddress(rs.getString("address"));
+                    foundAccount.setIsActive(rs.getBoolean("isActive"));
+                    foundAccount.setUpdateAt(rs.getTimestamp("updateAt"));
+                    foundAccount.setCreateAt(rs.getTimestamp("CreateAt"));
+                    foundAccount.setAvatarUrl(rs.getString("avatar_Url"));
+                    foundAccount.setGender(rs.getBoolean("gender"));
+                    foundAccount.setRoleIdRole(rs.getInt("role_idrole"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-        
-       
 
+    public Account updateAccount(Account acc) {
+        if (acc == null || acc.getIdAccount() == 0) {
+            return null; //
+        }
 
+        String sql = "UPDATE account SET username = ?, amount = ?, password = ?, name = ?, Mobile_number = ?, Email_address = ?, address = ?, IsActive = ?, UpdateAt = CURRENT_TIMESTAMP, CreateAt = ?, avatar_Url = ?, gender = ?, role_idrole = ? WHERE idAccount = ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setString(1, acc.getUsername());
+            ps.setDouble(2, acc.getAmount());
+            ps.setString(3, acc.getPassword());
+            ps.setString(4, acc.getName());
+            ps.setString(5, acc.getMobileNumber());
+            ps.setString(6, acc.getEmailAddress());
+            ps.setString(7, acc.getAddress());
+            ps.setBoolean(8, acc.isIsActive());
+            // ps.setTimestamp(9, acc.getUpdateAt()); // updateAt is set to current timestamp in SQL          
+            ps.setTimestamp(9, acc.getCreateAt());
+            ps.setString(10, acc.getAvatarUrl());
+            ps.setBoolean(11, acc.isGender());
+            ps.setInt(12, acc.getRoleIdRole());
+            ps.setInt(13, acc.getIdAccount());
 
-    
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                return acc;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 
-    
-        
-    
+    public Account getAccountById(int accountId) {
+        String sql = "SELECT * FROM account WHERE idAccount = ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, accountId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Account foundAccount = new Account();
+                    foundAccount.setIdAccount(rs.getInt("idAccount"));
+                    foundAccount.setUsername(rs.getString("username"));
+                    foundAccount.setAmount(rs.getDouble("amount"));
+                    foundAccount.setPassword(rs.getString("password"));
+                    foundAccount.setName(rs.getString("name"));
+                    foundAccount.setMobileNumber(rs.getString("Mobile_number"));
+                    foundAccount.setEmailAddress(rs.getString("Email_address"));
+                    foundAccount.setAddress(rs.getString("address"));
+                    foundAccount.setIsActive(rs.getBoolean("isActive"));
+                    foundAccount.setUpdateAt(rs.getTimestamp("updateAt"));
+                    foundAccount.setCreateAt(rs.getTimestamp("CreateAt"));
+                    foundAccount.setAvatarUrl(rs.getString("avatar_Url"));
+                    foundAccount.setGender(rs.getBoolean("gender"));
+                    foundAccount.setRoleIdRole(rs.getInt("role_idrole"));
 
-    
-    
-    
-   
+                    return foundAccount;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider better error handling
+        }
+        return null;
+    }
 
+    public void changeRole(String username, String role) {
+        String sql = "UPDATE account SET role = ? WHERE username = ?";
 
+        try (PreparedStatement stm = db.getConnection().prepareStatement(sql)) {
+            stm.setString(1, role);
+            stm.setString(2, username);
 
+            int affectedRows = stm.executeUpdate();
+            if (affectedRows == 0) {
 
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.INFO, "No account was updated.");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
-
+}

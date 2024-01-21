@@ -8,10 +8,12 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
+
                 <a class="nav-link" href="#">Accounts</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="account">Debt List</a>
+
             </li>
             <!-- Add more navigation links for the admin dashboard as needed -->
         </ul>
