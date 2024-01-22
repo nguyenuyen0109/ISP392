@@ -96,6 +96,24 @@ public class AccountDAO {
         }
     }
 
+    public boolean validateEmail(String email) {
+        String sql = "SELECT * FROM account WHERE Email_address = ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
+
     public Account getAccountByUsername(String username) {
         String query = "SELECT * FROM account WHERE username = ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
@@ -132,47 +150,8 @@ public class AccountDAO {
         return null;
     }
 
-    public static void main(String[] args) {
-        AccountDAO accDAO = new AccountDAO();
-//        List<Account> accounts = accDAO.getAllAccounts();
-//        for (Account account : accounts) {
-//            System.out.println("Account ID: " + account.getIdAccount());
-//            System.out.println("Username: " + account.getUsername());
-//            System.out.println("Amount: " + account.getAmount());
-//            // ... (in các thuộc tính khác tương tự)
-//            System.out.println("Role ID: " + account.getRoleIdRole());
-//            System.out.println("-------------------------------------------");
-//        }
-
-        String username = "minimonie";
-        String password = "123456";
-        Account acc = accDAO.findByUsernameAndPassword(username, password);
-        if (acc != null) {
-            System.out.println("Successful!");
-        } else {
-            System.out.println("Login Failed!");
-        }
-        // In thông tin của từng tài khoản
-        /* for (Account account : accounts) {
-            System.out.println("Account ID: " + account.getIdAccount());
-            System.out.println("Username: " + account.getUsername());
-            System.out.println("Amount: " + account.getAmount());
-            // ... (in các thuộc tính khác tương tự)
-            System.out.println("Role ID: " + account.getRoleIdRole());
-            System.out.println("-------------------------------------------");
-        }*/
-
-        int n = accDAO.insertAccount(new Account(0, "minimonie19", 0, "123",
-                "Nguyen Uyen", "01234567", "uyn@gmail.com", null,
-                true, null, null, null, true));
-        if (n > 0) {
-            System.out.println("success");
-        } else {
-            System.out.println("fail");
-        }
-    }
-
     public List<Account> getAllAccounts() {
+
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT * FROM account";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -208,9 +187,14 @@ public class AccountDAO {
 
     public int insertAccount(Account acc) {
         String username = acc.getUsername();
+        String email = acc.getEmailAddress();
         int n = 0;
-        if (usernameExists(username)) {
-            System.out.println("Username already exists. Please choose a different username.");
+        if (usernameExists(username) || validateEmail(email)) {
+            if (usernameExists(username)) {
+                System.out.println("Username already exists. Please choose a different username.");
+            }else{
+                System.out.println("Email already exist");
+            }
         } else {
             String sql = "INSERT INTO account\n"
                     + "(Name,"
@@ -406,4 +390,23 @@ public class AccountDAO {
         }
     }
 
+    public static void main(String[] args) {
+        AccountDAO accDAO = new AccountDAO();
+//        String username = "minimonie";
+//        String password = "vZ7rb1lVvH0";
+//        Account acc = accDAO.findByUsernameAndPassword(username, password);
+//        if (acc != null) {
+//            System.out.println("Successful!");
+//        } else {
+//            System.out.println("Login Failed!");
+//            System.out.println(accDAO.isAdmin(username));
+//        }
+        Account acc = new Account(0, "thuongday", 0, "thuongne", "Nguyen Thuong", "0328832923", "phuong2532005@gmail.com", null, true, null, null, null, true);
+        int n = accDAO.insertAccount(acc);
+        if(n>0){
+            System.out.println("sucess");
+        }else{
+            System.out.println("false");
+        }
+    }
 }
