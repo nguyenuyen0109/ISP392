@@ -26,6 +26,10 @@
             .login-form h2 {
                 margin: 0 0 15px;
             }
+            
+            .login-form form {
+        margin-bottom: 15px; /* Giảm giá trị này nếu cần */
+        /* ... */
             .form-control, .btn {
                 min-height: 38px;
                 border-radius: 2px;
@@ -47,6 +51,12 @@
 
             .form-group {
                 margin-bottom: 15px;
+            }
+
+            .text-right {
+                text-align: right;
+                margin-top: 10px;
+                margin-bottom: 0; /* Loại bỏ hoặc giảm khoảng cách phía dưới liên kết Quên mật khẩu */
             }
 
             .form-group label {
@@ -88,10 +98,14 @@
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Log in</button>
                     </div>
+
+                    <div class="text-right">
+                        <a href="#" class="forgetpass">Forgot Password?</a>
+                    </div>
                     <div class="form-group">
                         <span style="color: red">${error}</span>
                         </div>
-                        
+
                         <script>
                             function generateCaptcha() {
                                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -107,7 +121,7 @@
                             window.onload = generateCaptcha;
                         </script>
                     </form>
-                    <a href="#" class="forgetpass">Forgot Password?</a>
+
                     <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
                 </div>
             </body>
