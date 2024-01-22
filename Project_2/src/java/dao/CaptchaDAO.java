@@ -4,13 +4,24 @@
  */
 package dao;
 
+import dal.DBContext;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Random;
+import model.Account;
+import model.Capcha;
 
 /**
  *
  * @author MINIMONIE
  */
 public class CaptchaDAO {
+     DBContext db;
+
+    public CaptchaDAO(){
+        db = DBContext.getInstance();
+    }
+
      public String generateCaptcha(){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder captcha = new StringBuilder();
@@ -20,6 +31,7 @@ public class CaptchaDAO {
         }
         return captcha.toString();
     }
+    
      
     public static void main(String[] args) {
         CaptchaDAO u= new CaptchaDAO();
