@@ -96,24 +96,6 @@ public class AccountDAO {
         }
     }
 
-    public boolean validateEmail(String email) {
-        String sql = "SELECT * FROM account WHERE Email_address = ?";
-        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
-            ps.setString(1, email);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    int count = rs.getInt(1);
-                    return count > 0;
-                }
-            } catch (Exception ex) {
-                System.out.println(ex);
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-        return false;
-    }
-
     public Account getAccountByUsername(String username) {
         String query = "SELECT * FROM account WHERE username = ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
@@ -187,14 +169,9 @@ public class AccountDAO {
 
     public int insertAccount(Account acc) {
         String username = acc.getUsername();
-        String email = acc.getEmailAddress();
         int n = 0;
-        if (usernameExists(username) || validateEmail(email)) {
-            if (usernameExists(username)) {
-                System.out.println("Username already exists. Please choose a different username.");
-            }else{
-                System.out.println("Email already exist");
-            }
+        if (usernameExists(username)) {
+            System.out.println("Username already exists. Please choose a different username.");
         } else {
             String sql = "INSERT INTO account\n"
                     + "(Name,"
@@ -401,12 +378,12 @@ public class AccountDAO {
 //            System.out.println("Login Failed!");
 //            System.out.println(accDAO.isAdmin(username));
 //        }
-        Account acc = new Account(0, "thuongday", 0, "thuongne", "Nguyen Thuong", "0328832923", "phuong2532005@gmail.com", null, true, null, null, null, true);
-        int n = accDAO.insertAccount(acc);
-        if(n>0){
-            System.out.println("sucess");
-        }else{
-            System.out.println("false");
-        }
+//        Account acc = new Account(0, "thuongday", 0, "thuongne", "Nguyen Thuong", "0328832923", "phuong2532005@gmail.com", null, true, null, null, null, true);
+//        int n = accDAO.insertAccount(acc);
+//        if(n>0){
+//            System.out.println("sucess");
+//        }else{
+//            System.out.println("false");
+//        }
     }
 }
