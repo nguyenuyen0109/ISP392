@@ -4,6 +4,7 @@
  */
 package dao;
 
+import com.sun.jdi.connect.spi.Connection;
 import dal.DBContext;
 import model.Account;
 import java.sql.PreparedStatement;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -61,22 +64,6 @@ public class AccountDAO {
         } catch (SQLException e) {
             System.out.println("Fail");
         }
-//        finally {
-//            // Đóng các tài nguyên
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//                if (pstmt != null) {
-//                    pstmt.close();
-//                }
-//                if (db.getConnection() != null) {
-//                    db.getConnection().close();
-//                }
-//            } catch (SQLException e) {
-//                System.out.println("FAIL");
-//            }
-//        }
 
         return null;
     }
@@ -132,8 +119,25 @@ public class AccountDAO {
         return null;
     }
 
-    public List<Account> getAllAccounts() {
+    public static void main(String[] args) {
+        AccountDAO accDAO = new AccountDAO();
+        String username = "minimonie";
+        String password = "123";
+        Account acc = accDAO.findByUsernameAndPassword(username, password);
+        if (acc != null) {
+            System.out.println("Successful!");
+        } else {
+            System.out.println("Login Failed!");
+            System.out.println(accDAO.isAdmin(username));
+        }
+        String email = "phuong2532005@gmail.com";
+        String phone = "0123456789";
+        System.out.println(accDAO.isEmailExist(email));
+        System.out.println(accDAO.isEmailValid(email));
+        System.out.println(accDAO.isPhoneExist(phone));
+    }
 
+    public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT * FROM account";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -235,20 +239,19 @@ public class AccountDAO {
     }
 
     public boolean isAdmin(String username) {
-        // Giả sử bạn đã kết nối với cơ sở dữ liệu và có thể truy vấn thông tin người dùng
-        // Đây là một ví dụ giả định
-        String query = "SELECT role_idrole FROM users WHERE username = ?";
-        // Thực hiện truy vấn
-        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
-            preparedStatement.setString(1, username);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next(); // Nếu có kết quả, người dùng hợp lệ
+        String query = "SELECT role_idrole FROM account WHERE username = ?";
+        try (PreparedStatement statement = db.getConnection().prepareStatement(query)) {
+            statement.setString(1, username);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int roleId = resultSet.getInt("role_idrole");
+                    return roleId == 1; // Assuming 1 is the roleId for admin
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            e.printStackTrace(); // Handle exception appropriately
         }
+        return false;
     }
 
     public Account getAccount(Account acc) {
@@ -366,24 +369,50 @@ public class AccountDAO {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
 
-    public static void main(String[] args) {
-        AccountDAO accDAO = new AccountDAO();
-//        String username = "minimonie";
-//        String password = "vZ7rb1lVvH0";
-//        Account acc = accDAO.findByUsernameAndPassword(username, password);
-//        if (acc != null) {
-//            System.out.println("Successful!");
-//        } else {
-//            System.out.println("Login Failed!");
-//            System.out.println(accDAO.isAdmin(username));
-//        }
-//        Account acc = new Account(0, "thuongday", 0, "thuongne", "Nguyen Thuong", "0328832923", "phuong2532005@gmail.com", null, true, null, null, null, true);
-//        int n = accDAO.insertAccount(acc);
-//        if(n>0){
-//            System.out.println("sucess");
-//        }else{
-//            System.out.println("false");
-//        }
+    // Hàm kiểm tra định dạng email
+    public boolean isEmailValid(String email) {
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
+    
+    
+    public boolean isEmailExist(String email) {
+        String query = "SELECT COUNT(*) FROM account WHERE Email_address = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) { 
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ tùy theo yêu cầu của ứng dụng
+        }
+
+        return false;
+    }
+    
+    public boolean isPhoneExist(String phone) {
+        String query = "SELECT COUNT(*) FROM account WHERE Mobile_number = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            
+            preparedStatement.setString(1, phone);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ tùy theo yêu cầu của ứng dụng
+        }
+
+        return false;
+    }
+    
+
 }

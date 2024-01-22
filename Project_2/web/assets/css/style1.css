@@ -13,13 +13,25 @@ body{
 
 }
 
+/*.nvarbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a40;
+    color: #bcfefe;
+    font-family: 'Poppins', sans-serif;
+}*/
+
+
 .nvarbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #001C44;
+    background-color: #343a40;
     color: #bcfefe;
     font-family: 'Poppins', sans-serif;
+    height: 60px; /* Adjusted height */
+    padding: 10px 0; /* Adjusted padding */
 }
 
 .brand-title {
