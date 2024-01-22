@@ -4,6 +4,7 @@
  */
 package controller;
 
+import Util.MD5;
 import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,9 +63,10 @@ public class ForgotpasswordController extends HttpServlet {
         if (isValidUser(username, emailAddress)) {
             // tao mat khau moi
             String newPassword = generateNewPassword();
+            String hashedPassword = MD5.getMd5(newPassword);
 
             // day mat khau moi len database
-            acc.updatePassword(username, newPassword);
+            acc.updatePassword(username, hashedPassword);
 
             // lưu mật khẩu mới vào session
             request.setAttribute("newPassword", newPassword);
