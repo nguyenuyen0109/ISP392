@@ -43,7 +43,11 @@ public class RegisterController extends HttpServlet {
             String passWord = request.getParameter("password");
             String confirmPass = request.getParameter("confirmPass");
             
-            if(passWord.equals(confirmPass)){
+            if(passWord.equals(confirmPass)&&
+                    !dao.isEmailExist(email) &&
+                    dao.isEmailValid(email)&&
+                   !dao.isPhoneExist(phone)
+                    ){
                 Account acc = new Account(0, username, 0, passWord,
                     fullName, phone, email, null, true,
                     null, null, null, true);
@@ -61,7 +65,7 @@ public class RegisterController extends HttpServlet {
             
             }else{
                 url = "/client/register.jsp";
-                request.setAttribute("error1", "Password is not match");
+                request.setAttribute("error1", "Register fail");
             }
 
         }
