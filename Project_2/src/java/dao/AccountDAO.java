@@ -4,7 +4,6 @@
  */
 package dao;
 
-import com.sun.jdi.connect.spi.Connection;
 import dal.DBContext;
 import model.Account;
 import java.sql.PreparedStatement;
