@@ -59,45 +59,49 @@
                 margin-right: 15px;
                 border: 1px solid #ddd;
                 background-color: #f7f7f7;
-            </style>
-        </head>
-        <body>
-            <div class="login-form">
-                <form action="/Project_2/login" method="post">
-                    <h2 class="text-center">Log in</h2>       
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="username" placeholder="Username" required="required">
-                    </div>
-
-                    <div class="form-group">
-                        <input type="password" class="form-control" name="password" placeholder="Password" required="required">
-                    </div>
-
-                    <div class="form-group">
-
-                        <!--                        <label for="captcha">CAPTCHA:</label>
-                                                <span id="captcha"></span>
-                                                <button type="submit" onclick="generateCaptcha()">Refresh</button>
-                                                <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">-->
-                        <label for="captcha">CAPTCHA:</label>
-                        <span id="captcha">${generatedCaptcha}</span>
-                        <button type="button" onclick="location.reload();">Refresh</button>
-                        <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Log in</button>
-                    </div>
-                    <div class="form-group">
-                        <span style="color: red">${error}</span>
-                        </div>
-                    </form>
-                    <a href="#" class="forgetpass">Forgot Password?</a>
-
-                    <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
-
+        </style>
+    </head>
+    <body>
+        <div class="login-form">
+            <form action="/Project_2/login" method="post">
+                <h2 class="text-center">Log in</h2>       
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required="required">
                 </div>
-            </body>
 
-        </html>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                </div>
+
+                <div class="form-group">
+
+                    <!--                        <label for="captcha">CAPTCHA:</label>
+                                            <span id="captcha"></span>
+                                            <button type="submit" onclick="generateCaptcha()">Refresh</button>
+                                            <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">-->
+                    <label for="captcha">CAPTCHA:</label>
+                    <span id="captcha">${generatedCaptcha}</span>
+                    <button type="button" onclick="location.reload();">Refresh</button>
+                    <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                </div>
+                <div class="form-group">
+                    <span style="color: red">${error}</span>
+                </div>
+                <div class="form-group">
+                    <span style="color: blue">${message}</span>
+                </div>
+            </form>
+
+            <a href="/Project_2/client/forgotpassword.jsp" class="forgetpass">Forgot Password?</a>
+
+            <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
+
+        </div>
+    </body>
+
+</html>
 
