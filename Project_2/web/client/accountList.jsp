@@ -146,7 +146,7 @@
                                                         <label for="editIsActive">Active:</label>
                                                         <select class="form-control" name="isActive">
                                                             <option value="true" ${account.isActive ? 'selected' : ''}>Active</option>
-                                                            <option value="false" ${!account.isActive ? 'selected' : ''}>Inactive</option>
+                                                            <option value="false" ${!account.isActive ? 'selected' : ''}>Deactivate</option>
                                                         </select>
                                                     </div>
 

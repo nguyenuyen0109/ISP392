@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -119,14 +121,19 @@ public class AccountDAO {
     public static void main(String[] args) {
         AccountDAO accDAO = new AccountDAO();
         String username = "minimonie";
-        String password = "vZ7rb1lVvH0";
+        String password = "123";
         Account acc = accDAO.findByUsernameAndPassword(username, password);
         if (acc != null) {
             System.out.println("Successful!");
         } else {
-            System.out.println("Login Failed!");  
-        System.out.println(accDAO.isAdmin(username));
-    }
+            System.out.println("Login Failed!");
+            System.out.println(accDAO.isAdmin(username));
+        }
+        String email = "phuong2532005@gmail.com";
+        String phone = "0123456789";
+        System.out.println(accDAO.isEmailExist(email));
+        System.out.println(accDAO.isEmailValid(email));
+        System.out.println(accDAO.isPhoneExist(phone));
     }
 
     public List<Account> getAllAccounts() {
@@ -229,7 +236,7 @@ public class AccountDAO {
         // Handle the exception appropriately in your application
         return false;
     }
-      
+
     public boolean isAdmin(String username) {
         String query = "SELECT role_idrole FROM account WHERE username = ?";
         try (PreparedStatement statement = db.getConnection().prepareStatement(query)) {
@@ -359,6 +366,109 @@ public class AccountDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
+
+    // Hàm kiểm tra định dạng email
+    public boolean isEmailValid(String email) {
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    
+    
+    public boolean isEmailExist(String email) {
+        String query = "SELECT COUNT(*) FROM account WHERE Email_address = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) { 
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ tùy theo yêu cầu của ứng dụng
+        }
+
+        return false;
+    }
+    
+    public boolean isPhoneExist(String phone) {
+        String query = "SELECT COUNT(*) FROM account WHERE Mobile_number = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            
+            preparedStatement.setString(1, phone);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ tùy theo yêu cầu của ứng dụng
+        }
+
+        return false;
+    }
+    
+    public boolean checkUsernameAndEmailExists(String username, String emailAddress) {
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+        try {
+            // Chuẩn bị câu truy vấn SQL
+            String query = "SELECT * FROM account WHERE username = ? AND Email_address = ?";
+            pstmt = db.getConnection().prepareStatement(query);
+            pstmt.setString(1, username);
+            pstmt.setString(2, emailAddress);
+
+            // Thực hiện truy vấn
+            rs = pstmt.executeQuery();
+
+            // Nếu có kết quả trả về, người dùng hợp lệ
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đóng tất cả các tài nguyên
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean updatePassword(String username, String newPassword) {
+        
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            // Chuẩn bị câu truy vấn SQL
+            String query = "UPDATE account SET Password = ? WHERE username = ?";
+            pstmt = db.getConnection().prepareStatement(query);
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, username);
+
+            // Thực hiện truy vấn
+            int rowsAffected = pstmt.executeUpdate();
+
+            // Nếu có ít nhất một hàng được cập nhật, trả về true
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đóng tất cả các tài nguyên
+            try {
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
