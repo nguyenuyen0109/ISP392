@@ -34,11 +34,41 @@
                 font-size: 15px;
                 font-weight: bold;
             }
+            .form-popup {
+                display: none;
+                position: fixed;
+                bottom: 0;
+                right: 15px;
+                border: 3px solid #f1f1f1;
+                z-index: 9;
+            }
+            .popup {
+                display: none;
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #E8E8E8;  /*Mau popup*/
+                padding: 20px;
+                border: 1px solid red; /* màu viền xung quanh popup */
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            .overlay {
+                display: none; /* Ẩn lớp phủ ban đầu */
+                position: fixed; /* Phủ kín toàn bộ trang */
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+                z-index: 999; /* Đảm bảo lớp phủ nằm dưới popup */
+            }
         </style>
     </head>
     <body>
         <div class="login-form">
-            <form action="/Project_2/verify" method="post">
+            <form action="/Project_2/verify" method="post" onsubmit="openPopup()()">
                 <h2 class="text-center">Confirm OTP</h2>       
                 <div class="form-group">
                     <input type="hidden" class="form-control" name="email" value="${email}">
@@ -46,9 +76,13 @@
                 <div class="form-group">
                     <input type="text" class="form-control" name="otp" placeholder="OTP" required="required">
                 </div>
-                
-                
-                
+                <div id="myPopup" class="popup">
+<!--                     Nội dung popup -->
+                    <p>
+                        Register Success full!
+                    </p>
+                </div>
+                <div id="overlay" class="overlay"></div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">Confirm</button>
                 </div>
@@ -56,8 +90,71 @@
                     <span style="color: red">${error}</span>
                 </div>
             </form>
-                <a href="#" class="forgetpass">Forgot Password?</a>
-            <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
+            <a href="#" class="forgetpass">Forgot Password?</a>
+            <p class="text-center"><a href="/Project_2/client/register.jsp" >Create an Account</a></p>
+            <script>
+//                function openPopup() {
+//                    var otp = document.getElementsByName("otp")[0].values;
+//
+//                    if (otp) {
+//                        openForm();
+//                    }
+//                    function openForm() {
+//                        document.getElementById("myPopup").style.display = "block";
+//                        document.getElementById("overlay").style.display = "block";
+//                    }
+//                    function closeForm() {
+//                        document.getElementById("myPopup").style.display = "none";
+//                        document.getElementById("overlay").style.display = "none";
+//                    }
+//                }
+//                    function openPopup() {
+//                        var otp = document.getElementsByName("otp")[0].value;
+//                        var delayInMilliseconds = 10000; // 5 giây
+//
+//                        if (otp) {
+//                            openForm(); // Mở form ngay lập tức
+//
+//                            setTimeout(function () {
+//                                closeForm(); // Tự động đóng form sau 5 giây
+//                                window.location.href = "/client/login.jsp";
+//                            }, delayInMilliseconds);
+//
+//                            return false; // Ngăn không cho form submit
+//                        }
+//                        return true; // Nếu không có giá trị OTP, cho phép form submit
+//                    }
+//
+//                    function openForm() {
+//                        document.getElementById("myPopup").style.display = "block";
+//                        document.getElementById("overlay").style.display = "block";
+//                    }
+//
+//                    function closeForm() {
+//                        document.getElementById("myPopup").style.display = "none";
+//                        document.getElementById("overlay").style.display = "none";
+//                    }
+                $(document).ready(function() {
+        $("#otpForm").submit(function(event) {
+            event.preventDefault();
+            var otp = $("input[name=otp]").val();
+            var email = $("input[name=email]").val();
+
+            $.post("/Project_2/verify", { otp: otp, email: email }, function(response) {
+                // Giả sử server trả về JSON với trường 'success'
+                if (response.success) {
+                    alert("Register Successful!");
+                    setTimeout(function() {
+                        window.location.href = 'login.jsp';
+                    }, 10000); // Chuyển hướng sau 10 giây
+                } else {
+                    alert("Wrong OTP!");
+                }
+            });
+        });
+    });
+
+            </script>
         </div>
     </body>
 </html>
