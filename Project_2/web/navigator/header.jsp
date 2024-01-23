@@ -10,25 +10,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <c:choose>
-            <c:when test="${not empty sessionScope.USER}">
-            <a class="navbar-brand" href="#">Dashboard</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Project_2/account">Accounts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Debt List</a>
-                    </li>
-                    <!-- Add more navigation links for the admin dashboard as needed -->
-                </ul>
-            </div>
-            <div class="rightbar">
-                
+                <c:when test="${not empty sessionScope.USER}">
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Project_2/account">Accounts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Debt List</a>
+                            </li>
+                            <!-- Add more navigation links for the admin dashboard as needed -->
+                        </ul>
+                    </div>
+                    <div class="rightbar">
+
                         <li>
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"
@@ -58,11 +58,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         </li>
                     </c:when>
                     <c:otherwise>
-                        <a class="navbar-brand" href="/Project_2/login">Dashboard</a>
-                        <ul>
-                            <li><a href="/Project_2/login">Login</a></li>
-                        </ul>
+                        <div class="d-flex justify-content-between align-items-center w-100 navbar-custom-container">
+                            <a class="navbar-brand navbar-custom-brand" href="/Project_2/home">Dashboard</a>
+                            <div class="login-container">
+                                <a href="/Project_2/login">Login</a>
+                            </div>
+                        </div>
                     </c:otherwise>
+
+
                 </c:choose>
             </div>
         </nav>
