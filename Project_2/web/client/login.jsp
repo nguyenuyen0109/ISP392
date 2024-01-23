@@ -26,37 +26,32 @@
             .login-form h2 {
                 margin: 0 0 15px;
             }
-            .login-form form {
-                margin-bottom: 15px; /* Giảm giá trị này nếu cần */
-                /* ... */
-                .form-control, .btn {
-                    min-height: 38px;
-                    border-radius: 2px;
-                }
-                .btn {
-                    font-size: 15px;
-                    font-weight: bold;
-                }
-                .btn capcha{
-                    font-size: 25px;
-                    font-weight: bold;
-                }
-                .login-container {
-                    width: 300px;
-                    padding: 20px;
-                    border: 1px solid #ddd;
-                    border-radius: 5px;
-                }
+            .form-control, .btn {
+                min-height: 38px;
+                border-radius: 2px;
+            }
+            .btn {
+                font-size: 15px;
+                font-weight: bold;
+            }
+            .btn capcha{
+                font-size: 25px;
+                font-weight: bold;
+            }
+            .login-container {
+                width: 300px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
 
-                .form-group {
-                    margin-bottom: 15px;
-                }
+            .form-group {
+                margin-bottom: 15px;
+            }
 
-                .text-right {
-                    text-align: right;
-                    margin-top: 10px;
-                    margin-bottom: 0; /* Loại bỏ hoặc giảm khoảng cách phía dưới liên kết Quên mật khẩu */
-                }
+            .form-group label {
+                display: block;
+            }
 
             .forgot-pass {
                 display: block; /* Makes the link take up the full width of its container */
@@ -83,9 +78,21 @@
                         <input type="text" class="form-control" name="username" placeholder="Username" required="required">
                     </div>
 
-                        <div class="form-group">
-                            <input type="password" class="form-control" name="password" placeholder="Password" required="required">
-                        </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                    </div>
+
+                    <div class="form-group">
+
+                        <!--                        <label for="captcha">CAPTCHA:</label>
+                                                <span id="captcha"></span>
+                                                <button type="submit" onclick="generateCaptcha()">Refresh</button>
+                                                <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">-->
+                        <label for="captcha">CAPTCHA:</label>
+                        <span id="captcha">${generatedCaptcha}</span>
+                        <button type="button" onclick="location.reload();">Refresh</button>
+                        <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">
+                    </div>
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Log in</button>
@@ -115,5 +122,4 @@
                 </div>
             </body>
         </html>
-
 
