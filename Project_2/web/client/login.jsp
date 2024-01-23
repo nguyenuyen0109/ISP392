@@ -53,6 +53,15 @@
                 display: block;
             }
 
+            .forgot-pass {
+                display: block; /* Makes the link take up the full width of its container */
+                text-align: right; /* Aligns the text to the right */
+                padding-top: 10px; /* Adds some space between the login button and this link */
+                font-size: 0.85em;
+                margin-top: 10px;
+            }
+
+
             #captcha {
                 display: inline-block;
                 padding: 8px 13px;
@@ -88,10 +97,12 @@
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block">Log in</button>
                     </div>
+
+                    <a href="#" class="forgot-pass forgetpass">Forgot Password?</a>
                     <div class="form-group">
                         <span style="color: red">${error}</span>
                         </div>
-                        
+
                         <script>
                             function generateCaptcha() {
                                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -107,7 +118,6 @@
                             window.onload = generateCaptcha;
                         </script>
                     </form>
-                    <a href="#" class="forgetpass">Forgot Password?</a>
                     <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
                 </div>
             </body>
