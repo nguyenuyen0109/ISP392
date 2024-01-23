@@ -50,15 +50,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 font-size: 80%;
                 color: #dc3545;
             }
-            .open-button {
+/*            .open-button {
                 padding: 0 10px;
                 border: none;
                 background-color: #555;
                 cursor: pointer;
-                display: inline-block; /* Hiển thị cùng dòng với trường nhập */
-                vertical-align: middle; /* Căn giữa theo chiều dọc với trường nhập */
-                margin-left: 10px; /* Khoảng cách với trường nhập */
-            }  
+                display: inline-block;  Hiển thị cùng dòng với trường nhập 
+                vertical-align: middle;  Căn giữa theo chiều dọc với trường nhập 
+                margin-left: 10px;  Khoảng cách với trường nhập 
+            }  */
             /* The popup form - hidden by defulat */
             .form-popup {
             display: none;
@@ -83,13 +83,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             }
 
             /* Add styles to the form container */
-            .form-container {
+/*            .form-container {
             max-width: 300px;
             padding: 10px;
             background-color: white;
-            }
+            }*/
 
-            /* Set a style for the submit/login button */
+/*             Set a style for the submit/login button 
             .form-container .btn {
             background-color: #04AA6D;
             color: white;
@@ -99,7 +99,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             width: 100%;
             margin-bottom:10px;
             opacity: 0.8;
-            }
+            }*/
   
             .overlay {
                 display: none; /* Ẩn lớp phủ ban đầu */
@@ -114,10 +114,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         </style>
     </head>
     <body>
-         <%  String error = (String)request.getAttribute("error");  %>
+        <%  String error = (String)request.getAttribute("error");  %>
         <%  String error1 = (String)request.getAttribute("error1"); %> 
         <div class="login-form">
-                <form action="/Project_2/register" method="post">
+                <form action="/Project_2/register" method="post" onsubmit="return validatePassword()">
 <!--                    <input type="hidden" name="service" value="create">-->
                     <h2 class="text-center">Create new Account</h2>       
                     <div class="form-group">
@@ -128,18 +128,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="email" placeholder="Email" name="email" required="required">
-                        <!-- Nút để mở popup -->
                     </div>
                     <div id="myPopup" class="popup">
                         <!-- Nội dung popup -->
                         <p>
                             We sent code to confirm email. Please check email!
                         </p>
-                        <div class="form-group">
-                            <!--<input type="text" class="form-control" placeholder="Enter code" required="required">-->
-                        </div>
                         <!-- Nút đóng popup -->
-                        <button class="btn-primary" onclick="closeForm()">Close</button>
+<!--                        <button class="btn-primary" onclick="closeForm()">Close</button>-->
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Username" name="username" required="required">
@@ -159,7 +155,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <div id="overlay" class="overlay"></div>
 
                     <div class="form-group">
-                        <button type="submit" class="open-button - btn btn-primary btn-block " onclick="validatePassword()">Create Account</button>
+                        <button type="submit" class="open-button - btn btn-primary btn-block">Create Account</button>
                     </div>
                     <p class="text-center"><a href="login.jsp">Login</a></p>
                 </form>
@@ -177,7 +173,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         var confirmPassword = document.getElementsByName("confirmPass")[0];
 
                         if(fullname && phone && email && username && password && confirmPassword) {
-                            //openForm(); // Call the function to open the popup
+                                openForm(); // Call the function to open the popup
                         }
                         if (password.value === confirmPassword.value) {
                             // Mật khẩu khớp
@@ -200,10 +196,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                         document.getElementById("overlay").style.display = "block";
                         }
 
-                        function closeForm() {
-                            document.getElementById("myPopup").style.display = "none";
-                              document.getElementById("overlay").style.display = "none";
-                        }
+//                        function closeForm() {
+//                            document.getElementById("myPopup").style.display = "none";
+//                            document.getElementById("overlay").style.display = "none";
+//                        }
 //                        }
 
                     // Thêm sự kiện kiểm tra mỗi khi người dùng nhập vào trường xác nhận mật khẩu

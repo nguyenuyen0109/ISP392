@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/StudySpace/SPRING24/So_ghi_no_main2/ISP392/Project_2/web/client/accountList.jsp</file>
             <file>file:/D:/StudySpace/SPRING24/So_ghi_no_main2/ISP392/Project_2/web/client/register.jsp</file>
-            <file>file:/D:/StudySpace/SPRING24/So_ghi_no_main2/ISP392/Project_2/src/java/controller/DashBoardAdminController.java</file>
             <file>file:/D:/StudySpace/SPRING24/So_ghi_no_main2/ISP392/Project_2/src/java/controller/RegisterController.java</file>
-            <file>file:/D:/StudySpace/SPRING24/So_ghi_no_main2/ISP392/Project_2/src/java/dao/AccountDAO.java</file>
+            <file>file:/D:/StudySpace/SPRING24/So_ghi_no_main2/ISP392/Project_2/web/client/confirmOTP.jsp</file>
         </group>
     </open-files>
 </project-private>
