@@ -2,11 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
-import dao.AccountDAO;
-import dao.EmailConfirmCodeDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,65 +15,36 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Random;
-import model.Account;
 
 /**
  *
- * @author Admin
+ * @author MINIMONIE
  */
-public class RegisterController extends HttpServlet {
-
+public class ResendOtpController extends HttpServlet {
+   
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.setContentType("text/html;charset=UTF-8");
-        AccountDAO dao = new AccountDAO();
-        EmailConfirmCodeDAO emaildao = new EmailConfirmCodeDAO();
-        String username = request.getParameter("username");
-        String url;
-        if (dao.usernameExists(username)) {
-            url = "/client/register.jsp";
-            request.setAttribute("error", "Username Invalid");
-        } else {
-            
-            String fullName = request.getParameter("name");
-            String phone = request.getParameter("phone");
-            String email = request.getParameter("email");
- //           String userName = request.getParameter("username");
-            String passWord = request.getParameter("password");
-            String confirmPass = request.getParameter("confirmPass");
-            
-            if(passWord.equals(confirmPass)&&
-                    !dao.isEmailExist(email) &&
-                    dao.isEmailValid(email)&&
-                   !dao.isPhoneExist(phone)
-                    ){
-                Account acc = new Account(0, username, 0, passWord,
-                    fullName, phone, email, null, true,
-                    null, null, null, true);
-                
-            // dao.insertAccount(acc);
-            String otp = emaildao.generateRandomSixDigit();
-            
-            request.getSession().setAttribute(email + "_otp", otp);
-            request.getSession().setAttribute(email + "_info", acc);
-            request.setAttribute("registerSuccess", true);
-            sendEmail(email, "Confirm register", "Your OTP: " + otp);
-            
-            request.setAttribute("email", email);
-            url = "/client/confirmOTP.jsp";
-            
-            }else{
-                url = "/client/register.jsp";
-                request.setAttribute("error1", "Register fail");
-            }
+        String email = request.getParameter("email");
 
-        }
-        request.getRequestDispatcher(url).forward(request, response);
+        // Tạo OTP mới
+        String newOtp = generateRandomSixDigit();
+
+        // Lưu OTP mới vào session
+        request.getSession().setAttribute(email + "_otp", newOtp);
+
+        // Gửi OTP mới tới email
+        boolean emailSent = sendEmail(email, "Your OTP", "Your new OTP is: " + newOtp);
+
+        // Gửi phản hồi về cho client
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"emailSent\": " + emailSent + "}");
     }
-    
-    
-    
+
+    private String generateRandomSixDigit() {
+        // Sinh mã OTP 6 chữ số
+        return String.valueOf((int)(Math.random() * 900000) + 100000);
+    }
     public boolean sendEmail(String to, String subject, String text) {
         // URL to which the request will be sent
         String url = "https://mail-sender-service.vercel.app/send-email";
@@ -118,5 +87,4 @@ public class RegisterController extends HttpServlet {
             return false;
         }
     }
-
 }

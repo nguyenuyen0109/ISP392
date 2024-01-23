@@ -12,6 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 
 /**
@@ -73,22 +81,24 @@ public class VerifyController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String email = request.getParameter("email");
         String otp = request.getParameter("otp");
 
         String checkOtp = (String) request.getSession().getAttribute(email + "_otp");
 
-        if (otp.equals(checkOtp)) {
+        System.out.println("Email: " + email);
+        System.out.println("OTP người dùng nhập: " + otp);
+        System.out.println("OTP trong session: " + checkOtp);
 
+        if (otp.equals(checkOtp)) {
             Account account = (Account) request.getSession().getAttribute(email + "_info");
             new AccountDAO().insertAccount(account);
-
-            request.setAttribute("error", "Register success");
+            request.setAttribute("otpVerified", true);
+            request.setAttribute("error", "Register successful");
+            // request.getSession().removeAttribute(email + "_otp");
             request.getRequestDispatcher("/client/login.jsp").forward(request, response);
-
         } else {
-
+            request.setAttribute("otpVerified", false);
             request.setAttribute("error", "Wrong OTP");
             request.getRequestDispatcher("/client/confirmOTP.jsp").forward(request, response);
 
