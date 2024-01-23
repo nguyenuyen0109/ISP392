@@ -6,13 +6,13 @@ package controller;
 
 import dao.AccountDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.OutputStream;
+import Util.MD5;
 
 import java.net.HttpURLConnection;
 
@@ -62,9 +62,9 @@ public class ForgotpasswordController extends HttpServlet {
         if (isValidUser(username, emailAddress)) {
             // tao mat khau moi
             String newPassword = generateNewPassword();
-
+            String encryptedPassword = MD5.getMd5(newPassword);
             // day mat khau moi len database
-            acc.updatePassword(username, newPassword);
+            acc.updatePassword(username, encryptedPassword);
 
             // lưu mật khẩu mới vào session
             request.setAttribute("newPassword", newPassword);
