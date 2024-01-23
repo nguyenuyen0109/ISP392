@@ -29,7 +29,9 @@
     </head>
     <body>
 
-        <%@ include file="header1.jsp" %>
+
+        <%@ include file="/navigator/header.jsp" %>
+
 
         <%-- Check for update success/failure and display alert messages --%>
         <c:if test="${param.updateSuccess ne null}">
@@ -144,7 +146,7 @@
                                                         <label for="editIsActive">Active:</label>
                                                         <select class="form-control" name="isActive">
                                                             <option value="true" ${account.isActive ? 'selected' : ''}>Active</option>
-                                                            <option value="false" ${!account.isActive ? 'selected' : ''}>Inactive</option>
+                                                            <option value="false" ${!account.isActive ? 'selected' : ''}>Deactivate</option>
                                                         </select>
                                                     </div>
 
