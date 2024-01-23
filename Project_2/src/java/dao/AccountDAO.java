@@ -4,7 +4,6 @@
  */
 package dao;
 
-import com.sun.jdi.connect.spi.Connection;
 import dal.DBContext;
 import model.Account;
 import java.sql.PreparedStatement;
@@ -414,5 +413,63 @@ public class AccountDAO {
         return false;
     }
     
+    public boolean checkUsernameAndEmailExists(String username, String emailAddress) {
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+        try {
+            // Chuẩn bị câu truy vấn SQL
+            String query = "SELECT * FROM account WHERE username = ? AND Email_address = ?";
+            pstmt = db.getConnection().prepareStatement(query);
+            pstmt.setString(1, username);
+            pstmt.setString(2, emailAddress);
+
+            // Thực hiện truy vấn
+            rs = pstmt.executeQuery();
+
+            // Nếu có kết quả trả về, người dùng hợp lệ
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đóng tất cả các tài nguyên
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean updatePassword(String username, String newPassword) {
+        
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            // Chuẩn bị câu truy vấn SQL
+            String query = "UPDATE account SET Password = ? WHERE username = ?";
+            pstmt = db.getConnection().prepareStatement(query);
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, username);
+
+            // Thực hiện truy vấn
+            int rowsAffected = pstmt.executeUpdate();
+
+            // Nếu có ít nhất một hàng được cập nhật, trả về true
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đóng tất cả các tài nguyên
+            try {
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
