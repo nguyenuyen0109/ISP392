@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,10 +74,7 @@
 
                     <div class="form-group">
 
-                        <!--                        <label for="captcha">CAPTCHA:</label>
-                                                <span id="captcha"></span>
-                                                <button type="submit" onclick="generateCaptcha()">Refresh</button>
-                                                <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">-->
+                        
                         <label for="captcha">CAPTCHA:</label>
                         <span id="captcha">${generatedCaptcha}</span>
                         <button type="button" onclick="location.reload();">Refresh</button>
@@ -100,4 +96,3 @@
             </body>
 
         </html>
-
