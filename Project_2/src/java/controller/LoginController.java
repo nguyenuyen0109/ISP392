@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import Util.MD5;
 
 /**
  *
@@ -54,6 +55,7 @@ public class LoginController extends HttpServlet {
     HttpSession session = request.getSession();
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String hashedPassword = MD5.getMd5(password);
     String inputCaptcha = request.getParameter("captcha");
     String generatedCaptcha = (String) session.getAttribute("generatedCaptcha");
     boolean isCaptchaValid = generatedCaptcha != null && generatedCaptcha.equals(inputCaptcha);
@@ -62,7 +64,7 @@ public class LoginController extends HttpServlet {
         //String generatedCaptcha = (String) session.getAttribute("captcha");
         //tim account dua tren username and password
         AccountDAO accountDAO = new AccountDAO();
-        Account accountFound = accountDAO.findByUsernameAndPassword(username, password);
+        Account accountFound = accountDAO.findByUsernameAndPassword(username, hashedPassword);
         System.out.println(accountFound);
         //trong th dung => chuyen ve dau do 
         if(isCaptchaValid && accountFound !=null) {
