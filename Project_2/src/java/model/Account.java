@@ -15,7 +15,7 @@ public class Account {
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-    private int idAccount;
+    private int id;
     private String username;
     private double amount;
     private String password;
@@ -25,18 +25,16 @@ public class Account {
     private String address;
     private boolean isActive;
     private Timestamp updateAt;
-  //  private String emailConfirmationCode;
     private Timestamp createAt;
     private String avatarUrl;
     private boolean gender; // Assuming true for one gender and false for another
-    private int roleIdRole; // Foreign key to Role
-
+    private int role_id; // Foreign key to Role
+    private int salt_id;
     public Account() {
     }
 
-    public Account(int idAccount, String username, double amount, String password, String name, String mobileNumber, String emailAddress, String address, boolean isActive, Timestamp updateAt
-                , Timestamp createAt, String avatarUrl, boolean gender, int roleIdRole) {
-        this.idAccount = idAccount;
+    public Account(int id, String username, int role_id, String password, String name, String mobileNumber, String emailAddress, String address, boolean isActive, Timestamp updateAt, Timestamp createAt, String avatarUrl, boolean gender) {
+        this.id = id;
         this.username = username;
         this.amount = amount;
         this.password = password;
@@ -46,19 +44,19 @@ public class Account {
         this.address = address;
         this.isActive = isActive;
         this.updateAt = updateAt;
-       // this.emailConfirmationCode = emailConfirmationCode;
         this.createAt = createAt;
         this.avatarUrl = avatarUrl;
         this.gender = gender;
-        this.roleIdRole = roleIdRole;
+        this.role_id = role_id;
+        this.salt_id = salt_id;
     }
 
-    public int getIdAccount() {
-        return idAccount;
+    public int getId() {
+        return id;
     }
 
-    public void setIdAccount(int idAccount) {
-        this.idAccount = idAccount;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -133,8 +131,6 @@ public class Account {
         this.updateAt = updateAt;
     }
 
- 
-
     public Timestamp getCreateAt() {
         return createAt;
     }
@@ -159,35 +155,23 @@ public class Account {
         this.gender = gender;
     }
 
-    public int getRoleIdRole() {
-        return roleIdRole;
+    public int getRole_id() {
+        return role_id;
     }
 
-    public void setRoleIdRole(int roleIdRole) {
-        this.roleIdRole = roleIdRole;
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" + "idAccount=" + idAccount + ", username=" + username + ", amount=" + amount + ", password=" + password + ", name=" + name + ", mobileNumber=" + mobileNumber + ", emailAddress=" + emailAddress + ", address=" + address + ", isActive=" + isActive + ", updateAt=" + updateAt + ", createAt=" + createAt + ", avatarUrl=" + avatarUrl + ", gender=" + gender + ", roleIdRole=" + roleIdRole + '}';
+    public int getSalt_id() {
+        return salt_id;
     }
 
-    public Account(int idAccount, String username, double amount, String password, String name, String mobileNumber, String emailAddress, String address, boolean isActive, Timestamp updateAt, Timestamp createAt, String avatarUrl, boolean gender) {
-        this.idAccount = idAccount;
-        this.username = username;
-        this.amount = amount;
-        this.password = password;
-        this.name = name;
-        this.mobileNumber = mobileNumber;
-        this.emailAddress = emailAddress;
-        this.address = address;
-        this.isActive = isActive;
-        this.updateAt = updateAt;
-        this.createAt = createAt;
-        this.avatarUrl = avatarUrl;
-        this.gender = gender;
+    public void setSalt_id(int salt_id) {
+        this.salt_id = salt_id;
     }
 
+    
     
     
     

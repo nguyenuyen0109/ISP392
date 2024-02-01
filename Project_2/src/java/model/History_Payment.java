@@ -4,32 +4,32 @@
  */
 package model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  *
  * @author MINIMONIE
  */
 public class History_Payment {
-    int idHistory_Payment;
-    double amount;
-    Date payment_date;
+    private int id;
+    private double amount;
+    private Timestamp paymentDate;
 
     public History_Payment() {
     }
 
-    public History_Payment(int idHistory_Payment, double amount, Date payment_date) {
-        this.idHistory_Payment = idHistory_Payment;
+    public History_Payment(int id, double amount, Timestamp paymentDate) {
+        this.id = id;
         this.amount = amount;
-        this.payment_date = payment_date;
+        this.paymentDate = paymentDate;
     }
 
-    public int getIdHistory_Payment() {
-        return idHistory_Payment;
+    public int getId() {
+        return id;
     }
 
-    public void setIdHistory_Payment(int idHistory_Payment) {
-        this.idHistory_Payment = idHistory_Payment;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double getAmount() {
@@ -40,17 +40,17 @@ public class History_Payment {
         this.amount = amount;
     }
 
-    public Date getPayment_date() {
-        return payment_date;
+    public Timestamp getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setPayment_date(Date payment_date) {
-        this.payment_date = payment_date;
+    public void setPaymentDate(Timestamp paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     @Override
     public String toString() {
-        return "History_Payment{" + "idHistory_Payment=" + idHistory_Payment + ", amount=" + amount + ", payment_date=" + payment_date + '}';
+        return "History_Payment{" + "id=" + id + ", amount=" + amount + ", paymentDate=" + paymentDate + '}';
     }
     
 }

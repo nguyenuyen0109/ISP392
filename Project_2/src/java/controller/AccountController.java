@@ -59,7 +59,7 @@ public class AccountController extends HttpServlet {
         boolean isActive = Boolean.parseBoolean(req.getParameter("isActive"));
         String avatarUrl = req.getParameter("avatarUrl");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
-        int roleIdRole = Integer.parseInt(req.getParameter("roleIdRole"));
+        int role = Integer.parseInt(req.getParameter("roleId"));
 
         Account newAccount = new Account();
         newAccount.setUsername(username);
@@ -72,7 +72,7 @@ public class AccountController extends HttpServlet {
         newAccount.setIsActive(isActive);
         newAccount.setAvatarUrl(avatarUrl);
         newAccount.setGender(gender);
-        newAccount.setRoleIdRole(roleIdRole);
+        newAccount.setId(role);
 
 //        Account createdAccount = accountDAO.createAccount(newAccount);
 
@@ -110,7 +110,7 @@ public class AccountController extends HttpServlet {
             existingAccount.setIsActive(isActive);
             existingAccount.setAvatarUrl(avatarUrl);
             existingAccount.setGender(gender);
-            existingAccount.setRoleIdRole(roleIdRole);
+            existingAccount.setId(roleIdRole);
 
             Account updatedAccount = accountDAO.updateAccount(existingAccount);
 

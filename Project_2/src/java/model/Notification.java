@@ -4,43 +4,36 @@
  */
 package model;
 
+import java.security.Timestamp;
+
 /**
  *
- * @author admin
+ * @author MINIMONIE
  */
-import java.sql.Timestamp;
-
 public class Notification {
-    private int idNotification;
-    private Timestamp notificationDate;
-    private String status;
-    private String description;
-    private int debtdetailsIdDebtDetails;
-    private int debtdetailsDebtorAccountIdAccount;
-    private int debtdetailsDebtorIdDebtor;
+  private int id;
+  private Timestamp notificationDate;
+  private String status;
+  private String description;
+  private int debtdetails_id;
 
-    // Constructors
     public Notification() {
-        // Default constructor
     }
 
-    public Notification(int idNotification, Timestamp notificationDate, String status, String description, int debtdetailsIdDebtDetails, int debtdetailsDebtorAccountIdAccount, int debtdetailsDebtorIdDebtor) {
-        this.idNotification = idNotification;
+    public Notification(int id, Timestamp notificationDate, String status, String description, int debtdetails_id) {
+        this.id = id;
         this.notificationDate = notificationDate;
         this.status = status;
         this.description = description;
-        this.debtdetailsIdDebtDetails = debtdetailsIdDebtDetails;
-        this.debtdetailsDebtorAccountIdAccount = debtdetailsDebtorAccountIdAccount;
-        this.debtdetailsDebtorIdDebtor = debtdetailsDebtorIdDebtor;
+        this.debtdetails_id = debtdetails_id;
     }
 
-    // Getters and Setters
-    public int getIdNotification() {
-        return idNotification;
+    public int getId() {
+        return id;
     }
 
-    public void setIdNotification(int idNotification) {
-        this.idNotification = idNotification;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Timestamp getNotificationDate() {
@@ -67,36 +60,18 @@ public class Notification {
         this.description = description;
     }
 
-    public int getDebtdetailsIdDebtDetails() {
-        return debtdetailsIdDebtDetails;
+    public int getDebtdetails_id() {
+        return debtdetails_id;
     }
 
-    public void setDebtdetailsIdDebtDetails(int debtdetailsIdDebtDetails) {
-        this.debtdetailsIdDebtDetails = debtdetailsIdDebtDetails;
-    }
-
-    public int getDebtdetailsDebtorAccountIdAccount() {
-        return debtdetailsDebtorAccountIdAccount;
-    }
-
-    public void setDebtdetailsDebtorAccountIdAccount(int debtdetailsDebtorAccountIdAccount) {
-        this.debtdetailsDebtorAccountIdAccount = debtdetailsDebtorAccountIdAccount;
-    }
-
-    public int getDebtdetailsDebtorIdDebtor() {
-        return debtdetailsDebtorIdDebtor;
-    }
-
-    public void setDebtdetailsDebtorIdDebtor(int debtdetailsDebtorIdDebtor) {
-        this.debtdetailsDebtorIdDebtor = debtdetailsDebtorIdDebtor;
+    public void setDebtdetails_id(int debtdetails_id) {
+        this.debtdetails_id = debtdetails_id;
     }
 
     @Override
     public String toString() {
-        return "Notification{" + "idNotification=" + idNotification + ", notificationDate=" + notificationDate + ", status=" + status + ", description=" + description + ", debtdetailsIdDebtDetails=" + debtdetailsIdDebtDetails + ", debtdetailsDebtorAccountIdAccount=" + debtdetailsDebtorAccountIdAccount + ", debtdetailsDebtorIdDebtor=" + debtdetailsDebtorIdDebtor + '}';
+        return "Notification{" + "id=" + id + ", notificationDate=" + notificationDate + ", status=" + status + ", description=" + description + ", debtdetails_id=" + debtdetails_id + '}';
     }
-
-    
+  
+  
 }
-
-

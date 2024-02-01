@@ -1,98 +1,59 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Bootstrap Simple Login Form</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <style>
-            .login-form {
-                width: 340px;
-                margin: 80px auto;
-                font-size: 20px;
-            }
-            .login-form form {
-                margin-bottom: 15px;
-                background: #f7f7f7;
-                box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-                padding: 30px;
-            }
-            .login-form h2 {
-                margin: 0 0 15px;
-            }
-            .form-control, .btn {
-                min-height: 38px;
-                border-radius: 2px;
-            }
-            .btn {
-                font-size: 15px;
-                font-weight: bold;
-            }
-            .btn capcha{
-                font-size: 25px;
-                font-weight: bold;
-            }
-            .login-container {
-                width: 300px;
-                padding: 20px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Sign Up Form by Colorlib</title>
 
-            .form-group {
-                margin-bottom: 15px;
-            }
+        <!-- Font Icon -->
+        <link rel="stylesheet" href="../asset/boostrap/fonts/material-icon/css/material-design-iconic-font.min.css">
 
-            .form-group label {
-                display: block;
-            }
-
-            #captcha {
-                display: inline-block;
-                padding: 8px 13px;
-                margin-right: 15px;
-                border: 1px solid #ddd;
-                background-color: #f7f7f7;
-            </style>
-        </head>
-        <body>
-            <div class="login-form">
-                <form action="/Project_2/login" method="post">
-                    <h2 class="text-center">Log in</h2>       
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="username" placeholder="Username" required="required">
-                    </div>
-
-                    <div class="form-group">
-                        <input type="password" class="form-control" name="password" placeholder="Password" required="required">
-                    </div>
-
-                    <div class="form-group">
-
-                        
-                        <label for="captcha">CAPTCHA:</label>
-                        <span id="captcha">${generatedCaptcha}</span>
-                        <button type="button" onclick="location.reload();">Refresh</button>
-                        <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block">Log in</button>
-                    </div>
-                    <div class="form-group">
-                        <span style="color: red">${error}</span>
+        <!-- Main css -->
+        <link rel="stylesheet" href="../asset/boostrap/css/style.css">
+    </head>
+    <body>
+        <div class="main">
+            <section class="sign-in">
+                <div class="container">
+                    <div class="signin-content">
+                        <div class="signin-image">
+                            <figure><img src="../asset/boostrap/images/signin-image.jpg" alt="sing up image"></figure>
+                            <a href="register.jsp" class="signup-image-link">Create an account</a>
                         </div>
-                    </form>
-                    <a href="/Project_2/client/forgotpassword.jsp" class="forgetpass">Forgot Password?</a>
 
-                    <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
-
+                        <div class="signin-form">
+                            <h2 class="form-title">Sign up</h2>
+                            <form method="POST" class="register-form" id="login-form">
+                                <div class="form-group">
+                                    <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="text" name="username" id="username" placeholder="Username"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                    <input type="password" name="password" id="password" placeholder="Password"/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                    <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                                </div>
+                                <div class="form-group form-button">
+                                    <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                                </div>
+                            </form>
+                            <div class="social-login">
+                                <span class="social-label">Or login with</span>
+                                <ul class="socials">
+                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </body>
-
-        </html>
+            </section>
+        </div>
+        <script src="../asset/boostrap/vendor/jquery/jquery.min.js"></script>
+        <script src="../asset/boostrap/js/main.js"></script>
+    </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

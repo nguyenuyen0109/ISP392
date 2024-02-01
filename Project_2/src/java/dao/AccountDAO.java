@@ -50,7 +50,7 @@ public class AccountDAO {
                 String pass = rs.getString("password");
                 String name = rs.getString("name");
 
-                account.setIdAccount(idAccount);
+                account.setId(idAccount);
                 account.setUsername(un);
                 account.setPassword(pass);
                 account.setName(name);
@@ -103,12 +103,11 @@ public class AccountDAO {
                     double amount = resultSet.getDouble("Amount");
                     // String avatarUrl = resultSet.getString("avatarUrl");
                     boolean gender = resultSet.getBoolean("gender");
-                    int roleId = resultSet.getInt("role_idrole");
+                    int roleId = resultSet.getInt("role_id");
 
-                    return new Account(id, username, amount, password, name,
+                    return new Account(id, username, roleId, password, name,
                             mobileNumber, emailAddress, address, isActive,
-                            updatedAt, createdAt, avatarUrl, gender,
-                            roleId);
+                            updatedAt, createdAt, avatarUrl, gender);
                 }
             }
         } catch (SQLException e) {
@@ -154,14 +153,13 @@ public class AccountDAO {
                 java.sql.Timestamp createdAt = resultSet.getTimestamp("CreateAt");
                 String avatarUrl = resultSet.getString("avatar_Url");
                 boolean gender = resultSet.getBoolean("gender");
-                int roleId = resultSet.getInt("role_idrole");
+                int roleId = resultSet.getInt("role_id");
 
                 //Account account = new Account();
                 Account account;
-                account = new Account(id, username, amount, password, name,
+                account = new Account(id, username, roleId, password, name,
                         mobileNumber, emailAddress, address, isActive,
-                        updatedAt, createdAt, avatarUrl, gender,
-                        roleId);
+                        updatedAt, createdAt, avatarUrl, gender);
                 accounts.add(account);
             }
         } catch (SQLException e) {
@@ -243,7 +241,7 @@ public class AccountDAO {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    int roleId = resultSet.getInt("role_idrole");
+                    int roleId = resultSet.getInt("role_id");
                     return roleId == 1; // Assuming 1 is the roleId for admin
                 }
             }
@@ -267,7 +265,7 @@ public class AccountDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Account foundAccount = new Account();
-                    foundAccount.setIdAccount(rs.getInt("idAccount"));
+                    foundAccount.setId(rs.getInt("idAccount"));
                     foundAccount.setUsername(rs.getString("username"));
                     foundAccount.setAmount(rs.getDouble("amount"));
                     foundAccount.setPassword(rs.getString("password"));
@@ -280,7 +278,7 @@ public class AccountDAO {
                     foundAccount.setCreateAt(rs.getTimestamp("CreateAt"));
                     foundAccount.setAvatarUrl(rs.getString("avatar_Url"));
                     foundAccount.setGender(rs.getBoolean("gender"));
-                    foundAccount.setRoleIdRole(rs.getInt("role_idrole"));
+                    foundAccount.setRole_id(rs.getInt("role_id"));
                 }
             }
         } catch (SQLException e) {
@@ -290,7 +288,7 @@ public class AccountDAO {
     }
 
     public Account updateAccount(Account acc) {
-        if (acc == null || acc.getIdAccount() == 0) {
+        if (acc == null || acc.getId()== 0) {
             return null; //
         }
 
@@ -308,8 +306,8 @@ public class AccountDAO {
             ps.setTimestamp(9, acc.getCreateAt());
             ps.setString(10, acc.getAvatarUrl());
             ps.setBoolean(11, acc.isGender());
-            ps.setInt(12, acc.getRoleIdRole());
-            ps.setInt(13, acc.getIdAccount());
+            ps.setInt(12, acc.getRole_id());
+            ps.setInt(13, acc.getId());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
@@ -328,7 +326,7 @@ public class AccountDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Account foundAccount = new Account();
-                    foundAccount.setIdAccount(rs.getInt("idAccount"));
+                    foundAccount.setId(rs.getInt("idAccount"));
                     foundAccount.setUsername(rs.getString("username"));
                     foundAccount.setAmount(rs.getDouble("amount"));
                     foundAccount.setPassword(rs.getString("password"));
@@ -341,7 +339,7 @@ public class AccountDAO {
                     foundAccount.setCreateAt(rs.getTimestamp("CreateAt"));
                     foundAccount.setAvatarUrl(rs.getString("avatar_Url"));
                     foundAccount.setGender(rs.getBoolean("gender"));
-                    foundAccount.setRoleIdRole(rs.getInt("role_idrole"));
+                    foundAccount.setRole_id(rs.getInt("role_id"));
 
                     return foundAccount;
                 }

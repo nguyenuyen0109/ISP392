@@ -19,10 +19,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="/Project_2/account">Accounts</a>
+                                <a class="nav-link" href="#">Accounts</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">Debt List</a>
+                                <a class="nav-link" href="#">Debt List</a>
                             </li>
                             <!-- Add more navigation links for the admin dashboard as needed -->
                         </ul>
