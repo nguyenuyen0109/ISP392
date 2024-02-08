@@ -333,7 +333,7 @@ public class AccountDAO {
                     foundAccount.setAmount(rs.getDouble("amount"));
                     foundAccount.setPassword(rs.getString("password"));
                     foundAccount.setName(rs.getString("name"));
-                    foundAccount.setMobileNumber(rs.getString("Mobile_number"));
+                    foundAccount.setMobileNumber(rs.getString("mobileNumber"));
                     foundAccount.setEmailAddress(rs.getString("Email_address"));
                     foundAccount.setAddress(rs.getString("address"));
                     foundAccount.setIsActive(rs.getBoolean("isActive"));
@@ -396,7 +396,7 @@ public class AccountDAO {
     }
     
     public boolean isPhoneExist(String phone) {
-        String query = "SELECT COUNT(*) FROM account WHERE Mobile_number = ?";
+        String query = "SELECT COUNT(*) FROM account WHERE mobileNumber = ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
             
             preparedStatement.setString(1, phone);
