@@ -5,26 +5,20 @@
 --%>
 
 <%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>
- Ki?m tra xem có thông báo toast ?? hi?n th? không 
+ Ki?m tra xem có thông báo toast hi?n th? không 
 <% if (request.getAttribute("toastMessage") != null) { %>
 <div class="toast" style="position: fixed; top: 20px; right: 20px; z-index: 1050;">
     <div class="toast-header">
         <strong class="mr-auto text-primary">Thông báo</strong>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">&times;</button> <!-- Thêm s? ki?n click vào nút "x" -->
     </div>
     <div class="toast-body">
         <%= request.getAttribute("msg") %>
     </div>
 </div>
-<script>
-    $(document).ready(function(){
-        $('.toast').toast({ delay: 5000 });
-        $('.toast').toast('show');
-    });
-</script>
 <% } %>--%>
 
-
+<<link rel="stylesheet" href="./assets/css/toast.css"/>
 <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
   <!-- Position it -->
   <div style="position: absolute; top: 0; right: 0;">
@@ -32,49 +26,35 @@
     <!-- Then put toasts within -->
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header">
-        <img src="..." class="rounded mr-2" alt="...">
-        <strong class="mr-auto">Bootstrap</strong>
+        <img src="" class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Notifications</strong>
         <small class="text-muted">just now</small>
         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="toast-body">
-        See? Just like this.
-      </div>
-    </div>
-
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <img src="..." class="rounded mr-2" alt="...">
-        <strong class="mr-auto">Bootstrap</strong>
-        <small class="text-muted">2 seconds ago</small>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="toast-body">
-         <%= request.getAttribute("msg") %>
+        <%= request.getAttribute("msg") %>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Hàm ?? t? ??ng t?t toast sau m?t kho?ng th?i gian
-  function autoCloseToast() {
-    $('.toast').each(function () {
-      var toast = $(this);
-      var delay = 5000; // 5 giây
-      setTimeout(function () {
-        toast.toast('hide');
-      }, delay);
-    });
-  }
-
   // Khi tài li?u ???c t?i, t? ??ng m? và t?t toast sau m?t kho?ng th?i gian
   $(document).ready(function () {
+    // Thêm hi?u ?ng m? toast
+    $('.toast').toast({ delay: 5000 });
     $('.toast').toast('show');
-    autoCloseToast();
+
+    // T? ?óng toast sau m?t kho?ng th?i gian
+    setTimeout(function() {
+      $('.toast').toast('hide');
+    }, 5000);
+
+    // Thêm s? ki?n click vào nút "x" ?? ?óng toast
+    $('.close').on('click', function() {
+      $(this).closest('.toast').toast('hide');
+    });
   });
 </script>

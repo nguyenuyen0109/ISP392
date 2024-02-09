@@ -17,8 +17,7 @@
     <body>
         <div class="mainDiv">
             <div class="cardStyle">
-                <form action="changepassword" method="post" name="signupForm" id="signupForm">
-
+                <form action="verify" method="post" name="signupForm" id="signupForm">
                     <img src="" id="signupLogo"/>
 
                     <h2 class="formTitle">
@@ -34,7 +33,6 @@
                         <label class="inputLabel" for="confirmPassword">Confirm Password</label>
                         <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password">
                     </div>
-
                     <div class="inputDiv">
                         <label class="inputLabel">Captcha</label>
                         <input type="text" id="captcha" name="captcha" placeholder="Enter captcha" required>
@@ -44,6 +42,11 @@
                         <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
                         <img src="../assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
                     </div>
+                    <!--                    <div class="Captcha"> 
+                                            <input type="text" name="captcha" placeholder="Enter captcha" required>
+                                            <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000; width: 60%">
+                                            <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 15%; margin-left: 10px">
+                                        </div>-->
 
                     <div class="buttonWrapper">
                         <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">

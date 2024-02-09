@@ -34,7 +34,7 @@ public class LogoutController extends HttpServlet {
         }
 
         // Redirect the user to the login page after successful logout
-        response.sendRedirect("login.jsp"); // Redirect URL can be adjusted as per application routing
+        response.sendRedirect("client/homepage.jsp"); // Redirect URL can be adjusted as per application routing
     }
 
     @Override
