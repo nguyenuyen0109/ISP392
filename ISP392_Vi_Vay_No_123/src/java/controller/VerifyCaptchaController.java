@@ -21,7 +21,7 @@ public class VerifyCaptchaController extends HttpServlet {
     private final String LOGIN_PAGE = "/client/login.jsp";
     private final String REGISTER_PAGE = "/client/register.jsp";
     private final String FORGOT_PAGE = "/client/forgotpassword.jsp";
-    
+    private final String CHANGEPASSWORD_PAGE = "/client/changepassword.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -84,14 +84,17 @@ public class VerifyCaptchaController extends HttpServlet {
         } else if (uri.equalsIgnoreCase(REGISTER_PAGE)) {
             uri = "/register";
             jsp_uri = REGISTER_PAGE;
-        } else {
+        } else if(uri.equalsIgnoreCase(FORGOT_PAGE)){
             uri = "/forgot";
             jsp_uri = FORGOT_PAGE;
+        } else{
+            uri = "/changepassword";
+            jsp_uri = CHANGEPASSWORD_PAGE;
         }
         String captchaInput = (String) request.getParameter("captcha");
         String captchaText = (String) session.getAttribute("captchaText");
         if (!captchaInput.equalsIgnoreCase(captchaText)) {
-            request.setAttribute("msg", "Invalid captcha!");
+            request.setAttribute("alert", "Invalid captcha!");
             request.getRequestDispatcher(jsp_uri).forward(request, response);
         }
         request.getRequestDispatcher(uri).forward(request, response);

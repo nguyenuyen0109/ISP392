@@ -1,0 +1,120 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 9, 2024, 4:45:41 PM
+    Author     : MINIMONIE
+*/
+
+/* toast.css */
+
+/*.toast {
+  position: fixed;  Đảm bảo toast được hiển thị đè lên trên cấu trúc của trang 
+  z-index: 1050;  Độ ưu tiên hiển thị của toast 
+  top: 20px;
+  right: 20px;
+  max-width: $toast-max-width;
+  overflow: hidden;
+  font-size: $toast-font-size;
+  color: $toast-color;
+  background-color: $toast-background-color;
+  background-clip: padding-box;
+  border: $toast-border-width solid $toast-border-color;
+  box-shadow: $toast-box-shadow;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  border-radius: $toast-border-radius;
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: $toast-padding-y $toast-padding-x;
+  color: $toast-header-color;
+  background-color: $toast-header-background-color;
+  background-clip: padding-box;
+  border-bottom: $toast-border-width solid $toast-header-border-color;
+}
+
+.toast-body {
+  padding: $toast-padding-x;
+}
+
+.toast.showing {
+  opacity: 1;
+}
+
+.toast.show {
+  display: block;
+  opacity: 1;
+}
+
+.toast.hide {
+  display: none;
+}
+*/
+
+
+/* toast.css */
+
+.toast {
+  position: fixed; /* Sử dụng position: fixed để thông báo hiển thị cố định trên màn hình */
+  z-index: 1050; /* Độ ưu tiên hiển thị của toast */
+  top: 50%; /* Hiển thị ở giữa màn hình theo chiều dọc */
+  left: 50%; /* Hiển thị ở giữa màn hình theo chiều ngang */
+  transform: translate(-50%, -50%); /* Dịch chuyển thông báo để nó hiển thị chính giữa màn hình */
+  max-width: $toast-max-width;
+  overflow: hidden;
+  font-size: $toast-font-size;
+  color: $toast-color;
+  background-color: $toast-background-color;
+  /*background-clip: padding-box;*/
+  border: $toast-border-width solid $toast-border-color;
+  /*box-shadow: $toast-box-shadow;*/
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  border-radius: $toast-border-radius;
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  padding: $toast-padding-y $toast-padding-x;
+  color: $toast-header-color;
+  background-color: $toast-header-background-color;
+  background-clip: padding-box;
+  border-bottom: $toast-border-width solid $toast-header-border-color;
+}
+
+.toast-body {
+  padding: $toast-padding-x;
+}
+
+.toast.showing {
+  opacity: 1;
+}
+
+.toast.show {
+  display: block;
+  opacity: 1;
+}
+
+.toast.hide {
+  display: none;
+}
+
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px; /* Độ dài của vạch thời gian */
+    background-color: blue; /* Màu sắc của vạch thời gian */
+    width: 100%; /* Độ rộng của vạch thời gian, sẽ được điều chỉnh bằng JavaScript */
+    transform: scaleX(0); /* Vạch thời gian ban đầu sẽ không được hiển thị */
+    transition: width 5s linear; /* Chuyển động của vạch thời gian, ở đây sẽ mất sau 5 giây */
+}
+
+
+
+

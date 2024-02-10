@@ -27,18 +27,9 @@ public class RegisterController extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("pass");
         String rePassword = request.getParameter("re_pass");
-        
-//        String captchaResponse = request.getParameter("h-captcha-response");
-//        boolean isValidCaptcha = new Captcha().verifyCaptcha(captchaResponse);
-//        if (!isValidCaptcha) {
-//            request.setAttribute("msg", "Invalid captcha!");
-//            request.getRequestDispatcher("/client/register.jsp").forward(request, response);
-//            return;
-//        }
-
         // Perform any validation checks here
         if (!password.equals(rePassword)) {
-            request.setAttribute("msg", "Passwords do not match. Please try again.");
+            request.setAttribute("alert", "Passwords do not match. Please try again.");
             request.getRequestDispatcher("/client/register.jsp").forward(request, response);
             return;
         }
@@ -49,7 +40,7 @@ public class RegisterController extends HttpServlet {
 
         // Check if the username or email already exists
         if (accountDAO.checkUsernameAndEmailExists(username, email)) {
-            request.setAttribute("msg", "Username or Email already exists. Please choose a different username or email.");
+            request.setAttribute("alert", "Username or Email already exists. Please choose a different username or email.");
             request.getRequestDispatcher("/client/register.jsp").forward(request, response);
             return;
         }
@@ -70,7 +61,7 @@ public class RegisterController extends HttpServlet {
 
         new Mail().sendEmail(email, "Register", "Click here to register: " + url);
 
-        request.setAttribute("msg", "An email was sent!");
+        request.setAttribute("alert", "An email was sent!");
         request.getRequestDispatcher("/client/register.jsp").forward(request, response);
 
     }
@@ -94,10 +85,10 @@ public class RegisterController extends HttpServlet {
             request.getSession().removeAttribute("register_token_" + email);
             
             new AccountDAO().insertAccount(newAccount);
-            request.setAttribute("msg", "Register success");
+            request.setAttribute("alert", "Register success");
 
         } else {
-            request.setAttribute("msg", "Invalid token");
+            request.setAttribute("alert", "Invalid token");
         }
 
         request.getRequestDispatcher("/client/register.jsp").forward(request, response);

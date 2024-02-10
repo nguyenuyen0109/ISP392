@@ -79,7 +79,7 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("client/homepage.jsp"); // Đảm bảo rằng URL này chính xác
             return;
         } else {
-            request.setAttribute("msg", "Invalid username or password");
+            request.setAttribute("alert", "Invalid username or password");
             request.getRequestDispatcher("/client/login.jsp").forward(request, response);
         }
 

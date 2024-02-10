@@ -50,10 +50,10 @@ public class ResetPasswordController extends HttpServlet {
         
         Account user = new AccountDAO().getAccountByEmail(email);
         
-        String msg = "";      
+        String alert = "";      
         String url ="";
         if (user==null) {
-            msg = "Email not found";
+            alert = "Email not found";
         } else if (token.equals(checkToken)) {
             
             if (password.equals(retypePassword)) {
@@ -63,22 +63,22 @@ public class ResetPasswordController extends HttpServlet {
                 
                 request.getSession().removeAttribute("reset_token_" + email);
                 
-                msg = "Reset password success";
+                alert = "Reset password success";
                 url = "client/login.jsp";
             } else {
-                msg = "2 password not match";
+                alert = "2 password not match";
                 url = "client/resetpassword.jsp";
             }
             
         } else {
-            msg = "Invalid token!";
+            alert = "Invalid token!";
             url = "client/resetpassword.jsp";
         }
         
-        request.setAttribute("msg", msg);
+        request.setAttribute("alert", alert);
         request.setAttribute("token", token);
         request.setAttribute("email", email);
-        request.setAttribute("toast", msg);
+        request.setAttribute("toast", alert);
 
         request.getRequestDispatcher(url).forward(request, response);
     }
