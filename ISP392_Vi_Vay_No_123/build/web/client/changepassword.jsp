@@ -42,12 +42,6 @@
                         <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
                         <img src="../assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
                     </div>
-                    <!--                    <div class="Captcha"> 
-                                            <input type="text" name="captcha" placeholder="Enter captcha" required>
-                                            <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000; width: 60%">
-                                            <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 15%; margin-left: 10px">
-                                        </div>-->
-
                     <div class="buttonWrapper">
                         <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">
                             <span>Continue</span>

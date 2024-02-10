@@ -94,7 +94,7 @@ public class VerifyCaptchaController extends HttpServlet {
         String captchaInput = (String) request.getParameter("captcha");
         String captchaText = (String) session.getAttribute("captchaText");
         if (!captchaInput.equalsIgnoreCase(captchaText)) {
-            request.setAttribute("msg", "Invalid captcha!");
+            request.setAttribute("alert", "Invalid captcha!");
             request.getRequestDispatcher(jsp_uri).forward(request, response);
         }
         request.getRequestDispatcher(uri).forward(request, response);

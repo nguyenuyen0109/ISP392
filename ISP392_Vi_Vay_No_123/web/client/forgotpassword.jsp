@@ -32,9 +32,9 @@
                                 <p>You can reset your password here.</p>
                                 <div class="panel-body">
 
-                                    <c:if test="${requestScope.msg ne null}">
+                                    <c:if test="${requestScope.alert ne null}">
                                         <div class="alert mb-3" role="alert">
-                                            ${requestScope.msg}
+                                            ${requestScope.alert}
                                         </div>
                                     </c:if>
 

@@ -42,7 +42,7 @@ public class FotgotPasswordController extends HttpServlet {
         String captchaResponse = request.getParameter("h-captcha-response");
         
 //        if (!isValidCaptcha) {
-//            request.setAttribute("msg", "Invalid captcha!");
+//            request.setAttribute("alert", "Invalid captcha!");
 //            request.getRequestDispatcher("/client/forgotpassword.jsp").forward(request, response);
 //            return;
 //        }
@@ -51,7 +51,7 @@ public class FotgotPasswordController extends HttpServlet {
 
         // Check if the username or email already exists
         if (accountDAO.getAccountByEmail(email) == null) {
-            request.setAttribute("msg", "Invalid email!");
+            request.setAttribute("alert", "Invalid email!");
         } else {
             
             String token = new Token().generateRandomToken(18);
@@ -62,7 +62,7 @@ public class FotgotPasswordController extends HttpServlet {
 
             new Mail().sendEmail(email, "Reset password", "Click here to reset password: " + url);
             
-            request.setAttribute("msg", "An email was sent!");
+            request.setAttribute("alert", "An email was sent!");
         }
         
         

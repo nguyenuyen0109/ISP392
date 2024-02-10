@@ -22,9 +22,9 @@
                             <h2 class="form-title">Sign up</h2>
                             <form action="verify" method="POST" class="register-form" id="register-form">
 
-                                <c:if test="${requestScope.msg ne null}">
+                                <c:if test="${requestScope.alert ne null}">
                                     <div class="alert alert-danger mb-3" role="alert">
-                                        ${requestScope.msg}
+                                        ${requestScope.alert}
                                     </div>
                                 </c:if>
 

@@ -26,9 +26,9 @@
                             <h2 class="form-title">Login</h2>
                             <form action="verify" method="POST" class="register-form" id="login-form">
 
-                                <c:if test="${requestScope.msg ne null}">
+                                <c:if test="${requestScope.alert ne null}">
                                     <div class="alert alert-danger mb-3" role="alert">
-                                        ${requestScope.msg}
+                                        ${requestScope.alert}
                                     </div>
                                 </c:if>
 
@@ -59,14 +59,7 @@
                                 <input type="hidden" name="uri" value="/client/login.jsp">
 
                             </form>
-                            <div class="social-login">
-                                <span class="social-label">Or login with</span>
-                                <ul class="socials">
-                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                    <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
-                                </ul>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

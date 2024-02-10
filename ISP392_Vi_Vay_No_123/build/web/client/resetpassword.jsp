@@ -31,12 +31,6 @@
                                 <p>You can reset your password here.</p>
                                 <div class="panel-body">
 
-                                    <c:if test="${msg ne null}">
-                                        <div class="alert mb-3" role="alert">
-                                            ${msg}
-                                        </div>
-                                    </c:if>
-
                                     <form action="reset-password" id="register-form" role="form" autocomplete="off" class="form" method="post">
                                         
                                         <input type="hidden" name="token" value="${token}">
