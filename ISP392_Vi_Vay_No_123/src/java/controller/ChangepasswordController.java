@@ -62,21 +62,15 @@ public class ChangepasswordController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Captcha c = new Captcha();
-        String text = c.generateCaptchaText();
-        BufferedImage captchaImage = c.generateCaptchaImage(text);
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        ImageIO.write(captchaImage, "png", baos);
-//        byte[] imageBytes = baos.toByteArray();
-//        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-//        request.setAttribute("captchaImageBase64", base64Image);
-//        request.getRequestDispatcher("/client/.jsp").forward(request, response);
-        response.setContentType("image/png");
-        session.setAttribute("captchaText", text);
-        OutputStream outputStream = response.getOutputStream();
-        ImageIO.write(captchaImage, "png", outputStream);
-        outputStream.close();
+//        HttpSession session = request.getSession();
+//        Captcha c = new Captcha();
+//        String text = c.generateCaptchaText();
+//        BufferedImage captchaImage = c.generateCaptchaImage(text);
+//        response.setContentType("image/png");
+//        session.setAttribute("captchaText", text);
+//        OutputStream outputStream = response.getOutputStream();
+//        ImageIO.write(captchaImage, "png", outputStream);
+//        outputStream.close();
     }
 
     /**

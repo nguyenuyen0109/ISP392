@@ -123,3 +123,7 @@ button[disabled] {
         transform: rotate(360deg);
     }
 }
+
+.captcha img {
+    margin-top: 24px;
+}
