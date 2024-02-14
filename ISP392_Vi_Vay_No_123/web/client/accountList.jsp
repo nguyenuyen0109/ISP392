@@ -31,20 +31,7 @@
 
 
         <%@ include file="/navigator/header.jsp" %>
-
-
-        <%-- Check for update success/failure and display alert messages --%>
-        <c:if test="${param.updateSuccess ne null}">
-            <div class="alert alert-success" role="alert">
-                Account updated successfully!
-            </div>
-        </c:if>
-        <c:if test="${param.updateFailed ne null}">
-            <div class="alert alert-danger" role="alert">
-                Failed to update account.
-            </div>
-        </c:if>
-
+<jsp:include page="/navigator/toast.jsp" />
         <div class="container mt-5">
             <div class="row">
                 <div class="col-12">

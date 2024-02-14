@@ -7,56 +7,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : MINIMONIE
 */
 
-/* toast.css */
-
-/*.toast {
-  position: fixed;  Đảm bảo toast được hiển thị đè lên trên cấu trúc của trang 
-  z-index: 1050;  Độ ưu tiên hiển thị của toast 
-  top: 20px;
-  right: 20px;
-  max-width: $toast-max-width;
-  overflow: hidden;
-  font-size: $toast-font-size;
-  color: $toast-color;
-  background-color: $toast-background-color;
-  background-clip: padding-box;
-  border: $toast-border-width solid $toast-border-color;
-  box-shadow: $toast-box-shadow;
-  backdrop-filter: blur(10px);
-  opacity: 0;
-  border-radius: $toast-border-radius;
-}
-
-.toast-header {
-  display: flex;
-  align-items: center;
-  padding: $toast-padding-y $toast-padding-x;
-  color: $toast-header-color;
-  background-color: $toast-header-background-color;
-  background-clip: padding-box;
-  border-bottom: $toast-border-width solid $toast-header-border-color;
-}
-
-.toast-body {
-  padding: $toast-padding-x;
-}
-
-.toast.showing {
-  opacity: 1;
-}
-
-.toast.show {
-  display: block;
-  opacity: 1;
-}
-
-.toast.hide {
-  display: none;
-}
-*/
-
-
-/* toast.css */
 
 .toast {
   position: fixed; /* Sử dụng position: fixed để thông báo hiển thị cố định trên màn hình */
@@ -115,6 +65,47 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     transition: width 5s linear; /* Chuyển động của vạch thời gian, ở đây sẽ mất sau 5 giây */
 }
 
+.toast-container {
+  --bs-toast-zindex: 1090;
+  position: absolute;
+  z-index: var(--bs-toast-zindex);
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 100%;
+  pointer-events: none;
+}
+.toast-container > :not(:last-child) {
+  margin-bottom: var(--bs-toast-spacing);
+}
+
+.position-fixed {
+  position: fixed !important;
+}
+
+.bottom-0 {
+  bottom: 12 !important;
+}
 
 
+.end-0 {
+/*  right: 0 !important;*/
+  left: 0 !important;
+}
+
+.p-3 {
+  padding: 1rem !important;
+}
+
+.me-auto {
+  margin-right: auto !important;
+}
+
+.alert-dismissible .btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  padding: 1.25rem 1rem;
+}
 

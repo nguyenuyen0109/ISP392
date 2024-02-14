@@ -8,10 +8,10 @@
         <title>Sign Up</title>
 
         <link rel="stylesheet" href="./assets/css/register.css">
-        
+
     </head>
     <body>
-
+        <jsp:include page="/navigator/toast.jsp" />
         <div class="main">
 
             <!-- Sign up form -->

@@ -51,7 +51,7 @@ public class LoginController extends HttpServlet {
             return;
 
         } else {
-            request.setAttribute("toast", "Invalid token");
+            request.setAttribute("alert", "Invalid token");
             request.getRequestDispatcher("/client/login.jsp").forward(request, response);
         }
 

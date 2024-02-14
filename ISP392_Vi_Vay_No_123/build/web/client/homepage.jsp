@@ -107,7 +107,7 @@
 
     </head>
     <body>
-
+        <jsp:include page="/navigator/toast.jsp" />
         <div class="site-mobile-menu site-navbar-target">
             <div class="site-mobile-menu-header">
                 <div class="site-mobile-menu-close">

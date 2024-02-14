@@ -18,7 +18,7 @@
         </style>
     </head>
     <body>
-
+        <jsp:include page="/navigator/toast.jsp" />
         <div class="form-gap"></div>
         <div class="container">
             <div class="row">
@@ -32,25 +32,26 @@
                                 <div class="panel-body">
 
                                     <form action="reset-password" id="register-form" role="form" autocomplete="off" class="form" method="post">
-                                        
+
                                         <input type="hidden" name="token" value="${token}">
                                         <input type="hidden" name="email" value="${email}">
-                                        
+
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <input id="email" name="password" placeholder="Password" class="form-control" type="password">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <input id="email" name="retypePassword" placeholder="Retype password" class="form-control" type="password">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
                                         </div>
+
                                         <input type="hidden" class="hide" name="token" id="token" value="">
                                     </form>
 

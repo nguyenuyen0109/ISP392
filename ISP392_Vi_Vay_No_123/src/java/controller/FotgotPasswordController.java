@@ -40,13 +40,7 @@ public class FotgotPasswordController extends HttpServlet {
         String email = request.getParameter("email");
         
         String captchaResponse = request.getParameter("h-captcha-response");
-        
-//        if (!isValidCaptcha) {
-//            request.setAttribute("alert", "Invalid captcha!");
-//            request.getRequestDispatcher("/client/forgotpassword.jsp").forward(request, response);
-//            return;
-//        }
-        
+
         AccountDAO accountDAO = new AccountDAO();
 
         // Check if the username or email already exists

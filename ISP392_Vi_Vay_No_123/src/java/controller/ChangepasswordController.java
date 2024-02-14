@@ -95,11 +95,11 @@ public class ChangepasswordController extends HttpServlet {
                 if(accountDAO.updatePassword(username, newPassword)){
                     response.sendRedirect("changepassword.jsp");
                 }else{
-                    request.setAttribute("error", "Falied to change password.");
+                    request.setAttribute("alert", "Falied to change password.");
                     request.getRequestDispatcher("changepassword.jsp").forward(request, response);
                 }
             }else{
-                request.setAttribute("error", "Passwords do not match.");
+                request.setAttribute("alert", "Passwords do not match.");
                 request.getRequestDispatcher("changepassword.jsp").forward(request, response);
             }
         }

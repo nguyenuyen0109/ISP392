@@ -31,13 +31,6 @@
                                 <h2 class="text-center">Forgot Password?</h2>
                                 <p>You can reset your password here.</p>
                                 <div class="panel-body">
-
-                                    <c:if test="${requestScope.alert ne null}">
-                                        <div class="alert mb-3" role="alert">
-                                            ${requestScope.alert}
-                                        </div>
-                                    </c:if>
-
                                     <form action="verify" id="register-form" role="form" autocomplete="off" class="form" method="post">
                                         <div class="form-group">
                                             <div class="input-group">
