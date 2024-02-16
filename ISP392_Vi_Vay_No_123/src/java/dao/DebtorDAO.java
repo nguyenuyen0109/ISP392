@@ -112,6 +112,39 @@ public class DebtorDAO {
         });
         return list;
     }
+     
+    public List<Debtor> getDebtorsByName(String keyword) {
+        //here
+        List<Debtor> debtors = new ArrayList<>();
+        String query = "select * from debtor\n"
+                + " where " + keyword;
+        try {
+            PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
+            //preparedStatement.setObject(1, keyword);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            //
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String address = resultSet.getString("address");
+                String phone = resultSet.getString("phone");
+                String email = resultSet.getString("email");
+                double totalDebt = resultSet.getDouble("totalDebt");
+                java.sql.Timestamp createdAt = resultSet.getTimestamp("createdAt");
+                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
+                int account_id = resultSet.getInt("account_id");
+                int creditor_account_id = resultSet.getInt("creditor_account_id");
+                //Account account = new Account();
+                Debtor debtor;
+                debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, account_id, creditor_account_id);
+                debtors.add(debtor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return debtors;
+    }
 
     
     public static void main(String[] args) {
