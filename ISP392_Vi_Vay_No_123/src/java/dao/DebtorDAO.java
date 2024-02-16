@@ -76,6 +76,43 @@ public class DebtorDAO {
         }
 
     }
+    public List<Debtor> sortDebtorByOldest(int account_id){
+       List<Debtor> list = getAllDebtors (account_id);
+        // Sắp xếp theo ngày tạo cũ nhất (tăng dần)
+        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(Debtor::getCreatedAt)));
+        return list;
+    }
+
+    
+    public List<Debtor> sortDebtorByNewest(int account_id){
+        List<Debtor> list = getAllDebtors (account_id);
+        // Sắp xếp theo ngày tạo mới nhất (giảm dần)
+        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(Debtor::getCreatedAt)));
+        return list;
+    }
+    
+    public List<Debtor> sortDebtorByTotalDebtLargest(int account_id){
+        List<Debtor> list = getAllDebtors(account_id);
+        Collections.sort(list, new Comparator<Debtor>(){
+            @Override
+            public int compare(Debtor o1, Debtor o2) {
+                return Double.compare(o2.getTotalDebt(), o1.getTotalDebt());
+            }
+        });
+        return list;
+    }
+    
+     public List<Debtor> sortDebtorByTotalDebtSmallest(int account_id) {
+        List<Debtor> list = getAllDebtors(account_id);
+        Collections.sort(list, new Comparator<Debtor>(){
+            @Override
+            public int compare(Debtor o1, Debtor o2) {
+                return Double.compare(o1.getTotalDebt(), o2.getTotalDebt());
+            }
+        });
+        return list;
+    }
+
     
     public static void main(String[] args) {
         // Instantiate the DebtorDAO class
