@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,10 +84,7 @@
 
                     <div class="form-group">
 
-                        <!--                        <label for="captcha">CAPTCHA:</label>
-                                                <span id="captcha"></span>
-                                                <button type="submit" onclick="generateCaptcha()">Refresh</button>
-                                                <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">-->
+                        
                         <label for="captcha">CAPTCHA:</label>
                         <span id="captcha">${generatedCaptcha}</span>
                         <button type="button" onclick="location.reload();">Refresh</button>
@@ -121,9 +117,18 @@
                             window.onload = generateCaptcha;
                         </script>
                     </form>
+<<<<<<< HEAD
+=======
+                    <a href="/Project_2/client/forgotpassword.jsp" class="forgetpass">Forgot Password?</a>
+>>>>>>> 7a5a677e0a81b27d967adcc55bfeeb1738b4bd7e
 
                     <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
                 </div>
             </body>
+<<<<<<< HEAD
         </html>
 
+=======
+
+        </html>
+>>>>>>> 7a5a677e0a81b27d967adcc55bfeeb1738b4bd7e
