@@ -56,6 +56,26 @@ public class DebtorDAO {
         }
         return debtors;
     }
+    public boolean addDebtor(Debtor debtor) {
+        String sql = "INSERT INTO debtor "
+                + "(name, address, phone, email,totalDebt,account_id ) VALUES (?, ?, ?, ?,?,?)";
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis()); // Tạo một biến Timestamp duy nhất
+
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+            statement.setString(1, debtor.getName());
+            statement.setString(2, debtor.getAddress());
+            statement.setString(3, debtor.getPhone());
+            statement.setString(4, debtor.getEmail());
+            statement.setDouble(5, debtor.getTotalDebt());
+            statement.setInt(6, debtor.getAccount_id());
+            int rowsInserted = statement.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
     
     public static void main(String[] args) {
         // Instantiate the DebtorDAO class
