@@ -4,82 +4,140 @@
  */
 package controller;
 
+import dao.DebtorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import model.Debtor;
 
 /**
  *
- * @author minhh
+ * @author ADMIN
  */
 public class DebtorController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DebtorController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DebtorController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+    DebtorDAO debtor = new DebtorDAO();
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        HttpSession session = request.getSession();
+
+        //get du lieu tu db
+        List<Debtor> listDebtor = debtor.getAllDebtors(2);
+
+        //set list debtor vao session
+        session.setAttribute("listDebtor", listDebtor);
+
+        request.getRequestDispatcher("client/debtor.jsp").forward(request, response);
+
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action") == null
+                ? ""
+                : request.getParameter("action");
+        switch (action) {
+            case "search":
+                search(request, response);
+                break;
+            case "add":
+                add(request, response);
+                break;
+            default:
+                response.sendRedirect("debtor");
+                break;
+
+        }
+
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Search
+        String searchName = request.getParameter("searchName");
+        String searchAddress = request.getParameter("searchAddress");
+        String searchPhone = request.getParameter("searchPhone");
+        String searchMail = request.getParameter("searchMail");
+        List<Debtor> listDebtor = new ArrayList<>();
+
+        String cond = "";
+        if (searchName != null && !searchName.isEmpty()) {
+            cond += " name like '%" + searchName + "%'";
+            //listDebtor = debtor.getDebtorsByName(searchName);
+        }
+        if (searchAddress != null && !searchAddress.isEmpty()) {
+
+            if (cond != null && !cond.isEmpty()) {
+                cond += " AND ";
+            }
+            cond += " address like '%" + searchAddress + "%'";
+            //listDebtor = debtor.getDebtorsByAddress(searchAddress);
+        }
+        if (searchPhone != null && !searchPhone.isEmpty()) {
+            if (cond != null && !cond.isEmpty()) {
+                cond += " AND ";
+            }
+            cond += " phone like '%" + searchPhone + "%'";
+        }
+
+        if (searchMail != null && !searchMail.isEmpty()) {
+            if (cond != null && !cond.isEmpty()) {
+                cond += " AND ";
+            }
+            cond += " email like '%" + searchMail + "%'";
+        }
+
+        listDebtor = debtor.getDebtorsByName(cond);
+//if (searchName != null && !searchName.isEmpty()) {
+//    listDebtor = debtor.getDebtorsByName(searchName);
+//} else if (searchAddress != null && !searchAddress.isEmpty()) {
+//    listDebtor = debtor.getDebtorsByAddress(searchAddress);
+//} else if (searchPhone != null && !searchPhone.isEmpty()) {
+//    listDebtor = debtor.getDebtorsByPhone(searchPhone);
+//} else if (searchMail != null && !searchMail.isEmpty()) {
+//    listDebtor = debtor.getDebtorsByEmail(searchMail);
+//}
+
+        request.getSession().setAttribute("listDebtor", listDebtor);
+        request.getRequestDispatcher("client/debtor.jsp").forward(request, response);
+    }
+
+    private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // Add new debtor
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        double totalDebt = Double.parseDouble(request.getParameter("totalDebt"));
+
+        Debtor newDebtor = new Debtor();
+        newDebtor.setName(name);
+        newDebtor.setAddress(address);
+        newDebtor.setPhone(phone);
+        newDebtor.setEmail(email);
+        newDebtor.setTotalDebt(totalDebt);
+        newDebtor.setAccount_id(2);
+
+        // Save the new debtor
+        boolean success = debtor.addDebtor(newDebtor);
+        System.out.println(success);
+        if (success) {
+            response.sendRedirect("debtor");
+            request.setAttribute("successMessage", "Debtor added successfully!");
+        } else {
+            request.setAttribute("errorMessage", "Debt cannot be added.");
+            request.getRequestDispatcher("client/debtor.jsp").forward(request, response);
+
+        }
+    }
 
 }
