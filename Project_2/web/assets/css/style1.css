@@ -193,6 +193,27 @@ li a:hover {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+/* Adjust the container */
+.navbar-custom-container {
+    padding-left: 15px; /* Add padding on the left */
+    padding-right: 15px; /* Add padding on the right */
+}
+
+/* If you want to adjust only the dashboard link */
+.navbar-custom-brand {
+    margin-left: 15px; /* Add margin to the left of the Dashboard link */
+}
+
+.login-container {
+    position: absolute;
+    right: 15px; /* Adjusted right positioning */
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+}
+
+
+
 
 .page1 img {
     background-repeat: no-repeat;
@@ -201,3 +222,5 @@ li a:hover {
     display: flex;
     overflow: hidden;
 }
+
+

@@ -54,6 +54,10 @@ public class LoginController extends HttpServlet {
     HttpSession session = request.getSession();
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+<<<<<<< HEAD
+=======
+    String hashedPassword = MD5.getMd5(password);
+>>>>>>> main
     String inputCaptcha = request.getParameter("captcha");
     String generatedCaptcha = (String) session.getAttribute("generatedCaptcha");
     boolean isCaptchaValid = generatedCaptcha != null && generatedCaptcha.equals(inputCaptcha);

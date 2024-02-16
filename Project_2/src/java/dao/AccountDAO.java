@@ -370,7 +370,7 @@ public class AccountDAO {
                     foundAccount.setAmount(rs.getDouble("amount"));
                     foundAccount.setPassword(rs.getString("password"));
                     foundAccount.setName(rs.getString("name"));
-                    foundAccount.setMobileNumber(rs.getString("Mobile_number"));
+                    foundAccount.setMobileNumber(rs.getString("mobileNumber"));
                     foundAccount.setEmailAddress(rs.getString("Email_address"));
                     foundAccount.setAddress(rs.getString("address"));
                     foundAccount.setIsActive(rs.getBoolean("isActive"));
@@ -405,5 +405,111 @@ public class AccountDAO {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+<<<<<<< HEAD
+=======
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
+
+    // Hàm kiểm tra định dạng email
+    public boolean isEmailValid(String email) {
+        Pattern pattern = Pattern.compile(EMAIL_REGEX);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    
+    
+    public boolean isEmailExist(String email) {
+        String query = "SELECT COUNT(*) FROM account WHERE Email_address = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) { 
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ tùy theo yêu cầu của ứng dụng
+        }
+
+        return false;
+    }
+    
+    public boolean isPhoneExist(String phone) {
+        String query = "SELECT COUNT(*) FROM account WHERE mobileNumber = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            
+            preparedStatement.setString(1, phone);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ tùy theo yêu cầu của ứng dụng
+        }
+
+        return false;
+    }
+    
+    public boolean checkUsernameAndEmailExists(String username, String emailAddress) {
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+        try {
+            // Chuẩn bị câu truy vấn SQL
+            String query = "SELECT * FROM account WHERE username = ? AND Email_address = ?";
+            pstmt = db.getConnection().prepareStatement(query);
+            pstmt.setString(1, username);
+            pstmt.setString(2, emailAddress);
+
+            // Thực hiện truy vấn
+            rs = pstmt.executeQuery();
+
+            // Nếu có kết quả trả về, người dùng hợp lệ
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đóng tất cả các tài nguyên
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public boolean updatePassword(String username, String newPassword) {
+        
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            // Chuẩn bị câu truy vấn SQL
+            String query = "UPDATE account SET Password = ? WHERE username = ?";
+            pstmt = db.getConnection().prepareStatement(query);
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, username);
+
+            // Thực hiện truy vấn
+            int rowsAffected = pstmt.executeUpdate();
+
+            // Nếu có ít nhất một hàng được cập nhật, trả về true
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Đóng tất cả các tài nguyên
+            try {
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+>>>>>>> main
 
 }

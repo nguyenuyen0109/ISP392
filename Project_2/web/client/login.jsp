@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,6 +51,7 @@
             .form-group label {
                 display: block;
             }
+<<<<<<< HEAD
 
             .forgot-pass {
                 display: block; /* Makes the link take up the full width of its container */
@@ -61,6 +61,8 @@
                 margin-top: 10px;
             }
 
+=======
+>>>>>>> main
 
             #captcha {
                 display: inline-block;
@@ -81,6 +83,7 @@
                     <div class="form-group">
                         <input type="password" class="form-control" name="password" placeholder="Password" required="required">
                     </div>
+<<<<<<< HEAD
 
                     <div class="form-group">
 
@@ -122,4 +125,30 @@
                 </div>
             </body>
         </html>
+=======
+>>>>>>> main
 
+                    <div class="form-group">
+
+                        
+                        <label for="captcha">CAPTCHA:</label>
+                        <span id="captcha">${generatedCaptcha}</span>
+                        <button type="button" onclick="location.reload();">Refresh</button>
+                        <input type="text" class="form-control captcha-input" name="captcha" placeholder="Enter CAPTCHA" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                    </div>
+                    <div class="form-group">
+                        <span style="color: red">${error}</span>
+                        </div>
+                    </form>
+                    <a href="/Project_2/client/forgotpassword.jsp" class="forgetpass">Forgot Password?</a>
+
+                    <p class="text-center"><a href="/Project_2/client/register.jsp">Create an Account</a></p>
+
+                </div>
+            </body>
+
+        </html>
