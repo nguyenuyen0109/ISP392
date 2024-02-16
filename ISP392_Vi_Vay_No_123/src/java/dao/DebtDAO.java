@@ -47,5 +47,31 @@ public class DebtDAO {
         return debtList;
     }
     
+    public int addDebt(DebtDetail debt) {
+        int n = 0;
+        String sql = "insert into debtdetails ("
+                + "description, "
+                + "debtType, "
+                + "amount, "
+                + "debtor_id, "
+                + "debtor_account_id, "
+                + "interest_rate_id)\n"
+                + "values (?,?,?,?,?,?);";
+        try {
+            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+            ps.setString(1, debt.getDescription());
+            ps.setBoolean(2, debt.isDebtType()); //true=ngta vay, false= mình nợ
+            ps.setDouble(3, debt.getAmount());
+            ps.setInt(4, debt.getDebtor_IdDebtor());
+            ps.setInt(5, debt.getIdAccount());
+            ps.setInt(6, debt.getInterest_rate_id());
+            n = ps.executeUpdate();
+            System.out.println(sql);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return n;
+    }
+    
     
 }

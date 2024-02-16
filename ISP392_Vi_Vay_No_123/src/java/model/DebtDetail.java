@@ -33,6 +33,16 @@ public class DebtDetail {
         this.createAt = createAt;
     }
 
+    public DebtDetail(String description, boolean debtType, double amount, int debtor_IdDebtor, int idAccount, int interest_rate_id) {
+        this.description = description;
+        this.debtType = debtType;
+        this.amount = amount;
+        this.debtor_IdDebtor = debtor_IdDebtor;
+        this.idAccount = idAccount;
+        this.interest_rate_id = interest_rate_id;
+    }
+
+    
     public DebtDetail(int id, String description, boolean debtType, double amount, String image, Timestamp createAt, String qr, int debtor_IdDebtor, int idAccount, int interest_rate_id) {
         this.id = id;
         this.description = description;
