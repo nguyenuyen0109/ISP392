@@ -4,7 +4,7 @@
  */
 package model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;;
 
 /**
  *
@@ -13,24 +13,38 @@ import java.security.Timestamp;
 public class DebtDetail {
     private int id;
     private String description;
-    private boolean deptType;
+    private boolean debtType;
     private double amount;
     private String image;
-    private Timestamp creatAt;
+    private Timestamp createAt;
     private String qr;
     private int debtor_IdDebtor;
+    private int idAccount;
     private int interest_rate_id;
 
     public DebtDetail() {
     }
 
-    public DebtDetail(int id, String description, boolean deptType, double amount, String image, Timestamp creatAt, String qr, int debtor_IdDebtor, int interest_rate_id) {
+    public DebtDetail(int id, String description, boolean debtType, double amount, String image, Timestamp createAt, String qr, int debtor_IdDebtor, int idAccount, int interest_rate_id) {
         this.id = id;
         this.description = description;
-        this.deptType = deptType;
+        this.debtType = debtType;
         this.amount = amount;
         this.image = image;
-        this.creatAt = creatAt;
+        this.createAt = createAt;
+        this.qr = qr;
+        this.debtor_IdDebtor = debtor_IdDebtor;
+        this.idAccount = idAccount;
+        this.interest_rate_id = interest_rate_id;
+    }
+
+    public DebtDetail(int id, String description, boolean debtType, double amount, String image, Timestamp createAt, String qr, int debtor_IdDebtor, int interest_rate_id) {
+        this.id = id;
+        this.description = description;
+        this.debtType = debtType;
+        this.amount = amount;
+        this.image = image;
+        this.createAt = createAt;
         this.qr = qr;
         this.debtor_IdDebtor = debtor_IdDebtor;
         this.interest_rate_id = interest_rate_id;
@@ -52,12 +66,20 @@ public class DebtDetail {
         this.description = description;
     }
 
-    public boolean isDeptType() {
-        return deptType;
+    public boolean isDebtType() {
+        return debtType;
     }
 
-    public void setDeptType(boolean deptType) {
-        this.deptType = deptType;
+    public void setDebtType(boolean debtType) {
+        this.debtType = debtType;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 
     public double getAmount() {
@@ -77,11 +99,11 @@ public class DebtDetail {
     }
 
     public Timestamp getCreatAt() {
-        return creatAt;
+        return createAt;
     }
 
-    public void setCreatAt(Timestamp creatAt) {
-        this.creatAt = creatAt;
+    public void setCreatAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 
     public String getQr() {
@@ -100,6 +122,14 @@ public class DebtDetail {
         this.debtor_IdDebtor = debtor_IdDebtor;
     }
 
+    public int getIdAccount() {
+        return idAccount;
+    }
+
+    public void setIdAccount(int idAccount) {
+        this.idAccount = idAccount;
+    }
+    
     public int getInterest_rate_id() {
         return interest_rate_id;
     }
@@ -110,7 +140,8 @@ public class DebtDetail {
 
     @Override
     public String toString() {
-        return "DebtDetail{" + "id=" + id + ", description=" + description + ", deptType=" + deptType + ", amount=" + amount + ", image=" + image + ", creatAt=" + creatAt + ", qr=" + qr + ", debtor_IdDebtor=" + debtor_IdDebtor + ", interest_rate_id=" + interest_rate_id + '}';
+        return "DebtDetail{" + "id=" + id + ", description=" + description + ", debtType=" + debtType + ", amount=" + amount + ", image=" + image + ", createAt=" + createAt + ", qr=" + qr + ", debtor_IdDebtor=" + debtor_IdDebtor + ", idAccount=" + idAccount + ", interest_rate_id=" + interest_rate_id + '}';
     }
+
     
 }
