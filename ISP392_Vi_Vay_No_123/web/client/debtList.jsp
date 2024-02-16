@@ -510,7 +510,7 @@
                                 <tr>						
                                     <td>${debt.id}</td>
                                     <td>${debt.description}</td>
-                                    <td>${debt.deptType == false ? 'Debt' : 'Receivable'}</td>
+                                    <td>${debt.debtType == false ? 'Debt' : 'Receivable'}</td>
                                     <td>${debt.amount}</td>
                                     <td>${debt.creatAt}</td>                                                                                             
                                     <td>
