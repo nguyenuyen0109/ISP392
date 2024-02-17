@@ -29,9 +29,18 @@ public class DebtorController extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
+        // Assuming 'accountId' is stored in session, retrieve it.
+        Integer accountId = (Integer) session.getAttribute("account_id");
 
+        if (accountId == null) {
+            // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
+            response.sendRedirect("login"); // Example redirection to login page
+            return; // Stop further execution in this case.
+        }
+
+        // Now use this accountId to get data from the database
+        List<Debtor> listDebtor = debtor.getAllDebtors(accountId);
         //get du lieu tu db
-        List<Debtor> listDebtor = debtor.getAllDebtors(2);
 
         //set list debtor vao session
         session.setAttribute("listDebtor", listDebtor);

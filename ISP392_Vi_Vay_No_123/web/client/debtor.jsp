@@ -336,7 +336,6 @@
                 <div class="home-filter">
                     <div class="selection-input">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <button type="button" class="btn btn-info dropdown-toggle sort-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     
                                 Sorted by
@@ -395,7 +394,7 @@
                         </div>
                     </form>
                     </thead>
-                    <c:forEach items="${sessionScope.listDebtor}" var="debtor">
+                    <c:forEach items="${listDebtor}" var="debtor">
                         <tbody>
                             <tr>						
                                 <td>${debtor.id}</td>
@@ -535,9 +534,6 @@
         </div>
     </div>
     
-    
-    
-    
     <script>
         function validateForm() {
         var name = $('#name').val();
@@ -581,5 +577,11 @@
         return valid;
     }
     </script>
+    
+    
+    
+    
+   
+    
 </body>
 </html>
