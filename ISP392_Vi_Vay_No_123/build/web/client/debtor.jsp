@@ -19,43 +19,43 @@
             .actions {
                 display: flex;
                 align-items: center;
-                justify-content: center; /* ?i?u ch?nh này d?a theo cách b?n mu?n các bi?u t??ng ???c hi?n th? */
+                justify-content: center; /* ?i?u ch?nh n y d?a theo c ch b?n mu?n c c bi?u t??ng ???c hi?n th? */
             }
             .action-btn {
-                margin: 0 5px; /* ?i?u ch?nh kho?ng cách gi?a các bi?u t??ng n?u c?n */
+                margin: 0 5px; /* ?i?u ch?nh kho?ng c ch gi?a c c bi?u t??ng n?u c?n */
             }
-            /* CSS ?? thay ??i màu c?a bi?u t??ng thêm (gi? s? bi?u t??ng thêm có class 'add') */
+            /* CSS ?? thay ??i m u c?a bi?u t??ng th m (gi? s? bi?u t??ng th m c  class 'add') */
             .action-btn.add .material-icons {
-                color: #4CAF50; /* Màu xanh lá */
+                color: #4CAF50; /* M u xanh l  */
             }
-            /* CSS ?? thay ??i màu c?a bi?u t??ng con m?t (gi? s? bi?u t??ng con m?t có class 'view') */
+            /* CSS ?? thay ??i m u c?a bi?u t??ng con m?t (gi? s? bi?u t??ng con m?t c  class 'view') */
             .action-btn.view .material-icons {
-                color: #2196F3; /* Màu xanh d??ng */
+                color: #2196F3; /* M u xanh d??ng */
             }
             .button {
-                background-color: #2196F3; /* Màu n?n ban ??u c?a nút là màu xanh d??ng */
+                background-color: #2196F3; /* M u n?n ban ??u c?a n t l  m u xanh d??ng */
             }
 
-            /* CSS ?? thay ??i màu c?a nút 'Add New Debtor' */
+            /* CSS ?? thay ??i m u c?a n t 'Add New Debtor' */
             .btn-success {
-                background-color: #ff69b4; /* Mã màu h?ng */
-                border-color: #ff69b4; /* ??m b?o vi?n c?ng là màu h?ng */
+                background-color: #ff69b4; /* M  m u h?ng */
+                border-color: #ff69b4; /* ??m b?o vi?n c?ng l  m u h?ng */
             }
 
-            /* N?u b?n mu?n thay ??i màu khi ng??i dùng di chu?t qua nút */
+            /* N?u b?n mu?n thay ??i m u khi ng??i d ng di chu?t qua n t */
             .btn-success:hover {
-                background-color: #ff5c8a; /* M?t màu h?ng ??m h?n khi hover */
+                background-color: #ff5c8a; /* M?t m u h?ng ??m h?n khi hover */
                 border-color: #ff5c8a;
             }
-            /* CSS ?? thay ??i màu c?a nút có ID 'add-new-debtor-btn' */
+            /* CSS ?? thay ??i m u c?a n t c  ID 'add-new-debtor-btn' */
             #add-new-debtor-btn {
-                background-color: #ff69b4; /* Mã màu h?ng */
-                border-color: #ff69b4; /* ??m b?o vi?n c?ng là màu h?ng */
+                background-color: #ff69b4; /* M  m u h?ng */
+                border-color: #ff69b4; /* ??m b?o vi?n c?ng l  m u h?ng */
             }
 
-            /* Thay ??i màu khi hover */
+            /* Thay ??i m u khi hover */
             #add-new-debtor-btn:hover {
-                background-color: #ff5c8a; /* M?t màu h?ng ??m h?n khi hover */
+                background-color: #ff5c8a; /* M?t m u h?ng ??m h?n khi hover */
                 border-color: #ff5c8a;
             }
 
@@ -336,6 +336,7 @@
                 <div class="home-filter">
                     <div class="selection-input">
                         <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <button type="button" class="btn btn-info dropdown-toggle sort-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     
                                 Sorted by
@@ -394,7 +395,7 @@
                         </div>
                     </form>
                     </thead>
-                    <c:forEach items="${listDebtor}" var="debtor">
+                    <c:forEach items="${sessionScope.listDebtor}" var="debtor">
                         <tbody>
                             <tr>						
                                 <td>${debtor.id}</td>
@@ -537,9 +538,48 @@
     
     
     
-    
-    
-   
-    
+    <script>
+        function validateForm() {
+        var name = $('#name').val();
+        var address = $('#address').val();
+        var phone = $('#phone').val();
+        var email = $('#email').val();
+        var valid = true;
+
+        // Validate name (only letters)
+        if (!/^[a-zA-Z\s]+$/.test(name)) {
+            $('#nameError').html('Name must contain only letters');
+            valid = false;
+        } else {
+            $('#nameError').html('');
+        }
+
+        // Validate address (letters and numbers)
+        if (!/^[a-zA-Z0-9\s]+$/.test(address)) {
+            $('#addressError').html('Address must contain only letters and numbers');
+            valid = false;
+        } else {
+            $('#addressError').html('');
+        }
+
+        // Validate phone (only numbers)
+        if (!/^[0-9]+$/.test(phone)) {
+            $('#phoneError').html('Phone must contain only numbers');
+            valid = false;
+        } else {
+            $('#phoneError').html('');
+        }
+
+        // Validate email format
+        if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
+            $('#emailError').html('Invalid email address');
+            valid = false;
+        } else {
+            $('#emailError').html('');
+        }
+
+        return valid;
+    }
+    </script>
 </body>
 </html>

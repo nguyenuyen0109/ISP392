@@ -4,15 +4,9 @@
  */
 package model;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.security.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Comparator;
+
 
 /**
  *
@@ -25,15 +19,15 @@ public class Debtor {
     private String phone;
     private String email;
     private double totalDebt;
-    private java.sql.Timestamp createdAt;
-    private java.sql.Timestamp updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
     private int account_id;
-    private int history_payment_id;
+    private int creditor_account_id;
 
     public Debtor() {
     }
 
-    public Debtor(int id, String name, String address, String phone, String email, double totalDebt, java.sql.Timestamp createdAt, java.sql.Timestamp updatedAt, int account_id, int history_payment_id) {
+    public Debtor(int id, String name, String address, String phone, String email, double totalDebt, Timestamp createdAt, Timestamp updatedAt,int account_id, int creditor_account_id) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -43,15 +37,18 @@ public class Debtor {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.account_id = account_id;
-        this.history_payment_id = history_payment_id;
+        this.creditor_account_id = creditor_account_id;
     }
 
-        /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+    public Debtor(String name, String address, String phone, String email, int account_id) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.account_id = account_id;
+    }
 
-    public Debtor(String name, String address, String phone, String email, double totalDebt, int account_id) {
+    public Debtor(String name, String address, String phone, String email, double totalDebt,int account_id) {
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -60,13 +57,12 @@ public class Debtor {
         this.account_id = account_id;
     }
 
-   
 
-    public int getIdDebtor() {
+    public int getId() {
         return id;
     }
 
-    public void setIdDebtor(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -110,21 +106,22 @@ public class Debtor {
         this.totalDebt = totalDebt;
     }
 
-    public java.sql.Timestamp getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(java.sql.Timestamp createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public java.sql.Timestamp getUpdatedAt() {
+    public Timestamp getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(java.sql.Timestamp updatedAt) {
+    public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 
     public int getAccount_id() {
         return account_id;
@@ -134,17 +131,17 @@ public class Debtor {
         this.account_id = account_id;
     }
 
-    public int getHistory_payment_id() {
-        return history_payment_id;
+    public int getCreditor_account_id() {
+        return creditor_account_id;
     }
 
-    public void setHistory_payment_id(int history_payment_id) {
-        this.history_payment_id = history_payment_id;
+    public void setCreditor_account_id(int creditor_account_id) {
+        this.creditor_account_id = creditor_account_id;
     }
 
     @Override
     public String toString() {
-        return "Debtor{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", history_payment_id=" + history_payment_id + '}';
+        return "Debtor{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", creditor_account_id=" + creditor_account_id + '}';
     }
-    
+
 }

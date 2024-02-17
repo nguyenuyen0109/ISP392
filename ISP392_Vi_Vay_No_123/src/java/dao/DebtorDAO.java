@@ -27,6 +27,30 @@ public class DebtorDAO {
     public DebtorDAO() {
         db = DBContext.getInstance();
     }
+    // DebtorDAO.java
+
+    // Trong DebtorDAO.java
+    public boolean addDebtor(Debtor debtor) {
+        String sql = "INSERT INTO debtor "
+                + "(name, address, phone, email,totalDebt,account_id ) VALUES (?, ?, ?, ?,?,?)";
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis()); // Tạo một biến Timestamp duy nhất
+
+        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
+            statement.setString(1, debtor.getName());
+            statement.setString(2, debtor.getAddress());
+            statement.setString(3, debtor.getPhone());
+            statement.setString(4, debtor.getEmail());
+            statement.setDouble(5, debtor.getTotalDebt());
+            statement.setInt(6, debtor.getAccount_id());
+            int rowsInserted = statement.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
     public List<Debtor> getAllDebtors(int account_id) {
         List<Debtor> debtors = new ArrayList<>();
         String query = "SELECT * FROM debtor where account_id = ?";
@@ -56,33 +80,6 @@ public class DebtorDAO {
         }
         return debtors;
     }
-    public boolean addDebtor(Debtor debtor) {
-        String sql = "INSERT INTO debtor "
-                + "(name, address, phone, email,totalDebt,account_id ) VALUES (?, ?, ?, ?,?,?)";
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis()); // Tạo một biến Timestamp duy nhất
-
-        try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-            statement.setString(1, debtor.getName());
-            statement.setString(2, debtor.getAddress());
-            statement.setString(3, debtor.getPhone());
-            statement.setString(4, debtor.getEmail());
-            statement.setDouble(5, debtor.getTotalDebt());
-            statement.setInt(6, debtor.getAccount_id());
-            int rowsInserted = statement.executeUpdate();
-            return rowsInserted > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-    public List<Debtor> sortDebtorByOldest(int account_id){
-       List<Debtor> list = getAllDebtors (account_id);
-        // Sắp xếp theo ngày tạo cũ nhất (tăng dần)
-        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(Debtor::getCreatedAt)));
-        return list;
-    }
-
     
     public List<Debtor> sortDebtorByNewest(int account_id){
         List<Debtor> list = getAllDebtors (account_id);
@@ -112,12 +109,86 @@ public class DebtorDAO {
         });
         return list;
     }
-     
+
+    public static void main(String[] args) {
+        // Instantiate the DebtorDAO class
+        DebtorDAO debtorDAO = new DebtorDAO();
+
+        // Create a Debtor object with sample data
+        // Assuming there is a constructor in Debtor class that takes all these parameters
+        Debtor newDebtor = new Debtor(
+                // Assuming the Debtor constructor does not require an ID because it's auto-incremented in the database
+                "John Doe", // name
+                "123 Main St, Melbourne", // address
+                "0400000000", // phone
+                "johndoe@example.com",
+                5000,// email
+                2
+        //                new java.sql.Timestamp(System.currentTimeMillis()), // createdAt, assuming this will be overwritten by the database or constructor
+        //                new java.sql.Timestamp(System.currentTimeMillis()), // updatedAt, assuming this will be overwritten by the constructor
+
+        );
+
+        // Call the addDebtor method
+        boolean result = debtorDAO.addDebtor(newDebtor);
+
+        // Print the result
+        if (result) {
+            System.out.println("Debtor added successfully.");
+        } else {
+            System.out.println("Failed to add debtor.");
+        }
+
+        // Get all debtors
+        List<Debtor> allDebtors = debtorDAO.getAllDebtors(2);
+
+        // Print the list of debtors
+        if (allDebtors.isEmpty()) {
+            System.out.println("No debtors found.");
+        } else {
+            System.out.println("List of Debtors:");
+            for (Debtor debtor : allDebtors) {
+                System.out.println(debtor);
+            }
+        }
+    }
+    
+//    public List<Debtor> getAllDebtorsSorted(int account_id, String sortField, String sortOrder) {
+//        List<Debtor> debtors = new ArrayList<>();
+//        String query = "SELECT * FROM debtor WHERE account_id = ? ORDER BY " + sortField + " " + sortOrder;
+//
+//        try (Connection conn = db.getConnection();
+//             PreparedStatement statement = conn.prepareStatement(query)) {
+//
+//            statement.setInt(1, account_id);
+//            ResultSet resultSet = statement.executeQuery();
+//
+//            while (resultSet.next()) {
+//                int id = resultSet.getInt("id");
+//                String name = resultSet.getString("name");
+//                String address = resultSet.getString("address");
+//                String phone = resultSet.getString("phone");
+//                String email = resultSet.getString("email");
+//                double totalDebt = resultSet.getDouble("totalDebt");
+//                Timestamp createdAt = resultSet.getTimestamp("createdAt");
+//                Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
+//                int creditor_account_id = resultSet.getInt("creditor_account_id");
+//                
+//                
+//                Debtor debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, account_id, creditor_account_id);
+//                debtors.add(debtor);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return debtors;
+//    }
+
     public List<Debtor> getDebtorsByName(String keyword) {
         //here
         List<Debtor> debtors = new ArrayList<>();
         String query = "select * from debtor\n"
-                + " where " + keyword;
+                + "         where " + keyword;
         try {
             PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
             //preparedStatement.setObject(1, keyword);
@@ -146,38 +217,96 @@ public class DebtorDAO {
         return debtors;
     }
 
-    
-    public static void main(String[] args) {
-        // Instantiate the DebtorDAO class
-        DebtorDAO debtorDAO = new DebtorDAO();
+//    public List<Debtor> getDebtorsByAddress(String searchAddress) {
+//        List<Debtor> debtors = new ArrayList<>();
+//        String query = "select * from debtor\n"
+//                + "         where address like ?";
+//        try {
+//            PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
+//            preparedStatement.setString(1, "%" + searchAddress + "%");
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                int id = resultSet.getInt("id");
+//                String name = resultSet.getString("name");
+//                String address = resultSet.getString("address");
+//                String phone = resultSet.getString("phone");
+//                String email = resultSet.getString("email");
+//                double totalDebt = resultSet.getDouble("totalDebt");
+//                java.sql.Timestamp createdAt = resultSet.getTimestamp("createdAt");
+//                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
+//                int account_id = resultSet.getInt("account_id");
+//                int creditor_account_id = resultSet.getInt("creditor_account_id");
+//                //Account account = new Account();
+//                Debtor debtor;
+//                debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, account_id, creditor_account_id);
+//                debtors.add(debtor);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return debtors;
+//    }
+//
+//    public List<Debtor> getDebtorsByPhone(String searchPhone) {
+//        List<Debtor> debtors = new ArrayList<>();
+//        String query = "select * from debtor\n"
+//                + "         where phone like ?";
+//        try {
+//            PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
+//            preparedStatement.setString(1, "%" + searchPhone + "%");
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                int id = resultSet.getInt("id");
+//                String name = resultSet.getString("name");
+//                String address = resultSet.getString("address");
+//                String phone = resultSet.getString("phone");
+//                String email = resultSet.getString("email");
+//                double totalDebt = resultSet.getDouble("totalDebt");
+//                java.sql.Timestamp createdAt = resultSet.getTimestamp("createdAt");
+//                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
+//                int account_id = resultSet.getInt("account_id");
+//                int creditor_account_id = resultSet.getInt("creditor_account_id");
+//                //Account account = new Account();
+//                Debtor debtor;
+//                debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, account_id, creditor_account_id);
+//                debtors.add(debtor);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return debtors;
+//    }
+//
+//    public List<Debtor> getDebtorsByEmail(String searchMail) {
+//        List<Debtor> debtors = new ArrayList<>();
+//        String query = "select * from debtor\n"
+//                + "         where email like ?";
+//        try {
+//            PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
+//            preparedStatement.setString(1, "%" + searchMail + "%");
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//               int id = resultSet.getInt("id");
+//                String name = resultSet.getString("name");
+//                String address = resultSet.getString("address");
+//                String phone = resultSet.getString("phone");
+//                String email = resultSet.getString("email");
+//                double totalDebt = resultSet.getDouble("totalDebt");
+//                java.sql.Timestamp createdAt = resultSet.getTimestamp("createdAt");
+//                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
+//                int account_id = resultSet.getInt("account_id");
+//                int creditor_account_id = resultSet.getInt("creditor_account_id");
+//                //Account account = new Account();
+//                Debtor debtor;
+//                debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, account_id, creditor_account_id);
+//                debtors.add(debtor);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return debtors;
+//    }
 
-        // Create a Debtor object with sample data
-        // Assuming there is a constructor in Debtor class that takes all these parameters
-        Debtor newDebtor = new Debtor(
-                // Assuming the Debtor constructor does not require an ID because it's auto-incremented in the database
-                "John Doe", // name
-                "123 Main St, Melbourne", // address
-                "0400000000", // phone
-                "johndoe@example.com",
-                5000,// email
-                2
-        //                new java.sql.Timestamp(System.currentTimeMillis()), // createdAt, assuming this will be overwritten by the database or constructor
-        //                new java.sql.Timestamp(System.currentTimeMillis()), // updatedAt, assuming this will be overwritten by the constructor
+   
 
-        );
-
-
-        // Get all debtors
-        List<Debtor> allDebtors = debtorDAO.getAllDebtors(2);
-
-        // Print the list of debtors
-        if (allDebtors.isEmpty()) {
-            System.out.println("No debtors found.");
-        } else {
-            System.out.println("List of Debtors:");
-            for (Debtor debtor : allDebtors) {
-                System.out.println(debtor);
-            }
-        }
-    }
 }
