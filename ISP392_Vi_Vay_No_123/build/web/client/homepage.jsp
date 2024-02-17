@@ -58,7 +58,7 @@
             .login-button {
                 background-color: #3053E8;
                 color: #ffffff;
-                padding: 10px 20px;
+                padding: 10px 30px;
                 border: 2px solid #ffffff; /* White border */
                 border-radius: 20px; /* Rounded corners like the dropdown button */
                 cursor: pointer;

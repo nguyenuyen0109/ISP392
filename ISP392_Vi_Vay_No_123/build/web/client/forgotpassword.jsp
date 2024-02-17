@@ -19,7 +19,7 @@
         </style>
     </head>
     <body>
-
+        <jsp:include page="/navigator/toast.jsp" />
         <div class="form-gap"></div>
         <div class="container">
             <div class="row">
