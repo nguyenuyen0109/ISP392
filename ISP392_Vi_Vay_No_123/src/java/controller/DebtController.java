@@ -4,6 +4,7 @@
  */
 package controller;
 
+//import com.mysql.cj.protocol.Resultset;
 import dao.DebtDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -12,6 +13,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.DebtDetail;
 
@@ -21,26 +24,6 @@ import model.DebtDetail;
  */
 public class DebtController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,36 +31,34 @@ public class DebtController extends HttpServlet {
         String action = request.getParameter("action");
         List<DebtDetail> debtList;
         if (action == null) {
-            debtList = dao.getDebtByIdAccountAndIdDebtor(1);
+            debtList = dao.getDebtByIdAccountAndIdDebtor(7);
             request.setAttribute("debtList", debtList);
-//            RequestDispatcher dispatch = request.getRequestDispatcher("/client/debtlist.jsp");
-//            dispatch.forward(request, response);
         } else {
             switch (action) {
                 case "true":
-                    debtList = dao.filterByReceivable(1, action);
+                    debtList = dao.filterByReceivable(7, action);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "false":
-                    debtList = dao.filterByReceivable(1, action);
+                    debtList = dao.filterByReceivable(7, action);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "sortByOldest":
-                    debtList = dao.sortDebtByOldest(1);
+                    debtList = dao.sortDebtByOldest(7);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "sortByNewest":
-                    debtList = dao.sortDebtByNewest(1);
+                    debtList = dao.sortDebtByNewest(7);
                     request.setAttribute("debtList", debtList);
 
                     break;
                 case "sortByHighLow":
-                    debtList = dao.sortDebtByAmountHightLow(1);
+                    debtList = dao.sortDebtByAmountHightLow(7);
                     request.setAttribute("debtList", debtList);
 
                     break;
                 case "sortByLowHigh":
-                    debtList = dao.sortDebtByAmountLowHight(1);
+                    debtList = dao.sortDebtByAmountLowHight(7);
                     request.setAttribute("debtList", debtList);
 
                     break;
@@ -89,18 +70,40 @@ public class DebtController extends HttpServlet {
         dispatch.forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int idDebtor = 4;
+        String action = request.getParameter("action");
+        switch (action) {
+            case "add":
+                add(request, response);
+                break;
+            case "search":
+                search(request, response);
+                break;
+        }
+    }
+
+    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String searchQuery = request.getParameter("searchQuery");
+        String searchType = request.getParameter("searchType");
+        List<DebtDetail> debtList;
+        DebtDAO dao = new DebtDAO();
+        if ("amount".equals(searchType)) {
+            debtList = dao.searchDebtByAmount(7,searchQuery);
+            request.setAttribute("debtList", debtList);
+        }else if("description".equals(searchType)){
+            debtList = dao.searchDebtByDescription(7, searchQuery);
+            request.setAttribute("debtList", debtList);
+        }
+        
+        request.getRequestDispatcher("client/debtList.jsp").forward(request, response);
+
+    }
+
+    private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // Add new debt
+        int idDebtor = 7;
         int idAccount = 2;
         String description = request.getParameter("description");
         boolean debtType = Boolean.parseBoolean(request.getParameter("debtType"));
@@ -111,15 +114,4 @@ public class DebtController extends HttpServlet {
         int n = dao.addDebt(debt);
         response.sendRedirect("debt");
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

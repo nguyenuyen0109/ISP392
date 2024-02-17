@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Debt List</title>
+        <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -268,38 +268,15 @@
                 border-left: 1px solid #ccc;
                 padding-left: 14px;
             }
-
-            .search-selection:hover .search-selection-option{
-                display: block;
-            }
             .search-selection-label{
                 font-size: 13px;
                 color: #757575;
+                border: none !important;
+                outline: none !important;
             }
-            .search-selection-option{
-                position: absolute;
-                right: 0;
-                margin-top: 9px;
-                width: 100px;
-                list-style: none;
-                box-shadow: 0 1px 3px #ccc;
-                display: none;
-                padding-left: 0;
-            }
-            .search-selection-option::after{
-                content: "";
-                display: block;
-                width: 100%;
-                height: 10px;
-                position: absolute;
-                top: -10px;
-                left: 0;
-            }
-
             .search-selection-item{
-                background-color: #f5f5f5;
+                background-color: #fff;
                 padding: 8px 8px;
-
             }
             .search-btn{
                 background-color: #435d7d;
@@ -437,36 +414,25 @@
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
-                        <!-- <div class="row"> -->
-                        <!-- <div class="col-sm-6"> -->
                         <div>
                             <h2>Debt List</h2>
                         </div>
-
-                        <div class="search">
-                            <input type="text" class="search-input" placeholder="Search Debt">
+                        <form action="debt" method="post" class="search">
+                            <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
                             <div class="search-selection">
-                                <span class="search-selection-label">Search by</span>
-                                <i class="sort-icon fa-solid fa-angle-down"></i>
-                                <ul class="search-selection-option">
-                                    <li class="search-selection-item">
-                                        <span>Description</span>
-                                    </li>
-                                    <li class="search-selection-item">
-                                        <span>Create at</span>
-                                    </li>
-                                    <li class="search-selection-item">
-                                        <span>Amount</span>
-                                    </li>
-                                </ul>
+                                <select class="search-selection-label" name="searchType" >
+                                    <option class="search-selection-item">Search by</option>
+                                    <option class="search-selection-item" value="description">Description</option>
+                                    <!--<option class="search-selection-item" value="createAt">Create at</option>-->
+                                    <option class="search-selection-item" value="amount">Amount</option>
+                                </select>
                             </div>
-                            <button class="search-btn">
+                            <button class="search-btn" type="submit" name="action" value="search">
                                 <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                             </button>
-                        </div>
+                        </form>
                         <div>
                             <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debt</span></a>
-                            <!--<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>-->	
                         </div>
 
                     </div>
@@ -534,8 +500,6 @@
                 </div>
             </div>        
         </div>
-        <!-- search -->
-
         <!-- Edit Modal HTML -->
         <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
@@ -554,8 +518,10 @@
                                 <label>Debt type</label>
                                 <!--<input type="text" class="form-control" required>-->
                                 <select class="form-control" name="debtType" required>
-                                    <option value="0">Receivable</option>  
-                                    <option value="1">Debt</option>  
+                                    <option value="1">Receivable</option>  
+                                    <option value="0">Debt</option>  
+                                    <!--                                                    Debt: Mình n? ngkhac
+                                                                                        Receivable: ngkhac n? mình -->
                                 </select>
                             </div>
                             <div class="form-group">
@@ -567,12 +533,16 @@
                                 <select class="form-control" name="interest_rate" required>
                                     <option value="1">10%</option>  
                                     <option value="2">Debt</option>  
+                                    <!--                                                    Debt: Mình n? ngkhac
+                                                                                        Receivable: ngkhac n? mình -->
                                 </select>
+                                <!--<input type="number" class="form-control" name ="interest_rate" required>-->
                             </div>					
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                             <input name="submit" type="submit" class="btn btn-success" value="Add">
+                            <input type="hidden" name="action" value="add">
                         </div>
                     </form>
                 </div>
