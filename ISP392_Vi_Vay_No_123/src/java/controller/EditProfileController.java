@@ -44,7 +44,8 @@ public class EditProfileController extends HttpServlet {
         Account account = (Account) request.getSession().getAttribute("USER");
         //account = new Account();
         //account.setId(2);
-
+// Trong một servlet
+  
         if (account == null) {
             response.sendRedirect("login");
             return;

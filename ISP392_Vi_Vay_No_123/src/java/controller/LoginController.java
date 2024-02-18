@@ -76,6 +76,7 @@ public class LoginController extends HttpServlet {
             session.setAttribute("Admin", isAdmin);
             session.setAttribute("account_id", accountFound.getId()); // Giả sử account.getId() trả về account_id của người dùng
             session.setAttribute("username", accountFound.getUsername());
+            session.setAttribute("USER", accountFound);
             // Thay vì gửi email, bạn có thể đăng nhập người dùng ngay lập tức
             response.sendRedirect("client/homepage.jsp"); // Đảm bảo rằng URL này chính xác
             return;
