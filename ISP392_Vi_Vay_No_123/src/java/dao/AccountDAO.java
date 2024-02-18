@@ -303,12 +303,41 @@ public class AccountDAO {
         return null;
     }
 
+//    public Account updateAccount(Account acc) {
+//        if (acc == null || acc.getId() == 0) {
+//            return null; //
+//        }
+//
+//        String sql = "UPDATE account SET username = ?, password = ?, name = ?, mobileNumber = ?, emailAddress = ?, address = ?, IsActive = ?, UpdateAt = CURRENT_TIMESTAMP,  avatarUrl = ?, gender = ?, role_id = ? WHERE id = ?";
+//        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+//            ps.setString(1, acc.getUsername());
+//            ps.setString(2, acc.getPassword());
+//            ps.setString(3, acc.getName());
+//            ps.setString(4, acc.getMobileNumber());
+//            ps.setString(5, acc.getEmailAddress());
+//            ps.setString(6, acc.getAddress());
+//            ps.setBoolean(7, acc.isIsActive());        
+//            ps.setString(9, acc.getAvatarUrl());
+//            ps.setBoolean(10, acc.isGender());
+//            ps.setInt(11, acc.getRole_id());
+//            ps.setInt(12, acc.getId());
+//
+//            int affectedRows = ps.executeUpdate();
+//            if (affectedRows > 0) {
+//                return acc;
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//        }
+//        return null;
+//    }
+    
     public Account updateAccount(Account acc) {
         if (acc == null || acc.getId() == 0) {
             return null; //
         }
 
-        String sql = "UPDATE account SET username = ?, password = ?, name = ?, mobileNumber = ?, emailAddress = ?, address = ?, IsActive = ?, UpdateAt = CURRENT_TIMESTAMP,  avatarUrl = ?, gender = ?, role_id = ? WHERE id = ?";
+        String sql = "UPDATE account SET name = ?, mobileNumber = ?, emailAddress = ?, address = ?, password = ? WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, acc.getUsername());
             ps.setString(2, acc.getPassword());
@@ -316,12 +345,6 @@ public class AccountDAO {
             ps.setString(4, acc.getMobileNumber());
             ps.setString(5, acc.getEmailAddress());
             ps.setString(6, acc.getAddress());
-            ps.setBoolean(7, acc.isIsActive());        
-            ps.setString(9, acc.getAvatarUrl());
-            ps.setBoolean(10, acc.isGender());
-            ps.setInt(11, acc.getRole_id());
-            ps.setInt(12, acc.getId());
-
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 return acc;
@@ -329,7 +352,7 @@ public class AccountDAO {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return null;
+        return acc;
     }
 
     public Account getAccountById(int accountId) {

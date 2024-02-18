@@ -96,7 +96,7 @@ public class EditProfileController extends HttpServlet {
         request.getSession().setAttribute("USER", account);
 
         // Chuyển hướng người dùng hoặc hiển thị thông báo thành công
-        request.setAttribute("message", "Profile updated successfully!");
+        request.setAttribute("alert", "Profile updated successfully!");
         request.getRequestDispatcher("/client/editprofile.jsp").forward(request, response);
     }
 

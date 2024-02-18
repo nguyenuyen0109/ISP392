@@ -315,6 +315,7 @@
 
 
     </head>
+    <jsp:include page="/navigator/toast.jsp" />
     <div class="container-xl">
         <div class="table-responsive">
             <div class="table-wrapper">
@@ -407,6 +408,7 @@
                                 <td><fmt:formatDate value="${debtor.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>                                                                                                
 
                                 <td class="actions">
+                                    <!--<a href="./debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
                                     <a href="detailPath/${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
                                     <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
                                     <a href="editPath/${debtor.id}" class="edit action-btn" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>

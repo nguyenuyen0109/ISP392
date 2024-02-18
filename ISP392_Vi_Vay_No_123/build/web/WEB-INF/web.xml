@@ -45,9 +45,10 @@
         <servlet-class>controller.AccountController</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>DebtController</servlet-name>
         <servlet-class>controller.DebtController</servlet-class>
- </servlet>
+</servlet>
     <servlet>
         <servlet-name>DebtorController</servlet-name>
         <servlet-class>controller.DebtorController</servlet-class>
@@ -105,6 +106,7 @@
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
         <servlet-name>DebtController</servlet-name>
         <url-pattern>/debt</url-pattern>
 </servlet-mapping>

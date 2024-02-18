@@ -146,12 +146,8 @@
                                     <button class="dropbtn">Hello, <%= user.getUsername() %></button>
                                     <div class="dropdown-content">
                                         <a href="changepassword.jsp">Change Password</a>
-<<<<<<< HEAD
                                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
-=======
-                                        <a href="editprofile.jsp">Edit Profile</a>
                                         <a href ="../debtor"> View Debtor List </a>
->>>>>>> eba919ed810f462aff785d76f33641a60a2586f6
                                         <% if (isAdmin != null && isAdmin) { %>
                                         <a href="dashboard.jsp">Dashboard</a>
                                         <% } %>
