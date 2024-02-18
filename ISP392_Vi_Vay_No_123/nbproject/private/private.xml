@@ -3,7 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/D:/StudySpace/SPRING24/So_ghi_no_main2/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/DebtController.java</file>
             <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/EditProfileController.java</file>
             <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/EditPasswordController.java</file>
             <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/web/client/forgotpassword.jsp</file>
@@ -14,11 +14,11 @@
             <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java</file>
             <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/FotgotPasswordController.java</file>
             <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/ChangepasswordController.java</file>
-=======
+
             <file>file:/C:/Users/minhh/OneDrive/デスクトップ/Lai/ISP392/ISP392_Vi_Vay_No_123/web/assets/css/login.css</file>
             <file>file:/C:/Users/minhh/OneDrive/デスクトップ/Lai/ISP392/ISP392_Vi_Vay_No_123/web/WEB-INF/web.xml</file>
             <file>file:/C:/Users/minhh/OneDrive/デスクトップ/Lai/ISP392/ISP392_Vi_Vay_No_123/web/assets/css/toast.css</file>
->>>>>>> eba919ed810f462aff785d76f33641a60a2586f6
+
         </group>
     </open-files>
 </project-private>
