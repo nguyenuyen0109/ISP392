@@ -1,6 +1,4 @@
 <!-- /*
-* Template Name: Financing
-* Template Author: Untree.co
 * Template URI: https://untree.co/
 * License: https://creativecommons.org/licenses/by/3.0/
 */ -->
@@ -60,7 +58,7 @@
             .login-button {
                 background-color: #3053E8;
                 color: #ffffff;
-                padding: 10px 20px;
+                padding: 10px 30px;
                 border: 2px solid #ffffff; /* White border */
                 border-radius: 20px; /* Rounded corners like the dropdown button */
                 cursor: pointer;
@@ -123,29 +121,11 @@
                     <div class="site-navigation">
                         <div class="row g-0 align-items-center">
                             <div class="col-2">
-                                <a href="index.html" class="logo m-0 float-start">Financing<span class="text-primary">.</span></a>
+                                <a href="index.html" class="logo m-0 float-start">Debit Note<span class="text-primary">.</span></a>
                             </div>
                             <div class="col-8 text-center ">
                                 <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
-                                    <li class="active"><a href="index.html">Home</a></li>
-                                    <li class="has-children">
-                                        <a href="financing.html">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="financing.html">Financing</a></li>
-                                            <li><a href="single.html">Blog Single</a></li>
-                                            <li><a href="case-study.html">Case Study Detail</a></li>
-                                            <li><a href="#">Menu One</a></li>
-                                            <li><a href="#">Menu Two</a></li>
-                                            <li class="has-children">
-                                                <a href="#">Dropdown</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="#">Sub Menu One</a></li>
-                                                    <li><a href="#">Sub Menu Two</a></li>
-                                                    <li><a href="#">Sub Menu Three</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    <li class="active"><a href="#">Home</a></li>
                                     <li><a href="blog.html">Blog</a></li>
                                     <li><a href="services.html">Services</a></li>
                                     <li><a href="about.html">About</a></li>
@@ -166,7 +146,12 @@
                                     <button class="dropbtn">Hello, <%= user.getUsername() %></button>
                                     <div class="dropdown-content">
                                         <a href="changepassword.jsp">Change Password</a>
+<<<<<<< HEAD
+                                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
+=======
                                         <a href="editprofile.jsp">Edit Profile</a>
+                                        <a href ="../debtor"> View Debtor List </a>
+>>>>>>> eba919ed810f462aff785d76f33641a60a2586f6
                                         <% if (isAdmin != null && isAdmin) { %>
                                         <a href="dashboard.jsp">Dashboard</a>
                                         <% } %>
