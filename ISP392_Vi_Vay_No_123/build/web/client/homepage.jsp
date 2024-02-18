@@ -166,7 +166,7 @@
                                     <button class="dropbtn">Hello, <%= user.getUsername() %></button>
                                     <div class="dropdown-content">
                                         <a href="changepassword.jsp">Change Password</a>
-                                        <a href="editprofile.jsp">Edit Profile</a>
+                                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                                         <% if (isAdmin != null && isAdmin) { %>
                                         <a href="dashboard.jsp">Dashboard</a>
                                         <% } %>

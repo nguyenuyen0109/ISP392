@@ -39,7 +39,7 @@ public class FotgotPasswordController extends HttpServlet {
         
         String email = request.getParameter("email");
         
-        String captchaResponse = request.getParameter("h-captcha-response");
+        //String captchaResponse = request.getParameter("h-captcha-response");
 
         AccountDAO accountDAO = new AccountDAO();
 

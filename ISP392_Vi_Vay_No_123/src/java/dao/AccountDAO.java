@@ -308,7 +308,7 @@ public class AccountDAO {
             return null; //
         }
 
-        String sql = "UPDATE account SET username = ?, password = ?, name = ?, mobileNumber = ?, emailAddress = ?, address = ?, IsActive = ?, UpdateAt = CURRENT_TIMESTAMP, CreateAt = ?, avatarUrl = ?, gender = ?, role_id = ? WHERE id = ?";
+        String sql = "UPDATE account SET username = ?, password = ?, name = ?, mobileNumber = ?, emailAddress = ?, address = ?, IsActive = ?, UpdateAt = CURRENT_TIMESTAMP,  avatarUrl = ?, gender = ?, role_id = ? WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, acc.getUsername());
             ps.setString(2, acc.getPassword());
@@ -317,7 +317,6 @@ public class AccountDAO {
             ps.setString(5, acc.getEmailAddress());
             ps.setString(6, acc.getAddress());
             ps.setBoolean(7, acc.isIsActive());        
-            ps.setTimestamp(8, acc.getCreateAt());
             ps.setString(9, acc.getAvatarUrl());
             ps.setBoolean(10, acc.isGender());
             ps.setInt(11, acc.getRole_id());

@@ -8,27 +8,19 @@ import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import model.Account;
 
 /**
  *
- * @author admin
+ * @author lvhn1
  */
+@WebServlet(name = "EditProfileController", urlPatterns = {"/profile"})
 public class EditProfileController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -46,38 +38,21 @@ public class EditProfileController extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    HttpSession session = request.getSession();
-    Account loggedInUser = (Account) session.getAttribute("USER");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Account account = (Account) request.getSession().getAttribute("USER");
+        //account = new Account();
+        //account.setId(2);
 
-    if (loggedInUser == null) {
-        response.sendRedirect("login.jsp");
-        return;
+        if (account == null) {
+            response.sendRedirect("login");
+            return;
+        }
+
+        request.setAttribute("account", account);
+        request.getRequestDispatcher("/client/editprofile.jsp").forward(request, response);
     }
-
-    // Giả sử bạn đã có phương thức getProfileByUsername trong AccountDAO
-    AccountDAO accountDAO = new AccountDAO();
-    Account userProfile = accountDAO.getProfileByUsername(loggedInUser.getUsername());
-
-    if (userProfile != null) {
-        request.setAttribute("userProfile", userProfile);
-        request.getRequestDispatcher("/editprofile.jsp").forward(request, response);
-    } else {
-        response.sendRedirect("editprofile.jsp?error=UserNotFound");
-    }
-}
-
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -90,40 +65,39 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy thông tin từ form
-        String fullName = request.getParameter("fullName");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String email = request.getParameter("email");
+        // Lấy đối tượng Account từ session
+        Account account = (Account) request.getSession().getAttribute("USER");
 
-        HttpSession session = request.getSession();
-        Account loggedInUser = (Account) session.getAttribute("USER");
-
-        if (loggedInUser == null) {
-        
-            response.sendRedirect("login.jsp");
+        // Kiểm tra nếu Account là null, chuyển hướng người dùng đến trang đăng nhập
+        if (account == null) {
+            response.sendRedirect("login");
             return;
         }
 
-        Account updatedAccount = new Account();
-        updatedAccount.setId(loggedInUser.getId()); 
-        updatedAccount.setUsername(loggedInUser.getUsername()); 
-        updatedAccount.setName(fullName);
-        updatedAccount.setMobileNumber(phone);
-        updatedAccount.setEmailAddress(email);
-        updatedAccount.setAddress(address);
+        // Lấy dữ liệu từ form
+        String fullName = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String email = request.getParameter("email");
+        String avatar = request.getParameter("avatar");
 
-        // Cập nhật thông tin vào cơ sở dữ liệu sử dụng AccountDAO
-        AccountDAO accountDAO = new AccountDAO();
-        boolean updateSuccess = accountDAO.editProfileByUsername(loggedInUser.getUsername(), updatedAccount);
+        // Cập nhật thông tin Account
+        account.setName(fullName);
+        account.setMobileNumber(phone);
+        account.setAddress(address);
+        account.setEmailAddress(email);
+        account.setAvatarUrl(avatar);
 
-        if (updateSuccess) {
-            session.setAttribute("USER", updatedAccount);
+        // Lưu cập nhật vào cơ sở dữ liệu thông qua AccountDAO
+        AccountDAO dao = new AccountDAO();
+        dao.updateAccount(account);
 
-            response.sendRedirect("profile.jsp?updateSuccess=true");
-        } else {
-            response.sendRedirect("editprofile.jsp?updateError=true");
-        }
+        // Cập nhật lại đối tượng Account trong session
+        request.getSession().setAttribute("USER", account);
+
+        // Chuyển hướng người dùng hoặc hiển thị thông báo thành công
+        request.setAttribute("message", "Profile updated successfully!");
+        request.getRequestDispatcher("/client/editprofile.jsp").forward(request, response);
     }
 
     /**
