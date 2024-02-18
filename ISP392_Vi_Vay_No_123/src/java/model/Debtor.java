@@ -4,14 +4,16 @@
  */
 package model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.util.Comparator;
+
 
 /**
  *
  * @author MINIMONIE
  */
 public class Debtor {
-    private int idDebtor;
+    private int id;
     private String name;
     private String address;
     private String phone;
@@ -20,13 +22,13 @@ public class Debtor {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private int account_id;
-    private int history_payment_id;
+    private int creditor_account_id;
 
     public Debtor() {
     }
 
-    public Debtor(int idDebtor, String name, String address, String phone, String email, double totalDebt, Timestamp createdAt, Timestamp updatedAt, int account_id, int history_payment_id) {
-        this.idDebtor = idDebtor;
+    public Debtor(int id, String name, String address, String phone, String email, double totalDebt, Timestamp createdAt, Timestamp updatedAt,int account_id, int creditor_account_id) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -35,15 +37,33 @@ public class Debtor {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.account_id = account_id;
-        this.history_payment_id = history_payment_id;
+        this.creditor_account_id = creditor_account_id;
     }
 
-    public int getIdDebtor() {
-        return idDebtor;
+    public Debtor(String name, String address, String phone, String email, int account_id) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.account_id = account_id;
     }
 
-    public void setIdDebtor(int idDebtor) {
-        this.idDebtor = idDebtor;
+    public Debtor(String name, String address, String phone, String email, double totalDebt,int account_id) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.totalDebt = totalDebt;
+        this.account_id = account_id;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -102,6 +122,7 @@ public class Debtor {
         this.updatedAt = updatedAt;
     }
 
+
     public int getAccount_id() {
         return account_id;
     }
@@ -110,17 +131,17 @@ public class Debtor {
         this.account_id = account_id;
     }
 
-    public int getHistory_payment_id() {
-        return history_payment_id;
+    public int getCreditor_account_id() {
+        return creditor_account_id;
     }
 
-    public void setHistory_payment_id(int history_payment_id) {
-        this.history_payment_id = history_payment_id;
+    public void setCreditor_account_id(int creditor_account_id) {
+        this.creditor_account_id = creditor_account_id;
     }
 
     @Override
     public String toString() {
-        return "Debtor{" + "idDebtor=" + idDebtor + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", history_payment_id=" + history_payment_id + '}';
+        return "Debtor{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", creditor_account_id=" + creditor_account_id + '}';
     }
-    
+
 }

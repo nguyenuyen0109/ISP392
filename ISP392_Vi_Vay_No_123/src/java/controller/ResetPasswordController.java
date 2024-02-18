@@ -27,8 +27,8 @@ public class ResetPasswordController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
-        String email = request.getParameter("e");
-        String token = request.getParameter("t");
+        String email = request.getParameter("email");
+        String token = request.getParameter("token");
         
         request.setAttribute("email", email);
         request.setAttribute("token", token);
@@ -55,30 +55,24 @@ public class ResetPasswordController extends HttpServlet {
         if (user==null) {
             alert = "Email not found";
         } else if (token.equals(checkToken)) {
-            
             if (password.equals(retypePassword)) {
-                
                 user.setPassword(new Hash().hashPassword(password));
                 new AccountDAO().updateAccount(user);
-                
                 request.getSession().removeAttribute("reset_token_" + email);
-                
                 alert = "Reset password success";
                 url = "client/login.jsp";
             } else {
                 alert = "2 password not match";
                 url = "client/resetpassword.jsp";
-            }
-            
+            } 
         } else {
             alert = "Invalid token!";
             url = "client/resetpassword.jsp";
         }
-        
         request.setAttribute("alert", alert);
         request.setAttribute("token", token);
         request.setAttribute("email", email);
-        request.setAttribute("toast", alert);
+      
 
         request.getRequestDispatcher(url).forward(request, response);
     }

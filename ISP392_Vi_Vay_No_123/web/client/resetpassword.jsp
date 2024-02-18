@@ -39,8 +39,8 @@
 
                                     <form action="reset-password" id="register-form" role="form" autocomplete="off" class="form" method="post">
 
-                                        <input type="hidden" name="token" value="${token}">
-                                        <input type="hidden" name="email" value="${email}">
+                                        <input type="hidden" name="token" value="${requestScope.token}">
+                                        <input type="hidden" name="email" value="${requestScope.email}">
 
                                         <div class="form-group">
                                             <div class="input-group">
