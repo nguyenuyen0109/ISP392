@@ -28,46 +28,59 @@ public class DebtController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DebtDAO dao = new DebtDAO();
+         HttpSession session = request.getSession();
+        // Assuming 'accountId' is stored in session, retrieve it.
+        Integer accountId = (Integer) session.getAttribute("debtor_account_id");
+        String debtorIdStr = request.getParameter("debtorid");
+        if (debtorIdStr != null && !debtorIdStr.isEmpty()) {
+        try {
+            int debtorId = Integer.parseInt(debtorIdStr);
+            session.setAttribute("debtorid", debtorId);
+        //Integer accountId = (Integer) session.getAttribute("debtor_account_id");
+       // Integer debtorId = (Integer) session.getAttribute("debtor_id");
         String action = request.getParameter("action");
         List<DebtDetail> debtList;
         if (action == null) {
-            debtList = dao.getDebtByIdAccountAndIdDebtor(7);
+            debtList = dao.getDebtByIdAccountAndIdDebtor(debtorId,accountId );
             request.setAttribute("debtList", debtList);
         } else {
             switch (action) {
                 case "true":
-                    debtList = dao.filterByReceivable(7, action);
+                    debtList = dao.filterByReceivable(debtorId,accountId, action);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "false":
-                    debtList = dao.filterByReceivable(7, action);
+                    debtList = dao.filterByReceivable(debtorId,accountId, action);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "sortByOldest":
-                    debtList = dao.sortDebtByOldest(7);
+                    debtList = dao.sortDebtByOldest(debtorId, accountId);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "sortByNewest":
-                    debtList = dao.sortDebtByNewest(7);
+                    debtList = dao.sortDebtByNewest(debtorId,accountId);
                     request.setAttribute("debtList", debtList);
 
                     break;
                 case "sortByHighLow":
-                    debtList = dao.sortDebtByAmountHightLow(7);
+                    debtList = dao.sortDebtByAmountHightLow(debtorId,accountId);
                     request.setAttribute("debtList", debtList);
 
                     break;
                 case "sortByLowHigh":
-                    debtList = dao.sortDebtByAmountLowHight(7);
+                    debtList = dao.sortDebtByAmountLowHight(debtorId,accountId);
                     request.setAttribute("debtList", debtList);
 
                     break;
 //                default:
 //                    throw new AssertionError();
             }
-        }
         RequestDispatcher dispatch = request.getRequestDispatcher("/client/debtList.jsp");
         dispatch.forward(request, response);
+        } }catch (NumberFormatException e) {
+            // Handle the exception if debtorId is not a valid integer
+        }
+        }
     }
 
     @Override
@@ -87,13 +100,17 @@ public class DebtController extends HttpServlet {
     private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String searchQuery = request.getParameter("searchQuery");
         String searchType = request.getParameter("searchType");
+         HttpSession session = request.getSession();
+        // Assuming 'accountId' is stored in session, retrieve it.
+        Integer accountId = (Integer) session.getAttribute("debtor_account_id");
+        Integer debtorId = (Integer) session.getAttribute("debtor_id");
         List<DebtDetail> debtList;
         DebtDAO dao = new DebtDAO();
         if ("amount".equals(searchType)) {
-            debtList = dao.searchDebtByAmount(7,searchQuery);
+            debtList = dao.searchDebtByAmount(debtorId,accountId,searchQuery);
             request.setAttribute("debtList", debtList);
         }else if("description".equals(searchType)){
-            debtList = dao.searchDebtByDescription(7, searchQuery);
+            debtList = dao.searchDebtByDescription(debtorId,accountId, searchQuery);
             request.setAttribute("debtList", debtList);
         }
         
@@ -103,15 +120,17 @@ public class DebtController extends HttpServlet {
 
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Add new debt
-        int idDebtor = 7;
-        int idAccount = 2;
+         HttpSession session = request.getSession();
+        // Assuming 'accountId' is stored in session, retrieve it.
+        Integer accountId = (Integer) session.getAttribute("debtor_account_id");
+        Integer debtorId = (Integer) session.getAttribute("debtor_id");
         String description = request.getParameter("description");
         boolean debtType = Boolean.parseBoolean(request.getParameter("debtType"));
         double amount = Double.parseDouble(request.getParameter("amount"));
         int interest_rate = Integer.parseInt(request.getParameter("interest_rate"));
         DebtDAO dao = new DebtDAO();
-        DebtDetail debt = new DebtDetail(description, debtType, amount, idDebtor, idAccount, interest_rate);
-        int n = dao.addDebt(debt);
+        DebtDetail debt = new DebtDetail(description, debtType, amount, debtorId,accountId, interest_rate);
+        int n = dao.addDebt(debt,accountId,debtorId);
         response.sendRedirect("debt");
     }
 }

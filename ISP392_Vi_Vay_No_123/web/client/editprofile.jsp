@@ -51,7 +51,6 @@
                                 <input class="form-control" type="text" name="name" value="${account.name}" required>
                             </div>
                         </div>
-
                          Username form group 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Username:</label>

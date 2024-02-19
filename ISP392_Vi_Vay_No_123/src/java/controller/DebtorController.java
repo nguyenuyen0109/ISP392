@@ -77,14 +77,14 @@ public class DebtorController extends HttpServlet {
         String searchPhone = request.getParameter("searchPhone");
         String searchMail = request.getParameter("searchMail");
         List<Debtor> listDebtor = new ArrayList<>();
-
+        HttpSession session = request.getSession();
+        Integer accountid = (Integer) session.getAttribute("account_id");
         String cond = "";
         if (searchName != null && !searchName.isEmpty()) {
             cond += " name like '%" + searchName + "%'";
             //listDebtor = debtor.getDebtorsByName(searchName);
         }
         if (searchAddress != null && !searchAddress.isEmpty()) {
-
             if (cond != null && !cond.isEmpty()) {
                 cond += " AND ";
             }
@@ -105,7 +105,7 @@ public class DebtorController extends HttpServlet {
             cond += " email like '%" + searchMail + "%'";
         }
 
-        listDebtor = debtor.getDebtorsByName(cond);
+        listDebtor = debtor.getDebtorsByName(accountid,cond);
 //if (searchName != null && !searchName.isEmpty()) {
 //    listDebtor = debtor.getDebtorsByName(searchName);
 //} else if (searchAddress != null && !searchAddress.isEmpty()) {
@@ -122,19 +122,21 @@ public class DebtorController extends HttpServlet {
 
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Add new debtor
+
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         double totalDebt = Double.parseDouble(request.getParameter("totalDebt"));
-
+        HttpSession session = request.getSession();
+        Integer accountid = (Integer) session.getAttribute("account_id");
         Debtor newDebtor = new Debtor();
         newDebtor.setName(name);
         newDebtor.setAddress(address);
         newDebtor.setPhone(phone);
         newDebtor.setEmail(email);
         newDebtor.setTotalDebt(totalDebt);
-        newDebtor.setAccount_id(2);
+        newDebtor.setAccount_id(accountid);
 
         // Save the new debtor
         boolean success = debtor.addDebtor(newDebtor);

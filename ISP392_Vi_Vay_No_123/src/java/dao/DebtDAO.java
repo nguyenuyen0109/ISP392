@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dao;
-
 import com.mysql.cj.xdevapi.Collection;
 import dal.DBContext;
 import model.DebtDetail;
@@ -28,25 +27,25 @@ public class DebtDAO {
         db = DBContext.getInstance();
     }
 
-    public int addDebt(DebtDetail debt,int account_) {
+    public int addDebt(DebtDetail debt,int accountid, int debtorid) {
+        
         int n = 0;
         String sql = "insert into debtdetails ("
                 + "description, "
                 + "debtType, "
                 + "amount, "
-                + "debtor_id, "
-                + "debtor_account_id, "
-                + "interest_rate_id)\n"
+                + "interest_rate_id,"
+                + "debtor_id,"
+                + "debtor_account_id,"
                 + "values (?,?,?,?,?,?);"
-                + "";
-        try {
-            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+                + "where debtor_id = ? and account_debtor_id = ? ";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, debt.getDescription());
             ps.setBoolean(2, debt.isDebtType()); //true=ngta vay, false= mình nợ
             ps.setDouble(3, debt.getAmount());
-            ps.setInt(4, debt.getDebtor_IdDebtor());
-            ps.setInt(5, debt.getIdAccount());
-            ps.setInt(6, debt.getInterest_rate_id());
+            ps.setInt(4,  debt.getInterest_rate_id());
+            ps.setInt(5,debtorid);
+            ps.setInt(6, accountid);
             n = ps.executeUpdate();
             System.out.println(sql);
         } catch (SQLException ex) {
@@ -54,12 +53,11 @@ public class DebtDAO {
         }
         return n;
     }
-
-    public List<DebtDetail> getDebtByIdAccountAndIdDebtor(int idDebtor, int account_id) {
+    public List<DebtDetail> getDebtByIdAccountAndIdDebtor(int idDebtor, int accountid) {
         List<DebtDetail> debtList = new ArrayList<>();
-        String sql = "select * from debtdetails where debtor_id=? and account_id = ?";
+        String sql = "select * from debtdetails where debtor_id=? and debtor_account_id = ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
-            preparedStatement.setInt(2, account_id);
+            preparedStatement.setInt(2, accountid);
             preparedStatement.setInt(1, idDebtor);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
@@ -70,16 +68,12 @@ public class DebtDAO {
                     Timestamp createAt = rs.getTimestamp("createdAt");
                     DebtDetail debt = new DebtDetail(id, description, debtType, amount, createAt);
                     debtList.add(debt);
-
                 }
             }} catch (SQLException ex) {
                 System.out.println(ex);
             }
-
             return debtList;
         }
-    
-    
 
     public List<DebtDetail> sortDebtByOldest(int idDebtor,int accountid) {
         List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor,accountid);
@@ -120,11 +114,11 @@ public class DebtDAO {
     public List<DebtDetail> searchDebtByAmount(int idDebtor,int accountid,String input) {
         List<DebtDetail> debtList = new ArrayList<>();
 //        String sql = "SELECT * FROM debtdetails WHERE amount LIKE '%"+ inputAmount +"%'";
-        String sql = "select * from debtdetails where debtor_id= ? and account_id = ?  and amount like '%?%'";
+        String sql = "select * from debtdetails where debtor_id= ? and debtor_account_id = ?  and amount like ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, idDebtor);
             preparedStatement.setInt(2, accountid);
-            preparedStatement.setString(3, input);
+            preparedStatement.setString(3, "%"+input+"%");
             try (ResultSet rs = preparedStatement.executeQuery()) {
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -143,11 +137,11 @@ public class DebtDAO {
 
     public List<DebtDetail> searchDebtByDescription(int idDebtor,int accountid, String input) {
         List<DebtDetail> debtList = new ArrayList<>();
-        String sql = "select * from debtdetails where debtor_id= ? and debtor_account_id = ? and input like '%?%'";
+        String sql = "select * from debtdetails where debtor_id= ? and debtor_account_id = ? and description like ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(2, accountid);
             preparedStatement.setInt(1, idDebtor);
-            preparedStatement.setString(3, input);
+            preparedStatement.setString(3, "%"+input+"%");
             try (ResultSet rs = preparedStatement.executeQuery()) {
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -168,11 +162,11 @@ public class DebtDAO {
 
     public List<DebtDetail> filterByReceivable(int idDebtor, int accountid, String action) {
         List<DebtDetail> debtList = new ArrayList<>();
-        String sql = "select * from debtdetails where debtor_id= and account_id and debtType=?";
+        String sql = "select * from debtdetails where debtor_id= and debtor_account_id and debtType like ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(2, accountid);
             preparedStatement.setInt(1, idDebtor);
-            preparedStatement.setString(3, action);
+            preparedStatement.setString(3, "%"+action+"%");
             try (ResultSet rs = preparedStatement.executeQuery()) {
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -192,10 +186,29 @@ public class DebtDAO {
 
     public static void main(String[] args) {
         DebtDAO dao = new DebtDAO();
-        List<DebtDetail> list = dao.searchDebtByDescription(7,6, "test");
-        for (DebtDetail debtDetail : list) {
+        
+//        List<DebtDetail> list = dao.searchDebtByDescription(1,2, "test");
+//        for (DebtDetail debtDetail : list) {
+//            System.out.println(debtDetail);
+//        }
+//        System.out.println("-------List---------");
+//        List<DebtDetail> list1 = dao.getDebtByIdAccountAndIdDebtor(1, 2);
+//        for (DebtDetail debtDetail : list1) {
+//            System.out.println(debtDetail);
+//        }
+//        List<DebtDetail> list2 = dao.sortDebtByAmountHightLow(1, 2);
+//        for (DebtDetail debtDetail : list2) {
+//            System.out.println(debtDetail);
+//        }
+    List<DebtDetail> list = dao.searchDebtByDescription(1,2, "test");
+       for (DebtDetail debtDetail : list) {
             System.out.println(debtDetail);
         }
-
+    System.out.println("-------List---------");
+    
+    List<DebtDetail> list2 = dao.sortDebtByAmountHightLow(1, 2);
+//        for (DebtDetail debtDetail : list2) {
+//            System.out.println(debtDetail);
+//        }
     }
 }

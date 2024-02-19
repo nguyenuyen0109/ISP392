@@ -14,7 +14,7 @@
             <hr>
             <form class="form-horizontal" action="editprofile" method="post" enctype="multipart/form-data">
                 <div class="row">
-                    <!-- left column for avatar -->
+                     left column for avatar 
                     <div class="col-md-3">
                         <div class="text-center">
                             <img id="avatarImage" src="${account.avatarUrl == null ? '//bootdey.com/img/Content/avatar/avatar7.png' : account.avatarUrl}" class="avatar img-circle img-thumbnail" alt="avatar">
@@ -39,7 +39,7 @@
 
                     </div>
 
-                    <!-- edit form column -->
+                     edit form column 
                     <div class="col-md-9 personal-info">
                         <h3>Personal info</h3>
 
@@ -51,8 +51,7 @@
                                 <input class="form-control" type="text" name="name" value="${account.name}" required>
                             </div>
                         </div>
-
-                        <!-- Username form group -->
+                         Username form group 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Username:</label>
                             <div class="col-lg-8">
@@ -81,7 +80,7 @@
                             </div>
                         </div>
 
-                        <!-- Submit and Cancel buttons -->
+                         Submit and Cancel buttons 
                         <div class="form-group">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-8">

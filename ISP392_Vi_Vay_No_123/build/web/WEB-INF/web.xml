@@ -45,21 +45,16 @@
         <servlet-class>controller.AccountController</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>DebtController</servlet-name>
         <servlet-class>controller.DebtController</servlet-class>
-</servlet>
+    </servlet>
     <servlet>
         <servlet-name>DebtorController</servlet-name>
         <servlet-class>controller.DebtorController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SortDebtorController</servlet-name>
-        <servlet-class>controller.SortDebtorController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SortDebtorListController</servlet-name>
-        <servlet-class>controller.SortDebtorListController</servlet-class>
+        <servlet-name>SortController</servlet-name>
+        <servlet-class>controller.SortController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -106,22 +101,15 @@
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>DebtController</servlet-name>
         <url-pattern>/debt</url-pattern>
-</servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DebtorController</servlet-name>
         <url-pattern>/debtor</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
-        <servlet-name>SortDebtorController</servlet-name>
+        <servlet-name>SortController</servlet-name>
         <url-pattern>/sort</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>SortDebtorListController</servlet-name>
-        <url-pattern>/sortdebtor</url-pattern>
     </servlet-mapping>
 </web-app>

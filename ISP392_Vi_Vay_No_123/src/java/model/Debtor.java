@@ -26,6 +26,18 @@ public class Debtor {
 
     public Debtor() {
     }
+     
+    public Debtor(int id, String name, String address, String phone, String email, double totalDebt, Timestamp createdAt, Timestamp updatedAt, int creditor_account_id) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.totalDebt = totalDebt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.creditor_account_id = creditor_account_id;
+    }
 
     public Debtor(int id, String name, String address, String phone, String email, double totalDebt, Timestamp createdAt, Timestamp updatedAt,int account_id, int creditor_account_id) {
         this.id = id;
