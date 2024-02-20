@@ -397,9 +397,8 @@
                     </thead>
                     <c:forEach items="${listDebtor}" var="debtor">
                         
-                    </c:forEach>
-                </table>
-                <div class="clearfix<tbody>
+              
+                     <tbody>
                             <tr>						
                                 <td>${debtor.id}</td>
                                 <td>${debtor.name}</td>
@@ -412,14 +411,17 @@
 
                                 <td class="actions">
                                     <!--<a href="./debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                    <a href="/ISP392_Vi_Vay_No_123/debt?debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                                    <!--<a href="/ISP392_Vi_Vay_No_123/debt?debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
                                     <!--<a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
                                     <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
                                     <a href="editPath/${debtor.id}" class="edit action-btn" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                 </td>
 
                             </tr>					
-                        </tbody>">
+                         </tbody>
+                    </c:forEach>
+                </table>
+                <div class="clearfix">
                     <ul class="pagination">
                         <li class="page-item disabled"><a href="#">Previous</a></li>
                         <li class="page-item"><a href="#" class="page-link">1</a></li>

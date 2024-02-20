@@ -33,7 +33,7 @@ public class DebtorDAO {
     // Trong DebtorDAO.java
     public boolean addDebtor(Debtor debtor) {
         String sql = "INSERT INTO debtor "
-                + "(name, address, phone, email,totalDebt,account_id ) VALUES (?, ?, ?, ?,?,?)";
+                + "(name, address, phone, email,totalDebt,account_id ) VALUES (?, ?, ?, ?, ?, ?)";
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis()); // Tạo một biến Timestamp duy nhất
 
         try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
@@ -143,16 +143,16 @@ public class DebtorDAO {
 //        }
 //
 //        // Get all debtors
-//        List<Debtor> allDebtors = debtorDAO.getAllDebtors(2);
-//
-//        // Print the list of debtors
-//        if (allDebtors.isEmpty()) {
-//            System.out.println("No debtors found.");
-//        } else {
-//            System.out.println("List of Debtors:");
-//            for (Debtor debtor : allDebtors) {
-//                System.out.println(debtor);
-//            }
+        List<Debtor> allDebtors = debtorDAO.getAllDebtors(4);
+
+        // Print the list of debtors
+        if (allDebtors.isEmpty()) {
+            System.out.println("No debtors found.");
+        } else {
+            System.out.println("List of Debtors:");
+            for (Debtor debtor : allDebtors) {
+                System.out.println(debtor);
+            }
 //        }
 
         //sắp xếp theo mới nhất
@@ -182,7 +182,8 @@ public class DebtorDAO {
 //                System.out.println(debtor);
 //            }
 //        }
-        }
+        }  
+    }
     
 
 
