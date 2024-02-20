@@ -65,7 +65,7 @@ public class DebtorListController extends HttpServlet {
                 : request.getParameter("action");
         switch (action) {
             case "add":
-                add(request);
+                add(request,response);
                 break;
             case "update":
                 update(request);
@@ -99,8 +99,34 @@ public class DebtorListController extends HttpServlet {
         
     }
 
-    private void add(HttpServletRequest request) {
-       
+    private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // Add new debtor
+        String name = request.getParameter("name");
+        String address = request.getParameter("address");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        double totalDebt = Double.parseDouble(request.getParameter("totalDebt"));
+
+        Debtor newDebtor = new Debtor();
+        newDebtor.setName(name);
+        newDebtor.setAddress(address);
+        newDebtor.setPhone(phone);
+        newDebtor.setEmail(email);
+        newDebtor.setTotalDebt(totalDebt);
+        newDebtor.setAccount_id(2);
+
+        // Save the new debtor
+        DebtorDAO debtor = new DebtorDAO();
+        boolean success = debtor.addDebtor(newDebtor);
+        System.out.println(success);
+        if (success) {
+//            response.sendRedirect("debtor");
+            request.setAttribute("successMessage", "Debtor added successfully!");
+        } else {
+            request.setAttribute("errorMessage", "Debt cannot be added.");
+            request.getRequestDispatcher("client/debtorlist.jsp").forward(request, response);
+
+        }
     }
     
     private List<Debtor> pagination(HttpServletRequest request, PageControl pageControl) {
@@ -117,19 +143,73 @@ public class DebtorListController extends HttpServlet {
         int totalRecord = 0;
         List<Debtor> listDebtor = null;
         //get action hien tai muon lam gi
-        //tim xem co bao nhieu record va listTeddyBear by page
+        //tim xem co bao nhieu record va listDebtor by page
         String action = request.getParameter("action") == null
                 ? "defaultFindAll"
                 : request.getParameter("action");
         switch (action) {
-            case "searchName":
-                //tim kiem co bnh record
-
-                //tim ve listTeddy
+            case "search":
+                String searchType = request.getParameter("searchType");
+                String keyword = request.getParameter("searchQuery");
+                switch (searchType) {
+                    case "name":
+                        totalRecord = debtorDAO.findTotalRecordByName(keyword);
+                        listDebtor = debtorDAO.findByPageByName(keyword, page);
+                        pageControl.setUrlPattern("debtorlist?action=search&searchType=name&searchQuery=" + keyword + "&");
+                        break;
+                    case "address":
+                        totalRecord = debtorDAO.findTotalRecordByAddress(keyword);
+                        listDebtor = debtorDAO.findByPageByAddress(keyword, page);
+                        pageControl.setUrlPattern("debtorlist?action=search&searchType=address&searchQuery=" + keyword + "&");
+                        break;
+                    case "phone":
+                        totalRecord = debtorDAO.findTotalRecordByPhone(keyword);
+                        listDebtor = debtorDAO.findByPageByPhone(keyword, page);
+                        pageControl.setUrlPattern("debtorlist?action=search&searchType=phone&searchQuery=" + keyword + "&");
+                        break;
+                    case "email":
+                        totalRecord = debtorDAO.findTotalRecordByEmail(keyword);
+                        listDebtor = debtorDAO.findByPageByEmail(keyword, page);
+                        pageControl.setUrlPattern("debtorlist?action=search&searchType=email&searchQuery=" + keyword + "&");
+                        break;
+                    default:
+                        // Xử lý mặc định nếu không có lựa chọn nào phù hợp
+                        totalRecord = debtorDAO.findTotalRecord();
+                        //tim ve danh sach debt o trang chi dinh
+                        listDebtor = debtorDAO.findByPage(page);
+                        pageControl.setUrlPattern("debtorlist?");
+                        break;
+                }
                 break;
-            case "searchAddress":
+            case "sortByOldest":
+                    totalRecord = debtorDAO.findTotalRecord();
+                    listDebtor = debtorDAO.findByPageAndSortByOldest(page);
+                    pageControl.setUrlPattern("debtorlist?action=sortByOldest&");
+                    //request.setAttribute("debtList", debtList);
+                    break;
+                    
+                case "sortByNewest":
+                    totalRecord = debtorDAO.findTotalRecord();
+                    listDebtor = debtorDAO.findByPageAndSortByNewest(page);
+                    pageControl.setUrlPattern("debtorlist?action=sortByNewest&");
+                    //request.setAttribute("debtList", debtList);
 
-                break;
+                    break;
+                case "sortByHighLow":
+                    totalRecord = debtorDAO.findTotalRecord();
+                    listDebtor = debtorDAO.findByPageAndSortDebtByAmountHighLow(page);
+                    pageControl.setUrlPattern("debtorlist?action=sortByHighLow&");
+                    //request.setAttribute("debtList", debtList);
+
+                    break;
+                case "sortByLowHigh":
+                    totalRecord = debtorDAO.findTotalRecord();
+                    listDebtor = debtorDAO.findByPageAndSortDebtByAmountLowHigh(page);
+                    pageControl.setUrlPattern("debtorlist?action=sortByLowHigh&");
+                    //request.setAttribute("debtList", debtList);
+
+                    break;
+
             default:
                 //phan trang o trang home
                 //tim ve totalRecord

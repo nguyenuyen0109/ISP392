@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Debtor List</title>
+        <title>Debt List</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -17,51 +17,6 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/5bd22a55e3.js" crossorigin="anonymous"></script>
         <style>
-            .actions {
-                display: flex;
-                align-items: center;
-                justify-content: center; /* ?i?u ch?nh này d?a theo cách b?n mu?n các bi?u t??ng ???c hi?n th? */
-            }
-            .action-btn {
-                margin: 0 5px; /* ?i?u ch?nh kho?ng cách gi?a các bi?u t??ng n?u c?n */
-            }
-            /* CSS ?? thay ??i màu c?a bi?u t??ng thêm (gi? s? bi?u t??ng thêm có class 'add') */
-            .action-btn.add .material-icons {
-                color: #4CAF50; /* Màu xanh lá */
-            }
-            /* CSS ?? thay ??i màu c?a bi?u t??ng con m?t (gi? s? bi?u t??ng con m?t có class 'view') */
-            .action-btn.view .material-icons {
-                color: #2196F3; /* Màu xanh d??ng */
-            }
-            .button {
-                background-color: #2196F3; /* Màu n?n ban ??u c?a nút là màu xanh d??ng */
-            }
-
-            /* CSS ?? thay ??i màu c?a nút 'Add New Debtor' */
-            .btn-success {
-                background-color: #ff69b4; /* Mã màu h?ng */
-                border-color: #ff69b4; /* ??m b?o vi?n c?ng là màu h?ng */
-            }
-
-            /* N?u b?n mu?n thay ??i màu khi ng??i dùng di chu?t qua nút */
-            .btn-success:hover {
-                background-color: #ff5c8a; /* M?t màu h?ng ??m h?n khi hover */
-                border-color: #ff5c8a;
-            }
-            /* CSS ?? thay ??i màu c?a nút có ID 'add-new-debtor-btn' */
-            #add-new-debtor-btn {
-                background-color: #ff69b4; /* Mã màu h?ng */
-                border-color: #ff69b4; /* ??m b?o vi?n c?ng là màu h?ng */
-            }
-
-            /* Thay ??i màu khi hover */
-            #add-new-debtor-btn:hover {
-                background-color: #ff5c8a; /* M?t màu h?ng ??m h?n khi hover */
-                border-color: #ff5c8a;
-            }
-
-
-
             body {
                 color: #566787;
                 background: #f5f5f5;
@@ -86,6 +41,8 @@
                 min-width: 100%;
                 margin: -20px -25px 10px;
                 border-radius: 3px 3px 0 0;
+                display: flex;
+                align-items: center;
             }
             .table-title h2 {
                 margin: 5px 0 0;
@@ -154,9 +111,9 @@
             table.table td a.edit {
                 color: #FFC107;
             }
-            table.table td a.delete {
-                color: #F44336;
-            }
+            /* table.table td a.delete {
+                    color: #F44336;
+            } */
             table.table td i {
                 font-size: 19px;
             }
@@ -286,6 +243,7 @@
             .modal form label {
                 font-weight: normal;
             }
+
             /* tu viet them phan tim kiem */
             .table-title .search{
                 height: 33.8px;
@@ -345,7 +303,8 @@
             .search-btn:hover{
                 background-color: #4D6380;
             }
-             /* tu viet them phan sap xep */
+            
+            /* tu viet them phan sap xep */
             .home-filter{
                 font-size: 13px;
                 display: flex;
@@ -464,114 +423,136 @@
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h2>Debtor <b>List</b></h2>
+                        <div>
+                            <h2>Debt List</h2>
                         </div>
-                        <form action="debtorlist" method="get" class="search">
+                        <form action="debt" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
                             <div class="search-selection">
                                 <select class="search-selection-label" name="searchType" >
                                     <option class="search-selection-item">Search by</option>
-                                    <option class="search-selection-item" value="name">Name</option>
-                                    <option class="search-selection-item" value="address">Address</option>
-                                    <option class="search-selection-item" value="phone">Phone</option>
-                                    <option class="search-selection-item" value="email">Email</option>
+                                    <option class="search-selection-item" value="description">Description</option>
+                                    <option class="search-selection-item" value="amount">Amount</option>
                                 </select>
                             </div>
                             <button class="search-btn" type="submit" name="action" value="search">
                                 <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                             </button>
                         </form>
-
-                        <div class="col-sm-6">
-                            <a href="#addDebtorModal" class="btn btn-success" id="add-new-debtor-btn" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debtor</span></a>
+                        <div>
+                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debt</span></a>
                         </div>
+
                     </div>
-                        
-                </div>
+
                     <div class="home-filter">
                         <div class="selection-input">
                             <span class="select-input__label">Sorted by</span>
                             <i class="sort-icon fa-solid fa-angle-down"></i>	
                             <ul class="select-input__list">
                                 <li class="select-input_item">
-                                    <a href="debtorlist?action=sortByOldest" class="select-input__link">Oldest</a>
+                                    <a href="debt?action=sortByOldest" class="select-input__link">Oldest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtorlist?action=sortByNewest" class="select-input__link">Newest</a>
+                                    <a href="debt?action=sortByNewest" class="select-input__link">Newest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtorlist?action=sortByHighLow" class="select-input__link">Amount from high to low</a>
+                                    <a href="debt?action=sortByHighLow" class="select-input__link">Amount from high to low</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtorlist?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
+                                    <a href="debt?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debt?action=Receivable" class="select-input__link">Receivable</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debt?action=Debt" class="select-input__link">Debt</a>
                                 </li>
                             </ul>
                         </div>
 
                     </div>
+
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>						
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Total Debt</th>
-                                <th>Created At</th>
-                                <th>Update At</th>
-                                <th>Action</th>
+                                <th>Description</th>						
+                                <th>Debt Type</th>
+                                <th>Amount</th>
+                                <th>Create At</th>
                             </tr>
                         </thead>
-                        <c:forEach items="${listDebtor}" var="debtor">
+                        <c:forEach items="${debtList}" var="debt">
                             <tbody>
                                 <tr>						
-                                    <td>${debtor.id}</td>
-                                    <td>${debtor.name}</td>
-                                    <td>${debtor.address}</td>
-                                    <td>${debtor.phone}</td>
-                                    <td>${debtor.email}</td>
-                                    <td>${debtor.totalDebt}</td>
-                                    <td>${debtor.createdAt}</td>
-                                    <td>${debtor.updatedAt}</td>
-                                    <td class="actions">
-                                        
-                                    <a href="detailPath/${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
-                                    <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
-                                        <!-- Edit Debtor detail -->
-                                        <i class="fa fa-edit fa-2x"
-                                           style="color: #469408"
-                                           data-toggle="modal"
-                                           data-target="#editDebtorDetailModal"
-                                           onclick="editDebtorDetailModal(
-                                                           `${debtor.id}`,
-                                                           `${debtor.name}`,
-                                                           `${debtor.address}`,
-                                                           `${debtor.phone}`,
-                                                           `${debtor.email}`,
-                                           ${debtor.totalDebt})">
-                                        </i>
-
-
-                                        &nbsp;&nbsp;&nbsp;
+                                    <td>${debt.id}</td>
+                                    <td>${debt.description}</td>
+                                    <td>${debt.deptType == false ? 'Debt' : 'Receivable'}</td>
+                                    <td>${debt.amount}</td>
+                                    <td>${debt.creatAt}</td>                                                                                             
+                                    <td>
+                                        <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                        <!--<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
                                     </td>
                                 </tr>					
                             </tbody>
                         </c:forEach>
-                    </table>                   
+                    </table>
+
                 </div>
             </div>        
         </div>
-        <!-- Add Debtor detail Modal  -->
-        <jsp:include page="../client/addDebtorModal.jsp"></jsp:include>
-        
-        <!-- Edit Debtor detail Modal  -->
-        <jsp:include page="../client/editDebtorDetailModal.jsp"></jsp:include>
-        
-        <!-- Pagination  -->
-        <jsp:include page="../client/pagination.jsp"></jsp:include>
+        <!-- search -->
+
+        <!-- Edit Modal HTML -->
+        <div id="addEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="debt" method="post">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Add New Debt</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Debt type</label>
+                                <!--<input type="text" class="form-control" required>-->
+                                <select class="form-control" name="debtType" required>
+                                    <option value="0">Receivable</option>  
+                                    <option value="1">Debt</option>  
+                                    <!--                                                    Debt: Mình n? ngkhac
+                                                                                        Receivable: ngkhac n? mình -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" class="form-control" name="amount" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Interest rate</label>
+                                <select class="form-control" name="interest_rate" required>
+                                    <option value="1">10%</option>  
+                                    <option value="2">Debt</option>  
+                                    <!--                                                    Debt: Mình n? ngkhac
+                                                                                        Receivable: ngkhac n? mình -->
+                                </select>
+                            </div>					
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input name="submit" type="submit" class="btn btn-success" value="Add">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Pagination -->
+         <jsp:include page="../client/pagination.jsp"></jsp:include>
 
     </body>
 </html>

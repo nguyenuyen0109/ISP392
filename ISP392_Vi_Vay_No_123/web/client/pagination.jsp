@@ -1,6 +1,7 @@
 
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <section id="page-navigation" class="d-flex justify-content-center">
     <ul class="pagination">
         <!--Home-->
@@ -71,5 +72,16 @@
                 <a class="page-link" href="${pageControl.urlPattern}page=${pageControl.totalPage}">Last</a>
             </li>
         </c:if>
+            
+            <!-- Additional condition to prevent accessing pages beyond the total number of pages -->
+            <c:if test="${pageControl.page > pageControl.totalPage}">
+                <!-- Redirect to the last page if the requested page is beyond the total number of pages -->
+                <script type="text/javascript">
+        window.location.href = "${pageControl.urlPattern}page=${pageControl.totalPage}";
+                </script>
+            </c:if>
+
+            <c:set var="pageNumber" value="${pageControl.page}" />
+
     </ul>
 </section>
