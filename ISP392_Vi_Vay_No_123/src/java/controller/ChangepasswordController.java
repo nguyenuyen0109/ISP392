@@ -63,6 +63,15 @@ public class ChangePasswordController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        // Assuming 'accountId' is stored in session, retrieve it.
+        Integer accountId = (Integer) session.getAttribute("account_id");
+
+        if (accountId == null) {
+            // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
+            response.sendRedirect("login"); // Example redirection to login page
+            return; // Stop further execution in this case.
+        }
         request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
     }
 
@@ -86,7 +95,7 @@ public class ChangePasswordController extends HttpServlet {
         HttpSession session = request.getSession();
         String generatedCapcha = (String) session.getAttribute("CAPCHA");
         if (generatedCapcha != null && generatedCapcha.equals(capcha)) {
-            if (newpassword != null && newpassword.equals(confirmPassword)) {
+            if (newpassword != null && newpassword.trim().equals(confirmPassword.trim())) {
                 String username = (String) session.getAttribute("username");
                 AccountDAO accountDAO = new AccountDAO();
                 if (accountDAO.updatePassword(username, newpassword)) {

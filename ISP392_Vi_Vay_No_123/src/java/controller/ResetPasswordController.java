@@ -43,7 +43,7 @@ public class ResetPasswordController extends HttpServlet {
         String token = request.getParameter("token");
 
         String password = request.getParameter("password");
-        String retypePassword = request.getParameter("retypePassword");
+        String retypePassword = request.getParameter("confirmPassword");
 
         String checkToken = (String) request.getSession().getAttribute("reset_token_" + email);
 

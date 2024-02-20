@@ -43,18 +43,17 @@ public class FotgotPasswordController extends HttpServlet {
         String alert = "";
         // Check if the username or email already exists
         if (accountDAO.getAccountByEmail(email) == null) {
-            request.setAttribute("alert", "Invalid email!");
-        } else {
+//            request.setAttribute("alert", "Invalid email!");
+//        } else {
 
             String token = new Token().generateRandomToken(18);
             String url = "http://" + request.getServerName() + ":" + request.getServerPort()
                     + request.getContextPath() + "/reset-password?t=" + token + "&e=" + email;
 
             request.getSession().setAttribute("reset_token_" + email, token);
-
+            request.setAttribute("alert", "An email was sent!");
             new Mail().sendEmail(email, "Reset password", "Click here to reset password: " + url);
 
-            request.setAttribute("alert", "An email was sent!");
         }
         request.getRequestDispatcher("/client/forgotpassword.jsp").forward(request, response);
     }
