@@ -24,7 +24,7 @@ import utils.Captcha;
  *
  * @author admin
  */
-public class ChangepasswordController extends HttpServlet {
+public class ChangePasswordController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,26 +63,7 @@ public class ChangepasswordController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        Captcha c = new Captcha();
-//        String text = c.generateCaptchaText();
-//        BufferedImage captchaImage = c.generateCaptchaImage(text);
-//        response.setContentType("image/png");
-//        session.setAttribute("captchaText", text);
-//        OutputStream outputStream = response.getOutputStream();
-//        ImageIO.write(captchaImage, "png", outputStream);
-//        outputStream.close();
-        Account account = (Account) request.getSession().getAttribute("USER");
-//        account = new Account();
-//        account.setId(2);
-
-        if (account == null) {
-            response.sendRedirect("login");
-            return;
-        }
-
-        request.setAttribute("account", new AccountDAO().getAccountById(account.getId()));
-        request.getRequestDispatcher("/client/editpassword.jsp").forward(request, response);
+        request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
     }
 
     /**

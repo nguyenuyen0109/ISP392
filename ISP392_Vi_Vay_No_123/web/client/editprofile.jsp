@@ -9,17 +9,16 @@
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
-        <div class="container bootstrap snippets bootdey">
-            <h1 class="text-primary">Edit Profile</h1>
-            <hr>
-            <form class="form-horizontal" action="editprofile" method="post" enctype="multipart/form-data">
+        <form action="editprofile" method="post">
+            <div class="container bootstrap snippets bootdey">
+                <h1 class="text-primary">Edit Profile</h1>
                 <div class="row">
-                     left column for avatar 
+                    <!--left column for avatar--> 
                     <div class="col-md-3">
                         <div class="text-center">
-                            <img id="avatarImage" src="${account.avatarUrl == null ? '//bootdey.com/img/Content/avatar/avatar7.png' : account.avatarUrl}" class="avatar img-circle img-thumbnail" alt="avatar">
+                            <img id="avatarImage" src="${!empty account.avatarUrl ? account.avatarUrl : '//bootdey.com/img/Content/avatar/avatar7.png'}" class="avatar img-circle img-thumbnail" alt="avatar">
                             <input type="file" class="form-control" onchange="updateAvatar(this)">
-                            <input type="hidden" class="form-control mt-3" id="avatarInput" name="avatar" value="${account.avatarUrl}">
+                            <input type="hidden" class="form-control mt-3" id="avatarInput" name="avatar" value="${account.avatarUrl}"> 
                         </div>
 
                         <script>
@@ -39,48 +38,48 @@
 
                     </div>
 
-                     edit form column 
+                    <!--edit form column--> 
                     <div class="col-md-9 personal-info">
                         <h3>Personal info</h3>
 
-                        <input type="hidden" name="id" value="${account.id}">
+                        <input type="hidden" name="id" value="${sessionScope.account.id}">
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Full name:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="name" value="${account.name}" required>
+                                <input class="form-control" type="text" name="name" value="${sessionScope.account.name}" required>
                             </div>
                         </div>
-                         Username form group 
+                        <!--Username form group--> 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Username:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="username" value="${account.username}" disabled>
+                                <input class="form-control" type="text" name="username" value="${sessionScope.account.username}" disabled>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Phone:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="phone" value="${account.mobileNumber}" required>
+                                <input class="form-control" type="text" name="phone" value="${sessionScope.account.mobileNumber}" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Address:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="address" value="${account.address}" required>
+                                <input class="form-control" type="text" name="address" value="${sessionScope.account.address}" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Email:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="email" name="email" value="${account.emailAddress}" disabled>
+                                <input class="form-control" type="text" name="email" value="${sessionScope.account.emailAddress}" disabled>
                             </div>
                         </div>
 
-                         Submit and Cancel buttons 
+                        <!--Submit and Cancel buttons--> 
                         <div class="form-group">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-8">
@@ -89,10 +88,10 @@
                                 <input type="reset" class="btn btn-default" value="Cancel">
                             </div>
                         </div>
+
                     </div>
                 </div>
-            </form>
-        </div>
-        <hr>
+            </div>
+        </form>
     </body>
 </html>

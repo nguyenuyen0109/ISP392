@@ -28,6 +28,7 @@ public class AccountDAO {
         db = DBContext.getInstance();
     }
 
+    
     public Account findByUsernameAndPassword(String username, String password) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -50,12 +51,16 @@ public class AccountDAO {
                 String pass = rs.getString("password");
                 String name = rs.getString("name");
                 String email = rs.getString("emailAddress");
+                String mobileNumber = rs.getString("mobileNumber");
+                String address = rs.getString("address");
 
                 account.setId(id);
                 account.setUsername(un);
                 account.setPassword(pass);
                 account.setName(name);
                 account.setEmailAddress(email);
+                account.setMobileNumber(mobileNumber);
+                account.setAddress(address);
                 // Ví dụ: account.setUsername(rs.getString("username"));
                 //        account.setPassword(rs.getString("password"));
                 // Thêm các trường khác tương tự
@@ -107,7 +112,7 @@ public class AccountDAO {
                     boolean gender = resultSet.getBoolean("gender");
                     int roleId = resultSet.getInt("role_id");
 
-                    return new Account(id, username,password, name,
+                    return new Account(id, username, password, name,
                             mobileNumber, emailAddress, address, isActive,
                             updatedAt, createdAt, avatarUrl, gender,
                             roleId);
@@ -141,7 +146,7 @@ public class AccountDAO {
                     boolean gender = resultSet.getBoolean("gender");
                     int roleId = resultSet.getInt("role_id");
                     String username = resultSet.getString("username");
-                    return new Account(id, username,password, name,
+                    return new Account(id, username, password, name,
                             mobileNumber, emailAddress, address, isActive,
                             updatedAt, createdAt, avatarUrl, gender,
                             roleId);
@@ -161,7 +166,7 @@ public class AccountDAO {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String username = resultSet.getString("Username");
-              
+
                 String password = resultSet.getString("Password");
                 String name = resultSet.getString("Name");
                 String mobileNumber = resultSet.getString("mobileNumber");
@@ -176,7 +181,7 @@ public class AccountDAO {
 
                 //Account account = new Account();
                 Account account;
-                account = new Account(id, username,password, name,
+                account = new Account(id, username, password, name,
                         mobileNumber, emailAddress, address, isActive,
                         updatedAt, createdAt, avatarUrl, gender,
                         roleId);
@@ -331,7 +336,6 @@ public class AccountDAO {
 //        }
 //        return null;
 //    }
-    
     public Account updateAccount(Account acc) {
         if (acc == null || acc.getId() == 0) {
             return null; //
@@ -445,6 +449,7 @@ public class AccountDAO {
 
         return false;
     }
+
     public static boolean isValidPhoneNumber(String phoneNumber) {
         // Regex for a valid phone number
         String regex = "^[0-9]{1}[0-9\\-\\s]{9,14}$";
@@ -483,7 +488,7 @@ public class AccountDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } 
+        }
     }
 
     public boolean updatePassword(String username, String newPassword) {
@@ -561,27 +566,5 @@ public class AccountDAO {
             return false;
         }
     }
-    
-       public static void main(String[] args) {
-        AccountDAO accDAO = new AccountDAO();
-        String username = "minimonie";
-        String password = "123";
-        Account acc = accDAO.findByUsernameAndPassword(username, password);
-        if (acc != null) {
-            System.out.println("Successful!");
-        } else {
-            System.out.println("Login Failed!");
-            System.out.println(accDAO.isAdmin(username));
-        }
-        String email = "phuong2532005@gmail.com";
-        String phone = "0123456789";
-           System.out.println(accDAO.isValidPhoneNumber(phone));
-        System.out.println(accDAO.isEmailExist(email));
-        System.out.println(accDAO.isEmailValid(email));
-        System.out.println(accDAO.isPhoneExist(phone));
-    }
 
-    public Account getProfileByUsername(String username) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
