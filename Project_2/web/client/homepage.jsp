@@ -86,8 +86,31 @@
                                     <span></span>
                                 </a>
 
+<<<<<<< Updated upstream:Project_2/web/client/homepage.jsp
                                 <a href="login.jsp">
                                     <button class="login-button d-flex align-items-center" style="background-color: #3056E8; color: #ffffff; padding: 10px 20px; border: 2px solid #ffffff; border-radius: 5px; cursor: pointer; transition: all 0.3s ease;">
+=======
+                                <%
+                                    Account user = (Account) session.getAttribute("USER");
+                                    Boolean isAdmin = (Boolean) session.getAttribute("Admin");
+                                    if (user != null) {
+                                %>
+                                <div class="dropdown">
+                                    <button class="dropbtn">Hello, <%= user.getUsername() %></button>
+                                    <div class="dropdown-content">
+                                        <a href="/ISP392_Vi_Vay_No_123/changepassword">Change Password</a>
+                                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
+                                        <a href ="../debtor"> View Debtor List </a>
+                                        <% if (isAdmin != null && isAdmin) { %>
+                                        <a href="dashboard.jsp">Dashboard</a>
+                                        <% } %>
+                                        <a href="../logout">Logout</a>
+                                    </div>
+                                </div>
+                                <% } else { %>
+                                <a href="../login">
+                                    <button class="login-button d-flex align-items-center">
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/build/web/client/homepage.jsp
                                         <span class="icon-login" style="font-size: 24px; margin-right: 8px;"></span>
                                         <span style="font-weight: bold; font-size: 16px;">Login</span>
                                     </button>

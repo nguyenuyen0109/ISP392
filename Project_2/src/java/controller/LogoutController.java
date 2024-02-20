@@ -17,10 +17,24 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author MINIMONIE
  */
+<<<<<<< Updated upstream:Project_2/src/java/controller/LogoutController.java
 public class LogoutController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+=======
+public class VerifyCaptchaController extends HttpServlet {
+
+    private final String LOGIN_PAGE = "/client/login.jsp";
+    private final String REGISTER_PAGE = "/client/register.jsp";
+    private final String FORGOT_PAGE = "/client/forgotpassword.jsp";
+    private final String CHANGEPASSWORD_PAGE = "/client/changepassword.jsp";
+    private final String RESETPASSWORD_PAGE = "/client/resetpassword.jsp";
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/controller/VerifyCaptchaController.java
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -72,6 +86,35 @@ public class LogoutController extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+<<<<<<< Updated upstream:Project_2/src/java/controller/LogoutController.java
+=======
+        HttpSession session = request.getSession();
+        String uri = request.getParameter("uri");
+        String jsp_uri;
+        if (uri.equalsIgnoreCase(LOGIN_PAGE)) {
+            uri = "/login";
+            jsp_uri = LOGIN_PAGE;
+        } else if (uri.equalsIgnoreCase(REGISTER_PAGE)) {
+            uri = "/register";
+            jsp_uri = REGISTER_PAGE;
+        } else if (uri.equalsIgnoreCase(FORGOT_PAGE)){
+            uri = "/forgot";
+            jsp_uri = FORGOT_PAGE;
+        } else if (uri.equalsIgnoreCase(CHANGEPASSWORD_PAGE)){
+            uri = "/changepassword";
+            jsp_uri = CHANGEPASSWORD_PAGE;
+        } else {
+            uri = "/reset-password";
+            jsp_uri = RESETPASSWORD_PAGE;
+        }
+        String captchaInput = (String) request.getParameter("captcha");
+        String captchaText = (String) session.getAttribute("captchaText");
+        if (!captchaInput.equalsIgnoreCase(captchaText)) {
+            request.setAttribute("alert", "Invalid captcha!");
+            request.getRequestDispatcher(jsp_uri).forward(request, response);
+        }
+        request.getRequestDispatcher(uri).forward(request, response);
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/controller/VerifyCaptchaController.java
     }
 
     /** 

@@ -49,11 +49,23 @@ public class AccountDAO {
                 String un = rs.getString("username");
                 String pass = rs.getString("password");
                 String name = rs.getString("name");
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
+=======
+                String email = rs.getString("emailAddress");
+                String mobileNumber = rs.getString("mobileNumber");
+                String address = rs.getString("address");
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
 
                 account.setId(idAccount);
                 account.setUsername(un);
                 account.setPassword(pass);
                 account.setName(name);
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
+=======
+                account.setEmailAddress(email);
+                account.setAddress(address);
+                account.setMobileNumber(mobileNumber);
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
                 // Ví dụ: account.setUsername(rs.getString("username"));
                 //        account.setPassword(rs.getString("password"));
                 // Thêm các trường khác tương tự
@@ -105,7 +117,11 @@ public class AccountDAO {
                     boolean gender = resultSet.getBoolean("gender");
                     int roleId = resultSet.getInt("role_id");
 
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
                     return new Account(id, username, roleId, password, name,
+=======
+                    return new Account(id, username, password, name,
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
                             mobileNumber, emailAddress, address, isActive,
                             updatedAt, createdAt, avatarUrl, gender);
                 }
@@ -117,6 +133,7 @@ public class AccountDAO {
         return null;
     }
 
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
     public static void main(String[] args) {
         AccountDAO accDAO = new AccountDAO();
         String username = "minimonie";
@@ -127,6 +144,37 @@ public class AccountDAO {
         } else {
             System.out.println("Login Failed!");
             System.out.println(accDAO.isAdmin(username));
+=======
+    public Account getAccountByEmail(String email) {
+        String query = "SELECT * FROM account WHERE emailAddress = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+
+                    String avatarUrl = resultSet.getString("avatarUrl");
+                    String mobileNumber = resultSet.getString("mobileNumber");
+                    String emailAddress = resultSet.getString("emailAddress");
+                    String password = resultSet.getString("Password");
+                    String name = resultSet.getString("Name");
+                    String address = resultSet.getString("Address");
+                    boolean isActive = resultSet.getBoolean("IsActive");
+                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("UpdateAt");
+                    java.sql.Timestamp createdAt = resultSet.getTimestamp("CreateAt");
+                    boolean gender = resultSet.getBoolean("gender");
+                    int roleId = resultSet.getInt("role_id");
+                    String username = resultSet.getString("username");
+                    return new Account(id, username, password, name,
+                            mobileNumber, emailAddress, address, isActive,
+                            updatedAt, createdAt, avatarUrl, gender,
+                            roleId);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
         }
         String email = "phuong2532005@gmail.com";
         String phone = "0123456789";
@@ -142,7 +190,11 @@ public class AccountDAO {
             while (resultSet.next()) {
                 int id = resultSet.getInt("idAccount");
                 String username = resultSet.getString("Username");
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
                 double amount = resultSet.getDouble("Amount");
+=======
+
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
                 String password = resultSet.getString("Password");
                 String name = resultSet.getString("Name");
                 String mobileNumber = resultSet.getString("Mobile_number");
@@ -157,7 +209,11 @@ public class AccountDAO {
 
                 //Account account = new Account();
                 Account account;
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
                 account = new Account(id, username, roleId, password, name,
+=======
+                account = new Account(id, username, password, name,
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
                         mobileNumber, emailAddress, address, isActive,
                         updatedAt, createdAt, avatarUrl, gender);
                 accounts.add(account);
@@ -287,6 +343,37 @@ public class AccountDAO {
         return null;
     }
 
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
+=======
+//    public Account updateAccount(Account acc) {
+//        if (acc == null || acc.getId() == 0) {
+//            return null; //
+//        }
+//
+//        String sql = "UPDATE account SET username = ?, password = ?, name = ?, mobileNumber = ?, emailAddress = ?, address = ?, IsActive = ?, UpdateAt = CURRENT_TIMESTAMP,  avatarUrl = ?, gender = ?, role_id = ? WHERE id = ?";
+//        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+//            ps.setString(1, acc.getUsername());
+//            ps.setString(2, acc.getPassword());
+//            ps.setString(3, acc.getName());
+//            ps.setString(4, acc.getMobileNumber());
+//            ps.setString(5, acc.getEmailAddress());
+//            ps.setString(6, acc.getAddress());
+//            ps.setBoolean(7, acc.isIsActive());        
+//            ps.setString(9, acc.getAvatarUrl());
+//            ps.setBoolean(10, acc.isGender());
+//            ps.setInt(11, acc.getRole_id());
+//            ps.setInt(12, acc.getId());
+//
+//            int affectedRows = ps.executeUpdate();
+//            if (affectedRows > 0) {
+//                return acc;
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//        }
+//        return null;
+//    }
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
     public Account updateAccount(Account acc) {
         if (acc == null || acc.getId()== 0) {
             return null; //
@@ -410,7 +497,30 @@ public class AccountDAO {
 
         return false;
     }
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
     
+=======
+
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        // Regex for a valid phone number
+        String regex = "^[0-9]{1}[0-9\\-\\s]{9,14}$";
+
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+
+        // If the phone number is empty
+        // return false
+        if (phoneNumber == null) {
+            return false;
+        }
+
+        // Pattern class contains matcher() method
+        // to find matching between given phone number
+        // and regular expression
+        return p.matcher(phoneNumber).matches();
+    }
+
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
     public boolean checkUsernameAndEmailExists(String username, String emailAddress) {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -430,6 +540,7 @@ public class AccountDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
         } finally {
             // Đóng tất cả các tài nguyên
             try {
@@ -438,6 +549,8 @@ public class AccountDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+=======
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
         }
     }
     
@@ -470,4 +583,91 @@ public class AccountDAO {
         }
     }
 
+<<<<<<< Updated upstream:Project_2/src/java/dao/AccountDAO.java
+=======
+    public boolean isStaff(String username) {
+        String query = "SELECT role_id FROM account WHERE username = ?";
+        try (PreparedStatement statement = db.getConnection().prepareStatement(query)) {
+            statement.setString(1, username);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int roleId = resultSet.getInt("role_id");
+                    return roleId == 3; // Giả sử 3 là roleId cho staff
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý ngoại lệ tùy theo yêu cầu của ứng dụng
+        }
+        return false;
+    }
+
+    public boolean editProfileByUsername(String username, Account updatedAccount) {
+        if (username == null || updatedAccount == null) {
+            return false;
+        }
+        String sql = "UPDATE account SET "
+                + "Name = ?, "
+                + "mobileNumber = ?, "
+                + "emailAddress = ?, "
+                + "Address = ?, "
+                + "avatarUrl = ?, "
+                + "WHERE username = ?";
+
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setString(1, updatedAccount.getName());
+            ps.setString(2, updatedAccount.getMobileNumber());
+            ps.setString(3, updatedAccount.getEmailAddress());
+            ps.setString(4, updatedAccount.getAddress());
+            ps.setString(5, updatedAccount.getAvatarUrl());
+            ps.setBoolean(6, updatedAccount.isGender());
+            ps.setString(7, username);
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        AccountDAO accDAO = new AccountDAO();
+        String username = "minimonie";
+        String password = "123";
+        Account acc = accDAO.findByUsernameAndPassword(username, password);
+        if (acc != null) {
+            System.out.println("Successful!");
+        } else {
+            System.out.println("Login Failed!");
+            System.out.println(accDAO.isAdmin(username));
+        }
+        String email = "phuong2532005@gmail.com";
+        String phone = "0123456789";
+        System.out.println(accDAO.isValidPhoneNumber(phone));
+        System.out.println(accDAO.isEmailExist(email));
+        System.out.println(accDAO.isEmailValid(email));
+        System.out.println(accDAO.isPhoneExist(phone));
+    }
+
+    public Account editAccount(Account acc) {
+        if (acc == null || acc.getId() == 0) {
+            return null; //
+        }
+
+        String sql = "UPDATE account SET name = ?, mobileNumber = ?, address = ?,avatar=? WHERE id = ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setString(1, acc.getName());
+            ps.setString(1, acc.getMobileNumber());
+            ps.setString(3, acc.getAddress());
+            ps.setString(4, acc.getAvatarUrl());
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                return acc;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return acc;
+    }
+>>>>>>> Stashed changes:ISP392_Vi_Vay_No_123/src/java/dao/AccountDAO.java
 }
