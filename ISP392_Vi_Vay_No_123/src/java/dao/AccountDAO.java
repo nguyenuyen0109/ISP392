@@ -343,12 +343,15 @@ public class AccountDAO {
 
         String sql = "UPDATE account SET name = ?, mobileNumber = ?, emailAddress = ?, address = ?, password = ? WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
-            ps.setString(1, acc.getUsername());
-            ps.setString(2, acc.getPassword());
-            ps.setString(3, acc.getName());
-            ps.setString(4, acc.getMobileNumber());
-            ps.setString(5, acc.getEmailAddress());
-            ps.setString(6, acc.getAddress());
+            ps.setString(1, acc.getName());
+            ps.setString(2, acc.getMobileNumber());
+            ps.setString(3, acc.getEmailAddress());
+            ps.setString(4, acc.getAddress());
+            ps.setString(5, acc.getPassword());
+            ps.setInt(6, acc.getId());
+            
+            
+            
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 return acc;
@@ -566,5 +569,34 @@ public class AccountDAO {
             return false;
         }
     }
+    public static void main(String[] args) {
+        AccountDAO acc = new AccountDAO();
+        int accountId = 12; // Thay đổi ID này tùy vào dữ liệu của bạn
 
-}
+        // Lấy thông tin tài khoản hiện tại dựa trên ID
+        Account accountToUpdate = acc.getAccountById(accountId);
+
+        if (accountToUpdate != null) {
+            // Cập nhật một số thông tin của tài khoản
+            accountToUpdate.setName("New Name");
+            accountToUpdate.setMobileNumber("New Mobile Phone");
+            accountToUpdate.setEmailAddress("New Email");
+            accountToUpdate.setAddress("New Address");
+            accountToUpdate.setPassword("New Pass");
+            // Tiếp tục cập nhật các trường khác tùy ý
+
+            // Gọi hàm updateAccount để cập nhật thông tin tài khoản trong cơ sở dữ liệu
+            Account updatedAccount = acc.updateAccount(accountToUpdate);
+
+            if (updatedAccount != null) {
+                System.out.println("Cập nhật thông tin tài khoản thành công.");
+            } else {
+                System.out.println("Có lỗi xảy ra, không thể cập nhật thông tin tài khoản.");
+            }
+        } else {
+            System.out.println("Không tìm thấy tài khoản với ID: " + accountId);
+        }
+    }
+       
+ }
+

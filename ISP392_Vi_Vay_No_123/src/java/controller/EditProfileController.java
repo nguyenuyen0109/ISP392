@@ -68,12 +68,12 @@ public class EditProfileController extends HttpServlet {
             throws ServletException, IOException {
         // Lấy đối tượng Account từ session
         Account account = (Account) request.getSession().getAttribute("USER");
-//
-//        // Kiểm tra nếu Account là null, chuyển hướng người dùng đến trang đăng nhập
-//        if (account == null) {
-//            response.sendRedirect("login");
-//            return;
-//        }
+
+        // Kiểm tra nếu Account là null, chuyển hướng người dùng đến trang đăng nhập
+        if (account == null) {
+            response.sendRedirect("login");
+            return;
+        }
 
         // Lấy dữ liệu từ form
         String fullName = request.getParameter("name");
