@@ -174,7 +174,7 @@
             </div>
         </nav>
 
-        <div class="hero overlay">
+ <div class="hero overlay">
             <img src="../assets/images/blob.svg" alt="" class="img-fluid blob">
             <div class="container">
                 <div class="row align-items-center justify-content-between pt-5">
@@ -688,6 +688,7 @@ Please don't remove this copyright link unless you buy the license here https://
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
+
 
 
     <script src="../assets/js/bootstrap.bundle.min.js"></script>

@@ -30,45 +30,52 @@ public class DebtController extends HttpServlet {
         DebtDAO dao = new DebtDAO();
          HttpSession session = request.getSession();
         // Assuming 'accountId' is stored in session, retrieve it.
-        Integer accountId = (Integer) session.getAttribute("debtor_account_id");
-        String debtorIdStr = request.getParameter("debtorid");
-        if (debtorIdStr != null && !debtorIdStr.isEmpty()) {
+        Integer accountId = (Integer) session.getAttribute("account_id");
+        String debtorId = request.getParameter("debtorid");
+        
+        if (accountId == null) {
+            // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
+            response.sendRedirect("login"); // Example redirection to login page
+            return; // Stop further execution in this case.
+        }
+        
+        if (debtorId!= null && !debtorId.isEmpty()) {
         try {
-            int debtorId = Integer.parseInt(debtorIdStr);
+            int debtorId1 = Integer.parseInt(debtorId);
             session.setAttribute("debtorid", debtorId);
         //Integer accountId = (Integer) session.getAttribute("debtor_account_id");
        // Integer debtorId = (Integer) session.getAttribute("debtor_id");
         String action = request.getParameter("action");
         List<DebtDetail> debtList;
         if (action == null) {
-            debtList = dao.getDebtByIdAccountAndIdDebtor(debtorId,accountId );
+            debtList = dao.getDebtByIdAccountAndIdDebtor(debtorId1,accountId );
             request.setAttribute("debtList", debtList);
         } else {
             switch (action) {
                 case "true":
-                    debtList = dao.filterByReceivable(debtorId,accountId, action);
+                    debtList = dao.filterByReceivable(debtorId1,accountId, action);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "false":
-                    debtList = dao.filterByReceivable(debtorId,accountId, action);
+                    debtList = dao.filterByReceivable(debtorId1,accountId, action);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "sortByOldest":
-                    debtList = dao.sortDebtByOldest(debtorId, accountId);
+                    debtList = dao.sortDebtByOldest(debtorId1, accountId);
                     request.setAttribute("debtList", debtList);
                     break;
                 case "sortByNewest":
-                    debtList = dao.sortDebtByNewest(debtorId,accountId);
+                    debtList = dao.sortDebtByNewest(debtorId1,accountId);
                     request.setAttribute("debtList", debtList);
 
                     break;
                 case "sortByHighLow":
-                    debtList = dao.sortDebtByAmountHightLow(debtorId,accountId);
+                    debtList = dao.sortDebtByAmountHightLow(debtorId1,accountId);
                     request.setAttribute("debtList", debtList);
 
                     break;
                 case "sortByLowHigh":
-                    debtList = dao.sortDebtByAmountLowHight(debtorId,accountId);
+                    debtList = dao.sortDebtByAmountLowHight(debtorId1,accountId);
                     request.setAttribute("debtList", debtList);
 
                     break;
