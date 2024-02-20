@@ -1,72 +1,58 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%-- 
+    Document   : changepassword
+    Created on : Jan 31, 2024, 1:51:45 AM
+    Author     : admin
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
+        <title>TODO supply a title</title>
         <meta charset="UTF-8">
-        <title>Forgot Password</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <!-- Style to create space at the top of the form -->
-        <style>
-            .form-gap {
-                padding-top: 70px;
-            }
-        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/changepass.css"/>
     </head>
     <body>
+        <jsp:include page="/navigator/toast.jsp" />
+        <div class="mainDiv">
+            <div class="cardStyle">
+                <form action="verify" method="post" name="signupForm" id="signupForm">
+                    <img src="" id="signupLogo"/>
 
-        <div class="form-gap"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="text-center">
-                                <h3><i class="fa fa-lock fa-4x"></i></h3>
-                                <h2 class="text-center">Reset Password?</h2>
-                                <p>You can reset your password here.</p>
-                                <div class="panel-body">
+                    <h2 class="formTitle">
+                        Login to your account
+                    </h2>
 
-                                    <c:if test="${msg ne null}">
-                                        <div class="alert mb-3" role="alert">
-                                            ${msg}
-                                        </div>
-                                    </c:if>
-
-                                    <form action="reset-password" id="register-form" role="form" autocomplete="off" class="form" method="post">
-
-                                        <input type="hidden" name="token" value="${requestScope.token}">
-                                        <input type="hidden" name="email" value="${requestScope.email}">
-
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <input id="email" name="password" placeholder="Password" class="form-control" type="password">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <input id="email" name="retypePassword" placeholder="Retype password" class="form-control" type="password">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
-                                        </div>
-                                        <input type="hidden" class="hide" name="token" id="token" value="">
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
+                    <div class="inputDiv">
+                        <label class="inputLabel" for="password">New Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter password" required>
                     </div>
-                </div>
+
+                    <div class="inputDiv">
+                        <label class="inputLabel" for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password">
+                    </div>
+                    <div class="inputDiv">
+                        <label class="inputLabel">Captcha</label>
+                        <input type="text" id="captcha" name="captcha" placeholder="Enter captcha" required>
+                    </div>
+
+                    <div class="inputCaptcha"> 
+                        <img src="/ISP392_Vi_Vay_No_123/captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
+                        <img src="/ISP392_Vi_Vay_No_123/assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
+                    </div>
+                    <div class="buttonWrapper">
+                        <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">
+                            <span>Continue</span>
+                        </button>
+                    </div>
+
+                </form>
             </div>
         </div>
-
+        <script src="/ISP392_Vi_Vay_No_123/assets/js/changepass.js"></script>
+        <script src="/ISP392_Vi_Vay_No_123/assets/js/captcha.js"></script>
     </body>
 </html>

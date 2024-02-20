@@ -12,7 +12,7 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../assets/css/changepass.css"/>
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/changepass.css"/>
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
@@ -24,6 +24,10 @@
                     <h2 class="formTitle">
                         Login to your account
                     </h2>
+                    <div class="inputDiv">
+                        <label class="inputLabel" for="oldPassword">Old Password</label>
+                        <input type="password" id="password" name="oldPassword" placeholder="Enter OldPassword" required>
+                    </div>
 
                     <div class="inputDiv">
                         <label class="inputLabel" for="password">New Password</label>
@@ -40,8 +44,8 @@
                     </div>
 
                     <div class="inputCaptcha"> 
-                        <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
-                        <img src="../assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
+                        <img src="/ISP392_Vi_Vay_No_123/captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
+                        <img src="/ISP392_Vi_Vay_No_123/assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
                     </div>
                     <div class="buttonWrapper">
                         <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">
@@ -52,6 +56,7 @@
                 </form>
             </div>
         </div>
-        <script src="../assets/js/changepass.js"></script>
+        <script src="/ISP392_Vi_Vay_No_123/assets/js/changepass.js"></script>
+        <script src="/ISP392_Vi_Vay_No_123/assets/js/captcha.js"></script>
     </body>
 </html>
