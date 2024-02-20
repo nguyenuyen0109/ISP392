@@ -26,12 +26,12 @@
                     </h2>
                     <div class="inputDiv">
                         <label class="inputLabel" for="oldPassword">Old Password</label>
-                        <input type="password" id="password" name="oldPassword" placeholder="Enter OldPassword" required>
+                        <input type="password" id="password1" name="oldPassword" placeholder="Enter OldPassword" required>
                     </div>
 
                     <div class="inputDiv">
                         <label class="inputLabel" for="password">New Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter password" required>
+                        <input type="password" id="password2" name="password" placeholder="Enter password" required>
                     </div>
 
                     <div class="inputDiv">
