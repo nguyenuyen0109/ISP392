@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+        <title>Debt List</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -263,20 +263,28 @@
                 border-radius: 2px;
             }
             .search-selection{
-                color: #757575;
-                position: relative;
-                border-left: 1px solid #ccc;
-                padding-left: 14px;
+                    color: #757575;
+                    position: relative;
+                    border-left: 1px solid #ccc;
+                    padding-left: 14px;
             }
             .search-selection-label{
-                font-size: 13px;
-                color: #757575;
-                border: none !important;
-                outline: none !important;
-            }
+                    font-size: 14px;
+                    color: #757575;
+                    border: none !important;
+                    outline: none !important;
+            } 
+            
             .search-selection-item{
                 background-color: #fff;
                 padding: 8px 8px;
+            }
+            .search-selection-icon{
+                font-size: 10px;
+                margin: 0 8px 0 2px;
+                /* ben phai 8, ben trai 4 */
+                position: relative;
+                top: 0.5px
             }
             .search-btn{
                 background-color: #435d7d;
@@ -295,6 +303,7 @@
             .search-btn:hover{
                 background-color: #4D6380;
             }
+            
             /* tu viet them phan sap xep */
             .home-filter{
                 font-size: 13px;
@@ -310,7 +319,6 @@
                 height: 13px;
                 display: flex;
                 align-items: center;
-                cursor: pointer;
                 /* justify-content: khoang cach chu va icon o 2 dau */
             }
             .selection-input:hover .select-input__list{
@@ -325,6 +333,8 @@
                 align-items: center;
                 margin-left: 0;
                 font-size: 13px;
+                /* color: #566787; */
+
             }
             .sort-icon{
                 font-size: 0.6rem;
@@ -360,9 +370,8 @@
             .select-input__link{
                 color: var(--text-color);
                 padding: 4px 0;
-                text-decoration: none !important;
+                text-decoration: none;
                 display: block;
-                outline: none;
                 list-style: none;
             }
             .btn-filter{
@@ -417,13 +426,12 @@
                         <div>
                             <h2>Debt List</h2>
                         </div>
-                        <form action="debt" method="post" class="search">
+                        <form action="debt" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
                             <div class="search-selection">
                                 <select class="search-selection-label" name="searchType" >
                                     <option class="search-selection-item">Search by</option>
                                     <option class="search-selection-item" value="description">Description</option>
-                                    <!--<option class="search-selection-item" value="createAt">Create at</option>-->
                                     <option class="search-selection-item" value="amount">Amount</option>
                                 </select>
                             </div>
@@ -438,8 +446,6 @@
                     </div>
 
                     <div class="home-filter">
-                        <a href="debt?action=true"><button class="btn-filter">Receivable</button></a>
-                        <a href="debt?action=false"><button class="btn-filter">Debt</button></a>
                         <div class="selection-input">
                             <span class="select-input__label">Sorted by</span>
                             <i class="sort-icon fa-solid fa-angle-down"></i>	
@@ -455,6 +461,12 @@
                                 </li>
                                 <li class="select-input_item">
                                     <a href="debt?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debt?action=Receivable" class="select-input__link">Receivable</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debt?action=Debt" class="select-input__link">Debt</a>
                                 </li>
                             </ul>
                         </div>
@@ -478,28 +490,21 @@
                                     <td>${debt.description}</td>
                                     <td>${debt.debtType == false ? 'Debt' : 'Receivable'}</td>
                                     <td>${debt.amount}</td>
-                                    <td>${debt.creatAt}</td>                                                                                             
+                                    <td>${debt.createAt}</td>                                                                                             
                                     <td>
                                         <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                        <!--<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
                                     </td>
                                 </tr>					
                             </tbody>
                         </c:forEach>
                     </table>
-                    <div class="clearfix">
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a href="#">Previous</a></li>
-                            <li class="page-item"><a href="#" class="page-link">1</a></li>
-                            <li class="page-item"><a href="#" class="page-link">2</a></li>
-                            <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                            <li class="page-item"><a href="#" class="page-link">4</a></li>
-                            <li class="page-item"><a href="#" class="page-link">5</a></li>
-                            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                        </ul>
-                    </div>
+
                 </div>
             </div>        
         </div>
+        <!-- search -->
+
         <!-- Edit Modal HTML -->
         <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
@@ -518,8 +523,8 @@
                                 <label>Debt type</label>
                                 <!--<input type="text" class="form-control" required>-->
                                 <select class="form-control" name="debtType" required>
-                                    <option value="1">Receivable</option>  
-                                    <option value="0">Debt</option>  
+                                    <option value="0">Receivable</option>  
+                                    <option value="1">Debt</option>  
                                     <!--                                                    Debt: Mình n? ngkhac
                                                                                         Receivable: ngkhac n? mình -->
                                 </select>
@@ -536,18 +541,18 @@
                                     <!--                                                    Debt: Mình n? ngkhac
                                                                                         Receivable: ngkhac n? mình -->
                                 </select>
-                                <!--<input type="number" class="form-control" name ="interest_rate" required>-->
                             </div>					
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                             <input name="submit" type="submit" class="btn btn-success" value="Add">
-                            <input type="hidden" name="action" value="add">
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <!-- Pagination -->
+         <jsp:include page="../client/pagination.jsp"></jsp:include>
 
     </body>
 </html>

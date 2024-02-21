@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import model.DebtDetail;
 import model.Debtor;
+import utils.Pagination;
 
 /**
  *
@@ -51,6 +52,28 @@ public class DebtorDAO {
         }
 
     }
+    
+    public boolean updateDebtor(Debtor debtor) {
+        boolean updated = false;
+        String query = "UPDATE debtor SET name=?,"
+                + " address=?,"
+                + " phone=?,"
+                + " email=?"
+                + " WHERE id=?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, debtor.getName());
+            preparedStatement.setString(2, debtor.getAddress());
+            preparedStatement.setString(3, debtor.getPhone());
+            preparedStatement.setString(4, debtor.getEmail());
+            preparedStatement.setInt(5, debtor.getId());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            updated = rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return updated;
+    }
 
     public List<Debtor> getAllDebtors(int account_id) {
         List<Debtor> debtors = new ArrayList<>();
@@ -84,34 +107,34 @@ public class DebtorDAO {
         return debtors;
     }
 
-    public List<Debtor> sortDebtorByNewest(int account_id) {
-        List<Debtor> list = getAllDebtors(account_id);
-        // Sắp xếp theo ngày tạo mới nhất (giảm dần)
-        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(Debtor::getCreatedAt)));
-        return list;
-    }
-
-    public List<Debtor> sortDebtorByTotalDebtLargest(int account_id) {
-        List<Debtor> list = getAllDebtors(account_id);
-        Collections.sort(list, new Comparator<Debtor>() {
-            @Override
-            public int compare(Debtor o1, Debtor o2) {
-                return Double.compare(o2.getTotalDebt(), o1.getTotalDebt());
-            }
-        });
-        return list;
-    }
-
-    public List<Debtor> sortDebtorByTotalDebtSmallest(int account_id) {
-        List<Debtor> list = getAllDebtors(account_id);
-        Collections.sort(list, new Comparator<Debtor>() {
-            @Override
-            public int compare(Debtor o1, Debtor o2) {
-                return Double.compare(o1.getTotalDebt(), o2.getTotalDebt());
-            }
-        });
-        return list;
-    }
+//    public List<Debtor> sortDebtorByNewest(int account_id) {
+//        List<Debtor> list = getAllDebtors(account_id);
+//        // Sắp xếp theo ngày tạo mới nhất (giảm dần)
+//        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(Debtor::getCreatedAt)));
+//        return list;
+//    }
+//
+//    public List<Debtor> sortDebtorByTotalDebtLargest(int account_id) {
+//        List<Debtor> list = getAllDebtors(account_id);
+//        Collections.sort(list, new Comparator<Debtor>() {
+//            @Override
+//            public int compare(Debtor o1, Debtor o2) {
+//                return Double.compare(o2.getTotalDebt(), o1.getTotalDebt());
+//            }
+//        });
+//        return list;
+//    }
+//
+//    public List<Debtor> sortDebtorByTotalDebtSmallest(int account_id) {
+//        List<Debtor> list = getAllDebtors(account_id);
+//        Collections.sort(list, new Comparator<Debtor>() {
+//            @Override
+//            public int compare(Debtor o1, Debtor o2) {
+//                return Double.compare(o1.getTotalDebt(), o2.getTotalDebt());
+//            }
+//        });
+//        return list;
+//    }
 
     public static void main(String[] args) {
         // Instantiate the DebtorDAO class
@@ -187,37 +210,522 @@ public class DebtorDAO {
     
 
 
-public List<Debtor> getDebtorsByName(int accountid,String keyword) {
-        //here
-        List<Debtor> debtors = new ArrayList<>();
-        String query = "select * from debtor\n"
-                + "         where account_id = ? and " + keyword;
-        try(PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
-            
-            preparedStatement.setObject(1, accountid);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//public List<Debtor> getDebtorsByName(int accountid,String keyword) {
+//        //here
+//        List<Debtor> debtors = new ArrayList<>();
+//        String query = "select * from debtor\n"
+//                + "         where account_id = ? and " + keyword;
+//        try(PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+//            
+//            preparedStatement.setObject(1, accountid);
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//
+//            while (resultSet.next()) {
+//                int id = resultSet.getInt("id");
+//                String name = resultSet.getString("name");
+//                String address = resultSet.getString("address");
+//                String phone = resultSet.getString("phone");
+//                String email = resultSet.getString("email");
+//                double totalDebt = resultSet.getDouble("totalDebt");
+//                java.sql.Timestamp createdAt = resultSet.getTimestamp("createdAt");
+//                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
+//                //int account_id = resultSet.getInt("account_id");
+//                int creditor_account_id = resultSet.getInt("creditor_account_id");
+//                //Account account = new Account();
+//                Debtor debtor;
+//                debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, accountid, creditor_account_id);
+//                debtors.add(debtor);
+//            }
+//        }} catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return debtors;
+//    }
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String address = resultSet.getString("address");
-                String phone = resultSet.getString("phone");
-                String email = resultSet.getString("email");
-                double totalDebt = resultSet.getDouble("totalDebt");
-                java.sql.Timestamp createdAt = resultSet.getTimestamp("createdAt");
-                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
-                //int account_id = resultSet.getInt("account_id");
-                int creditor_account_id = resultSet.getInt("creditor_account_id");
-                //Account account = new Account();
-                Debtor debtor;
-                debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, accountid, creditor_account_id);
-                debtors.add(debtor);
+public int findTotalRecord(int accountid) {
+        int totalRecord = 0;
+        String sql = "SELECT COUNT(*) FROM debtor where account_id = ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
+            preparedStatement.setInt(1, accountid);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    totalRecord = resultSet.getInt(1);
+                }
             }
-        }} catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return debtors;
+
+        return totalRecord;
     }
+
+     public List<Debtor> findByPage(int accountid,int pageNumber) {
+        List<Debtor> debtorList = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+
+        try {
+            int offset = (pageNumber - 1) * Pagination.RECORD_PER_PAGE;
+            String sql = "SELECT * FROM debtor WHERE account_id = ? ORDER BY id LIMIT ? OFFSET ?";
+            ps = db.getConnection().prepareStatement(sql);
+            ps.setInt(1, accountid);
+            ps.setInt(2, Pagination.RECORD_PER_PAGE);
+            ps.setInt(3, offset);
+            resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Debtor debtor = new Debtor();
+                debtor.setId(resultSet.getInt("id"));
+                debtor.setName(resultSet.getString("name"));
+                debtor.setAddress(resultSet.getString("address"));
+                debtor.setPhone(resultSet.getString("phone"));
+                debtor.setEmail(resultSet.getString("email"));
+                debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+                debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+                debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+                debtor.setAccount_id(accountid);
+                debtorList.add(debtor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (ps != null) ps.close();
+                // Không cần đóng connection ở đây để sử dụng lại
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return debtorList;
+    }
+
+    public List<Debtor> findByPageAndSortByNewest(int accountid, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? ORDER BY createdAt DESC LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setInt(2, Pagination.RECORD_PER_PAGE);
+        ps.setInt(3, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+                debtor.setId(resultSet.getInt("id"));
+                debtor.setName(resultSet.getString("name"));
+                debtor.setAddress(resultSet.getString("address"));
+                debtor.setPhone(resultSet.getString("phone"));
+                debtor.setEmail(resultSet.getString("email"));
+                debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+                debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+                debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+                debtor.setAccount_id(accountid);
+                debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
+    
+    public List<Debtor> findByPageAndSortByOldest(int accountid, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? ORDER BY createdAt ASC LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setInt(2, Pagination.RECORD_PER_PAGE);
+        ps.setInt(3, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+                debtor.setId(resultSet.getInt("id"));
+                debtor.setName(resultSet.getString("name"));
+                debtor.setAddress(resultSet.getString("address"));
+                debtor.setPhone(resultSet.getString("phone"));
+                debtor.setEmail(resultSet.getString("email"));
+                debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+                debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+                debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+                debtor.setAccount_id(accountid);
+                debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
+    public List<Debtor> findByPageAndSortDebtByAmountHighLow(int accountid, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? ORDER BY totalDebt DESC LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setInt(2, Pagination.RECORD_PER_PAGE);
+        ps.setInt(3, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+            debtor.setId(resultSet.getInt("id"));
+            debtor.setName(resultSet.getString("name"));
+            debtor.setAddress(resultSet.getString("address"));
+            debtor.setPhone(resultSet.getString("phone"));
+            debtor.setEmail(resultSet.getString("email"));
+            debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+            debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+            debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+            debtor.setAccount_id(accountid);
+            debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
+    
+    public List<Debtor> findByPageAndSortDebtByAmountLowHigh(int accountid, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? ORDER BY totalDebt ASC LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setInt(2, Pagination.RECORD_PER_PAGE);
+        ps.setInt(3, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+            debtor.setId(resultSet.getInt("id"));
+            debtor.setName(resultSet.getString("name"));
+            debtor.setAddress(resultSet.getString("address"));
+            debtor.setPhone(resultSet.getString("phone"));
+            debtor.setEmail(resultSet.getString("email"));
+            debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+            debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+            debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+            debtor.setAccount_id(accountid);
+            debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
+
+public int findTotalRecordByName(int accountid, String keyword) {
+    int totalRecord = 0;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String sql = "SELECT COUNT(*) FROM debtor WHERE account_id = ? AND name LIKE ?";
+        statement = db.getConnection().prepareStatement(sql);
+        statement.setInt(1, accountid);
+        statement.setString(2, "%" + keyword + "%");
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            totalRecord = resultSet.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } 
+
+    return totalRecord;
+}
+
+public List<Debtor> findByPageByName(int accountid, String keyword, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? AND name LIKE ? ORDER BY id LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setString(2, "%" + keyword + "%");
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+            debtor.setId(resultSet.getInt("id"));
+            debtor.setName(resultSet.getString("name"));
+            debtor.setAddress(resultSet.getString("address"));
+            debtor.setPhone(resultSet.getString("phone"));
+            debtor.setEmail(resultSet.getString("email"));
+            debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+            debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+            debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+            debtor.setAccount_id(accountid);
+            debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
+
+public int findTotalRecordByAddress(int accountid, String keyword) {
+    int totalRecord = 0;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String sql = "SELECT COUNT(*) FROM debtor WHERE account_id = ? AND address LIKE ?";
+        statement = db.getConnection().prepareStatement(sql);
+        statement.setInt(1, accountid);
+        statement.setString(2, "%" + keyword + "%");
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            totalRecord = resultSet.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } 
+
+    return totalRecord;
+}
+
+public List<Debtor> findByPageByAddress(int accountid, String keyword, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? AND address LIKE ? ORDER BY id LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setString(2, "%" + keyword + "%");
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+            debtor.setId(resultSet.getInt("id"));
+            debtor.setName(resultSet.getString("name"));
+            debtor.setAddress(resultSet.getString("address"));
+            debtor.setPhone(resultSet.getString("phone"));
+            debtor.setEmail(resultSet.getString("email"));
+            debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+            debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+            debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+            debtor.setAccount_id(accountid);
+            debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
+
+public int findTotalRecordByPhone(int accountid, String keyword) {
+    int totalRecord = 0;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String sql = "SELECT COUNT(*) FROM debtor WHERE account_id = ? AND phone LIKE ?";
+        statement = db.getConnection().prepareStatement(sql);
+        statement.setInt(1, accountid);
+        statement.setString(2, "%" + keyword + "%");
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            totalRecord = resultSet.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } 
+
+    return totalRecord;
+}
+
+public List<Debtor> findByPageByPhone(int accountid, String keyword, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? AND phone LIKE ? ORDER BY id LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setString(2, "%" + keyword + "%");
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+            debtor.setId(resultSet.getInt("id"));
+            debtor.setName(resultSet.getString("name"));
+            debtor.setAddress(resultSet.getString("address"));
+            debtor.setPhone(resultSet.getString("phone"));
+            debtor.setEmail(resultSet.getString("email"));
+            debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+            debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+            debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+            debtor.setAccount_id(accountid);
+            debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
+public int findTotalRecordByEmail(int accountid, String keyword) {
+    int totalRecord = 0;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String sql = "SELECT COUNT(*) FROM debtor WHERE account_id = ? AND email LIKE ?";
+        statement = db.getConnection().prepareStatement(sql);
+        statement.setInt(1, accountid);
+        statement.setString(2, "%" + keyword + "%");
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            totalRecord = resultSet.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } 
+
+    return totalRecord;
+}
+
+public List<Debtor> findByPageByEmail(int accountid, String keyword, int page) {
+    List<Debtor> debtorList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtor WHERE account_id = ? AND email LIKE ? ORDER BY id LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountid);
+        ps.setString(2, "%" + keyword + "%");
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            Debtor debtor = new Debtor();
+            debtor.setId(resultSet.getInt("id"));
+            debtor.setName(resultSet.getString("name"));
+            debtor.setAddress(resultSet.getString("address"));
+            debtor.setPhone(resultSet.getString("phone"));
+            debtor.setEmail(resultSet.getString("email"));
+            debtor.setTotalDebt(resultSet.getDouble("totalDebt"));
+            debtor.setCreatedAt(resultSet.getTimestamp("createdAt"));
+            debtor.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+            debtor.setAccount_id(accountid);
+            debtorList.add(debtor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtorList;
+}
 
 }
 
