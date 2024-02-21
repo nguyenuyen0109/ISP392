@@ -4,6 +4,7 @@
 
 <section id="page-navigation" class="d-flex justify-content-center">
     <ul class="pagination">
+        
         <!--Home-->
         <c:if test="${pageControl.page > 1}">
             <li class="page-item">
