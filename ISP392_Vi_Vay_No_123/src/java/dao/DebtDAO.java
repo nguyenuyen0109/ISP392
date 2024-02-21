@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import utils.Pagination;
 
 /**
  *
@@ -75,41 +76,41 @@ public class DebtDAO {
             return debtList;
         }
 
-    public List<DebtDetail> sortDebtByOldest(int idDebtor,int accountid) {
-        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor,accountid);
-        // Sắp xếp theo ngày tạo cũ nhất (tăng dần)
-        Collections.sort(list, Comparator.comparing(DebtDetail::getCreatAt));
-        return list;
-    }
-
-    public List<DebtDetail> sortDebtByNewest(int idDebtor,int accountid) {
-        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor, accountid);
-        // Sắp xếp theo ngày tạo mới nhất (giảm dần)
-        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(DebtDetail::getCreatAt)));
-        return list;
-    }
-
-    public List<DebtDetail> sortDebtByAmountHightLow(int idDebtor,int accountid) {
-        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor,accountid);
-        Collections.sort(list, new Comparator<DebtDetail>() {
-            @Override
-            public int compare(DebtDetail o1, DebtDetail o2) {
-                return Double.compare(o2.getAmount(), o1.getAmount());
-            }
-        });
-        return list;
-    }
-
-    public List<DebtDetail> sortDebtByAmountLowHight(int idDebtor,int accountid) {
-        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor, accountid);
-        Collections.sort(list, new Comparator<DebtDetail>() {
-            @Override
-            public int compare(DebtDetail o1, DebtDetail o2) {
-                return Double.compare(o1.getAmount(), o2.getAmount());
-            }
-        });
-        return list;
-    }
+//    public List<DebtDetail> sortDebtByOldest(int idDebtor,int accountid) {
+//        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor,accountid);
+//        // Sắp xếp theo ngày tạo cũ nhất (tăng dần)
+//        Collections.sort(list, Comparator.comparing(DebtDetail::getCreatAt));
+//        return list;
+//    }
+//
+//    public List<DebtDetail> sortDebtByNewest(int idDebtor,int accountid) {
+//        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor, accountid);
+//        // Sắp xếp theo ngày tạo mới nhất (giảm dần)
+//        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(DebtDetail::getCreatAt)));
+//        return list;
+//    }
+//
+//    public List<DebtDetail> sortDebtByAmountHightLow(int idDebtor,int accountid) {
+//        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor,accountid);
+//        Collections.sort(list, new Comparator<DebtDetail>() {
+//            @Override
+//            public int compare(DebtDetail o1, DebtDetail o2) {
+//                return Double.compare(o2.getAmount(), o1.getAmount());
+//            }
+//        });
+//        return list;
+//    }
+//
+//    public List<DebtDetail> sortDebtByAmountLowHight(int idDebtor,int accountid) {
+//        List<DebtDetail> list = getDebtByIdAccountAndIdDebtor(idDebtor, accountid);
+//        Collections.sort(list, new Comparator<DebtDetail>() {
+//            @Override
+//            public int compare(DebtDetail o1, DebtDetail o2) {
+//                return Double.compare(o1.getAmount(), o2.getAmount());
+//            }
+//        });
+//        return list;
+//    }
 
     public List<DebtDetail> searchDebtByAmount(int idDebtor,int accountid,String input) {
         List<DebtDetail> debtList = new ArrayList<>();
@@ -183,6 +184,343 @@ public class DebtDAO {
 
         return debtList;
     }
+    
+    public int findTotalRecord(int accountId, int debtorId) {
+    int totalRecord = 0;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String sql = "SELECT COUNT(*) FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ?";
+        statement = db.getConnection().prepareStatement(sql);
+        statement.setInt(1, accountId);
+        statement.setInt(2, debtorId);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            totalRecord = resultSet.getInt(1);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } 
+
+    return totalRecord;
+}
+
+public List<DebtDetail> findByPage(int accountId, int debtorId, int page) {
+    List<DebtDetail> debtList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY id LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            DebtDetail debt = new DebtDetail();
+            debt.setId(resultSet.getInt("id"));
+            debt.setDescription(resultSet.getString("description"));
+            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setAmount(resultSet.getDouble("amount"));
+            debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+            debtList.add(debt);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (resultSet != null) resultSet.close();
+            if (ps != null) ps.close();
+            // Không cần đóng connection ở đây để sử dụng lại
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return debtList;
+}
+
+public int findTotalRecordByDescription(int accountId, int debtorId, String keyword) {
+    int totalRecord = 0;
+
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+   
+        String sql = "SELECT COUNT(*) AS totalRecord " +
+                     "FROM debtdetails " +
+                     "WHERE debtor_account_id = ? AND debtor_id = ? AND description LIKE ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setString(3, "%" + keyword + "%");
+
+        resultSet = ps.executeQuery();
+
+        if (resultSet.next()) {
+            totalRecord = resultSet.getInt("totalRecord");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return totalRecord;
+}
+
+public List<DebtDetail> findByPageByDescription(int accountId, int debtorId, String keyword, int page) {
+    List<DebtDetail> debtList = new ArrayList<>();
+
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * " +
+                     "FROM debtdetails " +
+                     "WHERE debtor_account_id = ? AND debtor_id = ? AND description LIKE ? " +
+                     "ORDER BY id " +
+                     "LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setString(3, "%" + keyword + "%");
+        ps.setInt(4, Pagination.RECORD_PER_PAGE);
+        ps.setInt(5, offset);
+
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            DebtDetail debt = new DebtDetail();
+            debt.setId(resultSet.getInt("id"));
+            debt.setDescription(resultSet.getString("description"));
+            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setAmount(resultSet.getDouble("amount"));
+            debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+            debtList.add(debt);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return debtList;
+}
+
+public int findTotalRecordByAmount(int accountId, int debtorId, double amount) {
+    String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ?";
+    try (
+         PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setDouble(3, amount);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("total");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0;
+}
+
+    public List<DebtDetail> findByPageByAmount(int accountId, int debtorId, double amount, int page) {
+        List<DebtDetail> debtList = new ArrayList<>();
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ? ORDER BY id LIMIT ? OFFSET ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, accountId);
+            ps.setInt(2, debtorId);
+            ps.setDouble(3, amount);
+            ps.setInt(4, Pagination.RECORD_PER_PAGE);
+            ps.setInt(5, offset);
+            try (ResultSet resultSet = ps.executeQuery()) {
+                while (resultSet.next()) {
+                    DebtDetail debt = new DebtDetail();
+                    debt.setId(resultSet.getInt("id"));
+                    debt.setDescription(resultSet.getString("description"));
+                    debt.setDebtType(resultSet.getBoolean("debtType"));
+                    debt.setAmount(resultSet.getDouble("amount"));
+                    debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+                    debtList.add(debt);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return debtList;
+    }
+
+public List<DebtDetail> findByPageAndSortByOldest(int accountId, int debtorId, int page) {
+    List<DebtDetail> debtList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY createdAt ASC LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            DebtDetail debt = new DebtDetail();
+            debt.setId(resultSet.getInt("id"));
+            debt.setDescription(resultSet.getString("description"));
+            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setAmount(resultSet.getDouble("amount"));
+            debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+            debtList.add(debt);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Đóng resultSet, preparedStatement và kết nối tại đây
+    }
+
+    return debtList;
+}
+
+public List<DebtDetail> findByPageAndSortByNewest(int accountId, int debtorId, int page) {
+    List<DebtDetail> debtList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY createdAt DESC LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            DebtDetail debt = new DebtDetail();
+            debt.setId(resultSet.getInt("id"));
+            debt.setDescription(resultSet.getString("description"));
+            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setAmount(resultSet.getDouble("amount"));
+            debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+            debtList.add(debt);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Đóng resultSet, preparedStatement và kết nối tại đây
+    }
+
+    return debtList;
+}
+
+public List<DebtDetail> findByPageAndSortDebtByAmountHighLow(int accountId, int debtorId, int page) {
+    return findByPageAndSortDebtAmount(accountId, debtorId, page, "amount DESC");
+}
+
+public List<DebtDetail> findByPageAndSortDebtByAmountLowHigh(int accountId, int debtorId, int page) {
+    return findByPageAndSortDebtAmount(accountId, debtorId, page, "amount ASC");
+}
+
+private List<DebtDetail> findByPageAndSortDebtAmount(int accountId, int debtorId, int page, String orderBy) {
+    List<DebtDetail> debtList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY " + orderBy + " LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setInt(3, Pagination.RECORD_PER_PAGE);
+        ps.setInt(4, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            DebtDetail debt = new DebtDetail();
+            debt.setId(resultSet.getInt("id"));
+            debt.setDescription(resultSet.getString("description"));
+            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setAmount(resultSet.getDouble("amount"));
+            debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+            debtList.add(debt);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return debtList;
+}
+
+public int findTotalRecordByDebtType(int accountId, int debtorId, boolean isDebtType) {
+    int totalRecord = 0;
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtType = ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setBoolean(3, isDebtType);
+        resultSet = ps.executeQuery();
+
+        if (resultSet.next()) {
+            totalRecord = resultSet.getInt("total");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Đóng resultSet và preparedStatement tại đây
+    }
+
+    return totalRecord;
+}
+
+public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, boolean isDebtType, int page) {
+    List<DebtDetail> debtList = new ArrayList<>();
+    PreparedStatement ps = null;
+    ResultSet resultSet = null;
+
+    try {
+        int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtType = ? LIMIT ? OFFSET ?";
+        ps = db.getConnection().prepareStatement(sql);
+        ps.setInt(1, accountId);
+        ps.setInt(2, debtorId);
+        ps.setBoolean(3, isDebtType);
+        ps.setInt(4, Pagination.RECORD_PER_PAGE);
+        ps.setInt(5, offset);
+        resultSet = ps.executeQuery();
+
+        while (resultSet.next()) {
+            DebtDetail debt = new DebtDetail();
+            debt.setId(resultSet.getInt("id"));
+            debt.setDescription(resultSet.getString("description"));
+            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setAmount(resultSet.getDouble("amount"));
+            debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+            debtList.add(debt);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Đóng resultSet và preparedStatement tại đây
+    }
+
+    return debtList;
+}
+
 
     public static void main(String[] args) {
         DebtDAO dao = new DebtDAO();
@@ -206,7 +544,7 @@ public class DebtDAO {
         }
     System.out.println("-------List---------");
     
-    List<DebtDetail> list2 = dao.sortDebtByAmountHightLow(1, 2);
+//    List<DebtDetail> list2 = dao.sortDebtByAmountHightLow(1, 2);
 //        for (DebtDetail debtDetail : list2) {
 //            System.out.println(debtDetail);
 //        }
