@@ -66,8 +66,8 @@ public class DebtController extends HttpServlet {
         // Add new debt
          HttpSession session = request.getSession();
         // Assuming 'accountId' is stored in session, retrieve it.
-        Integer accountId = (Integer) session.getAttribute("debtor_account_id");
-        Integer debtorId = (Integer) session.getAttribute("debtor_id");
+        Integer accountId = (Integer) session.getAttribute("account_id");
+        Integer debtorId = (Integer) session.getAttribute("debtorid");
         String description = request.getParameter("description");
         boolean debtType = Boolean.parseBoolean(request.getParameter("debtType"));
         double amount = Double.parseDouble(request.getParameter("amount"));

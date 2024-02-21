@@ -355,7 +355,7 @@ public class AccountDAO {
                 return acc;
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return acc;
     }

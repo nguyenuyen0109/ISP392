@@ -67,7 +67,7 @@ public class EditProfileController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Lấy đối tượng Account từ session
-        Account account = (Account) request.getSession().getAttribute("USER");
+        Account account = (Account) request.getSession().getAttribute("account");
 
         // Kiểm tra nếu Account là null, chuyển hướng người dùng đến trang đăng nhập
         if (account == null) {
@@ -86,15 +86,16 @@ public class EditProfileController extends HttpServlet {
         account.setName(fullName);
         account.setMobileNumber(phone);
         account.setAddress(address);
-        account.setEmailAddress(email);
+       // account.setEmailAddress(email);
         account.setAvatarUrl(avatar);
 
         // Lưu cập nhật vào cơ sở dữ liệu thông qua AccountDAO
         AccountDAO dao = new AccountDAO();
+        
         dao.updateAccount(account);
 
         // Cập nhật lại đối tượng Account trong session
-        request.getSession().setAttribute("USER", account);
+        request.getSession().setAttribute("account", account);
 
         // Chuyển hướng người dùng hoặc hiển thị thông báo thành công
         request.setAttribute("alert", "Profile updated successfully!");
