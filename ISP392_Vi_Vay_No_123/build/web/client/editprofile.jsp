@@ -9,6 +9,7 @@
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
+        <jsp:include page="/navigator/header.jsp" />
         <form action="editprofile" method="post">
             <div class="container bootstrap snippets bootdey">
                 <h1 class="text-primary">Edit Profile</h1>

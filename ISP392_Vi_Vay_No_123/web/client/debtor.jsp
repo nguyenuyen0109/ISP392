@@ -460,7 +460,9 @@
 
 
     </head>
+    <body>
     <jsp:include page="/navigator/toast.jsp" />
+    <jsp:include page="/navigator/header.jsp" />
     <div class="container-xl">
         <div class="table-responsive">
             <div class="table-wrapper">
@@ -470,7 +472,7 @@
                             <h2>Debtor <b>List</b></h2>
                         </div>
                         <form action="debtor" method="get" class="search">
-                            <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
+                            <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery">
                             <div class="search-selection">
                                 <select class="search-selection-label" name="searchType" >
                                     <option class="search-selection-item">Search by</option>

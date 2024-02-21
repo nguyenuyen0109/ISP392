@@ -419,6 +419,7 @@
         </script>
     </head>
     <body>
+        <jsp:include page="/navigator/header.jsp" />
         <div class="container-xl">
             <div class="table-responsive">
                 <div class="table-wrapper">

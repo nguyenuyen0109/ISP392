@@ -16,6 +16,7 @@
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
+        <jsp:include page="/navigator/header.jsp" />
         <div class="mainDiv">
             <div class="cardStyle">
                 <form action="verify" method="post" name="signupForm" id="signupForm">

@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Debit Note</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/assets/css/header.css">
     <!-- Styles are kept as you provided -->
     <style>
         /* CSS for dropdown menu and login button as provided */
@@ -112,7 +112,7 @@
                                 <div class="dropdown-content">
                                     <a href="changepassword.jsp">Change Password</a>
                                     <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
-                                    <a href="../debtor">View Debtor List</a>
+                                    <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                                     <% if (isAdmin != null && isAdmin) { %>
                                         <a href="dashboard.jsp">Dashboard</a>
                                     <% } %>
@@ -138,6 +138,14 @@
             </div>
         </div>
     </nav>
-    <script src="/ISP392_Vi_Vay_No_123/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="ISP392_Vi_Vay_No_123/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/tiny-slider.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/flatpickr.min.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/aos.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/glightbox.min.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/navbar.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/counter.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/custom.js"></script>
 </body>
 </html>
