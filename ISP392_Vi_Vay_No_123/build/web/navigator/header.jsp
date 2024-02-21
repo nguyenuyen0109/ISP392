@@ -1,85 +1,143 @@
-<%-- 
-    Document   : header
-    Created on : Feb 5, 2024, 1:02:03 PM
-    Author     : MINIMONIE
---%>
 
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="model.Account"%> <!-- Replace 'your.package' with the actual package name where the 'Account' class is defined -->
 
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-    <!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
-    -->
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <c:choose>
-                <c:when test="${not empty sessionScope.USER}">
-                    <a class="navbar-brand" href="#">Dashboard</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Project_2/account">Accounts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">Debt List</a>
-                            </li>
-                            <!-- Add more navigation links for the admin dashboard as needed -->
-                        </ul>
-                    </div>
-                    <div class="rightbar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debit Note</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Styles are kept as you provided -->
+    <style>
+        /* CSS for dropdown menu and login button as provided */
+            <style>
+            /* CSS for dropdown menu */
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
 
-                        <li>
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                border-radius: 20px; /* Rounded corners like the login button */
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            .dropbtn {
+                background-color: #3053E8;
+                color: white;
+                padding: 16px;
+                font-size: 16px;
+                border: 1px solid #dddddd; /* Adding a border similar to the dropdown */
+                border-radius: 20px; /* Increasing border radius for rounded edges */
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase; /* Uppercase text */
+                letter-spacing: 1px; /* Spacing between letters */
+            }
+
+            .dropbtn:hover {
+                background-color: #2036B4;
+                border-color: #dddddd; /* Keeping the border color consistent on hover */
+            }
+
+            /* CSS for the login button */
+            .login-button {
+                background-color: #3053E8;
+                color: #ffffff;
+                padding: 10px 30px;
+                border: 2px solid #ffffff; /* White border */
+                border-radius: 20px; /* Rounded corners like the dropdown button */
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-transform: uppercase; /* Uppercase text */
+                letter-spacing: 1px; /* Spacing between letters */
+            }
+
+            .login-button:hover {
+                background-color: #2036B4;
+                border-color: #ffffff; /* White border on hover */
+            }
+
+        
+    </style>
+    
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="container">
+            <div class="menu-bg-wrap">
+                <div class="site-navigation">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                            <a href="index.html" class="logo m-0 float-start">Debit Note<span class="text-primary">.</span></a>
+                        </div>
+                        <div class="col-8 text-center">
+                            <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
+                                <li class="active"><a href="#">Home</a></li>
+                                <li><a href="blog.html">Blog</a></li>
+                                <li><a href="services.html">Services</a></li>
+                                <li><a href="about.html">About</a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-2 text-end">
+                            <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light"><span></span></a>
+                            <%
+                                if (session != null) {
+                                    Account user = (Account) session.getAttribute("USER");
+                                    Boolean isAdmin = (Boolean) session.getAttribute("Admin");
+                                    if (user != null) {
+                            %>
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownMenu2" data-bs-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    <c:out value="${sessionScope.USER.username}"/>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <c:choose>
-                                        <c:when test="${sessionScope.Admin}">
-                                            <!-- Dropdown cho Admin -->
-                                            <form action="/Project_2/account"><button class="dropdown-item" type="submit" name="userAction" value="logout">View Profile </button></form>
-                                            <form action="/Project_2/account"><button class="dropdown-item" type="submit" name="userAction" value="logout">View Account List</button></form>
-                                            <form action=""><button class="dropdown-item" type="submit" name="userAction" value="logout">View Debt List</button></form>
-                                            <form action="/Project_2/logout"method="get"><button class="dropdown-item" type="submit" name="userAction" value="logout">Log out</button></form>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <!-- Dropdown cho User bình thường -->
-                                            <form action="#"><button class="dropdown-item" type="submit" name="userAction" value="logout">View Profile</button></form>
-                                            <form action="#"><button class="dropdown-item" type="submit" name="userAction" value="logout">View Debt List</button></form>
-                                            <form action="/Project_2/logout"><button class="dropdown-item" type="submit" name="userAction" value="logout">Log out</button></form>
-
-                                        </c:otherwise>
-                                    </c:choose>
+                                <button class="dropbtn">Hello, <%= user.getUsername() %></button>
+                                <div class="dropdown-content">
+                                    <a href="changepassword.jsp">Change Password</a>
+                                    <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
+                                    <a href="../debtor">View Debtor List</a>
+                                    <% if (isAdmin != null && isAdmin) { %>
+                                        <a href="dashboard.jsp">Dashboard</a>
+                                    <% } %>
+                                    <a href="../logout">Logout</a>
                                 </div>
                             </div>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="d-flex justify-content-between align-items-center w-100 navbar-custom-container">
-                            <a class="navbar-brand navbar-custom-brand" href="/Project_2/home">Dashboard</a>
-                            <div class="login-container">
-                                <a href="/Project_2/login">Login</a>
-                            </div>
+                            <% 
+                                    } else { 
+                            %>
+                            <a href="../login">
+                                <button class="login-button d-flex align-items-center">
+                                    <span class="icon-login" style="font-size: 24px; margin-right: 8px;"></span>
+                                    <span style="font-weight: bold; font-size: 16px;">Login</span>
+                                </button>
+                            </a>
+                            <%
+                                    }
+                                }
+                            %>
                         </div>
-                    </c:otherwise>
-
-
-                </c:choose>
+                    </div>
+                </div>
             </div>
-        </nav>
-        <nav class="category">
-
-        </nav>
-        <script src="/Project_2/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-
+        </div>
+    </nav>
+    <script src="/ISP392_Vi_Vay_No_123/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

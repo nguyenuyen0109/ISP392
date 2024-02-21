@@ -35,7 +35,7 @@ public class DebtDAO {
                 + "description, "
                 + "debtType, "
                 + "amount, "
-                + "interest_rate_id,"
+                + "interestRate,"
                 + "debtor_id,"
                 + "debtor_account_id,"
                 + "values (?,?,?,?,?,?);"
@@ -43,8 +43,8 @@ public class DebtDAO {
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, debt.getDescription());
             ps.setBoolean(2, debt.isDebtType()); //true=ngta vay, false= mình nợ
-            ps.setDouble(3, debt.getAmount());
-            ps.setInt(4,  debt.getInterest_rate_id());
+            ps.setDouble(3, debt.getAmount()*debt.getInterestRate());
+            ps.setDouble(4, debt.getInterestRate());
             ps.setInt(5,debtorid);
             ps.setInt(6, accountid);
             n = ps.executeUpdate();

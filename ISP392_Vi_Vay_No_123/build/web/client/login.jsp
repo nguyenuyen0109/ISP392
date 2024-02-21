@@ -17,7 +17,7 @@
                 <div class="container">
                     <div class="signin-content">
                         <div class="signin-image">
-                            <figure><img src="./assets/boostrap/images/signin-image.jpg" alt="sing up image"></figure>
+                            <figure><img src="./assets/boostrap/images/signin-image.jpg" alt="sing up image" style ="margin-left: 150px"></figure>
                             <a href="register" class="signup-image-link">Create an account</a>
                             <a href="forgot" class="signup-image-link">Forgot password</a>
                         </div>
@@ -37,8 +37,8 @@
                                 <!--<div class="h-captcha" data-sitekey="de38ed28-e8a8-48a6-890f-640dd1bd2553"></div>-->
                                 <div class="captcha"> 
                                     <input type="text" name="captcha" placeholder="Enter captcha" required>
-                                    <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000; width: 60%">
-                                    <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 15%; margin-left: 10px">
+                                    <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000; width: 40%">
+                                    <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 10%; margin-left: 5 px">
                                 </div>
                                 
                                 <div class="form-group">

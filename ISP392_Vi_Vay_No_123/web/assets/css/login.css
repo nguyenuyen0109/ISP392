@@ -246,7 +246,10 @@ input[type=radio] {
 
 img {
   max-width: 100%;
-  height: auto; }
+  height: auto; 
+  margin-left: 30px;
+  
+}
 
 h2 {
   line-height: 1.66;
@@ -293,7 +296,8 @@ body {
 
 .signup-form, .signup-image, .signin-form, .signin-image {
   width: 80%;
-  overflow: hidden; }
+  overflow: hidden;
+    }
 
 .signup-image {
   margin: 0 55px; }
@@ -340,6 +344,7 @@ body {
   width: 100%; }
 
 .form-group {
+    width: 80%;
   position: relative;
   margin-bottom: 25px;
   overflow: hidden; }

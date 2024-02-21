@@ -1,0 +1,77 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 22, 2024, 1:44:02 AM
+    Author     : MINIMONIE
+*/
+
+body, h1, nav, ul, li, a, button {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+header {
+  background-color: #007bff; /* A vibrant blue background */
+  color: white;
+  padding: 10px 0;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2em; /* Slightly larger font for the logo text */
+  font-weight: bold;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav ul li {
+  padding: 0 15px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.login-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #0056b3; /* Slightly darker blue background for the button */
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #004494; /* Even darker blue for hover effect */
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+  }
+  nav ul {
+    padding-top: 20px;
+    flex-direction: column;
+  }
+  nav ul li {
+    padding: 5px 0;
+  }
+}
