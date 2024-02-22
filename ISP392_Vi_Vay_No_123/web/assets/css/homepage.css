@@ -11748,7 +11748,7 @@ fieldset:disabled .btn {
     transform: translateY(-50%);
     font-family: 'icomoon';
 }
-.site-nav .site-navigation .site-menu .has-children .dropdown {
+.site-nav .site-navigation .site-menu .has-children {
     visibility: hidden;
     opacity: 0;
     top: 100%;
@@ -13015,6 +13015,8 @@ textarea {
     transition: all 0.3s ease;
     text-transform: uppercase; /* Uppercase text */
     letter-spacing: 1px; /* Spacing between letters */
+    
+    margin-left: 1000px;
 }
 
 .login-button:hover {

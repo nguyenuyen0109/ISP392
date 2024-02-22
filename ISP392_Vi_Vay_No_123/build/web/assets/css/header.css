@@ -55,6 +55,7 @@ nav ul li a {
   color: white;
   font-weight: bold;
   cursor: pointer;
+  margin-left: 850px;
 }
 
 .login-button:hover {

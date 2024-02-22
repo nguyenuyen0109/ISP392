@@ -38,8 +38,9 @@
 
     </head>
     <body>
-       
+        <jsp:include page="/navigator/toast.jsp" />
         <jsp:include page="/navigator/header.jsp" />
+
         <div class="hero overlay">
             <img src="../assets/images/blob.svg" alt="" class="img-fluid blob">
             <div class="container">
