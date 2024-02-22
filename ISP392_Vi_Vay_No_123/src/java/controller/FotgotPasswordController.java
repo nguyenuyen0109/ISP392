@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 import utils.Captcha;
 import utils.Mail;
 import utils.Token;
@@ -40,9 +41,10 @@ public class FotgotPasswordController extends HttpServlet {
 
         //String captchaResponse = request.getParameter("h-captcha-response");
         AccountDAO accountDAO = new AccountDAO();
+        Account account = accountDAO.getAccountByEmail(email);
         String alert = "";
         // Check if the username or email already exists
-        if (accountDAO.getAccountByEmail(email) == null) {
+        if (account != null) {
 //            request.setAttribute("alert", "Invalid email!");
 //        } else {
 
@@ -54,7 +56,10 @@ public class FotgotPasswordController extends HttpServlet {
             request.setAttribute("alert", "An email was sent!");
             new Mail().sendEmail(email, "Reset password", "Click here to reset password: " + url);
 
+        } else {
+            request.setAttribute("alert", "Email not found");
         }
+        
         request.getRequestDispatcher("/client/forgotpassword.jsp").forward(request, response);
     }
 

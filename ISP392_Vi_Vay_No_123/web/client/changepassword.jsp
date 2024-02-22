@@ -19,7 +19,7 @@
         <jsp:include page="/navigator/header.jsp" />
         <div class="mainDiv">
             <div class="cardStyle">
-                <form action="/ISP_Vi_Vay_No_123/verify" method="post" name="signupForm" id="signupForm">
+                <form action="/ISP392_Vi_Vay_No_123/verify" method="post" name="signupForm" id="signupForm">
                     <img src="" id="signupLogo"/>
 
                     <h2 class="formTitle">
@@ -48,6 +48,8 @@
                         <img src="/ISP392_Vi_Vay_No_123/captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
                         <img src="/ISP392_Vi_Vay_No_123/assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
                     </div>
+                    <input type="hidden" value="/client/changepassword.jsp" name="uri">
+                  
                     <div class="buttonWrapper">
                         <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">
                             <span>Continue</span>

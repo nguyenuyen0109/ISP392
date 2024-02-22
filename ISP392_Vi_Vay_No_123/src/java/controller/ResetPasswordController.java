@@ -52,12 +52,13 @@ public class ResetPasswordController extends HttpServlet {
         Boolean valid = dao.validatePassword(password);
         String alert = "";
         String url = "";
+
         if (user == null) {
             alert = "Email not found";
         } else if (token.equals(checkToken)) {
             if (password.equals(retypePassword)) {
                 user.setPassword(new Hash().hashPassword(password));
-                new AccountDAO().updateAccount(user);
+                new AccountDAO().updatePassword(user.getUsername(), new Hash().hashPassword(password));
                 request.getSession().removeAttribute("reset_token_" + email);
                 alert = "Reset password success";
                 url = "client/login.jsp";
