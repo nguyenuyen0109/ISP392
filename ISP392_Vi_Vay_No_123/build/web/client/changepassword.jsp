@@ -15,15 +15,15 @@
         <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/changepass.css"/>
     </head>
     <body>
-        <jsp:include page="/navigator/toast.jsp" />
+      <jsp:include page="/navigator/toast.jsp" />
         <jsp:include page="/navigator/header.jsp" />
         <div class="mainDiv">
             <div class="cardStyle">
-                <form action="verify" method="post" name="signupForm" id="signupForm">
+                <form action="/ISP_Vi_Vay_No_123/verify" method="post" name="signupForm" id="signupForm">
                     <img src="" id="signupLogo"/>
 
                     <h2 class="formTitle">
-                        Login to your account
+                        Change Password
                     </h2>
                     <div class="inputDiv">
                         <label class="inputLabel" for="oldPassword">Old Password</label>

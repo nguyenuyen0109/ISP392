@@ -48,7 +48,8 @@ public class ResetPasswordController extends HttpServlet {
         String checkToken = (String) request.getSession().getAttribute("reset_token_" + email);
 
         Account user = new AccountDAO().getAccountByEmail(email);
-
+        AccountDAO dao = new AccountDAO();
+        Boolean valid = dao.validatePassword(password);
         String alert = "";
         String url = "";
         if (user == null) {

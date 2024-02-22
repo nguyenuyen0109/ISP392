@@ -27,7 +27,37 @@ public class AccountDAO {
     public AccountDAO() {
         db = DBContext.getInstance();
     }
+    
+    
+    private static final int MIN_LENGTH = 8;
+    private static final int MAX_LENGTH = 20;
+    private static final Pattern HAS_NUMBER = Pattern.compile("\\d");
+    private static final Pattern HAS_UPPER_CASE = Pattern.compile("[A-Z]");
+    private static final Pattern HAS_LOWER_CASE = Pattern.compile("[a-z]");
+    private static final Pattern HAS_SPECIAL_CHAR = Pattern.compile("[^a-zA-Z0-9]");
 
+    public boolean validatePassword(String password) {
+        if (password == null) {
+            return false;
+        }
+        int length = password.length();
+        if (length < MIN_LENGTH || length > MAX_LENGTH) {
+            return false;
+        }
+        if (!HAS_NUMBER.matcher(password).find()) {
+            return false;
+        }
+        if (!HAS_UPPER_CASE.matcher(password).find()) {
+            return false;
+        }
+        if (!HAS_LOWER_CASE.matcher(password).find()) {
+            return false;
+        }
+        if (!HAS_SPECIAL_CHAR.matcher(password).find()) {
+            return false;
+        }
+        return true;
+    }
     
     public Account findByUsernameAndPassword(String username, String password) {
         PreparedStatement pstmt = null;

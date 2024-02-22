@@ -11,6 +11,8 @@
 
     </head>
     <body>
+
+
         <jsp:include page="/navigator/toast.jsp" />
         <div class="main">
 
@@ -71,14 +73,21 @@
 
 
         </div>
-
+        <script src="../assets/js/validatepassword.js"></script>
+        <script>
+                                        // Thêm s? ki?n cho form khi submit
+                                        document.getElementById("register-form").onsubmit = function () {
+                                            return validatePassword();
+                                        };
+        </script>
+        
+        <!-- Add this in the head section of your HTML document -->
+        <script src="https://hcaptcha.com/1/api.js" async defer></script>
+        <script src="./assets/js/captcha.js"></script>
         <!-- JS -->
         <script src="./assets/boostrap/vendor/jquery/jquery.min.js"></script>
         <script src="./assets/boostrap/js/main.js"></script>
 
-        <!-- Add this in the head section of your HTML document -->
-        <script src="https://hcaptcha.com/1/api.js" async defer></script>
-        <script src="./assets/js/captcha.js"></script>
 
     </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
