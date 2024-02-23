@@ -502,6 +502,7 @@
                                     </button>
                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report <i class="fa fa-flag"></i></button>
                                 </td>
+                                
                             </tr>					
                         </c:forEach>
 
@@ -576,7 +577,7 @@
         </div>
         <!-- search -->
         <!-- Edit Modal HTML -->
-        <div id="addEmployeeModal" class="modal fade">
+<!--        <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form action="debt" method="post">
@@ -591,12 +592,12 @@
                             </div>
                             <div class="form-group">
                                 <label>Debt type</label>
-                                <!--<input type="text" class="form-control" required>-->
+                                <input type="text" class="form-control" required>
                                 <select class="form-control" name="debtType" required>
                                     <option value="0">Receivable</option>  
                                     <option value="1">Debt</option>  
-                                    <!--                                                    Debt: Mình n? ngkhac
-                                                                                        Receivable: ngkhac n? mình -->
+                                                                                        Debt: Mình n? ngkhac
+                                                                                        Receivable: ngkhac n? mình 
                                 </select>
                             </div>
                             <div class="form-group">
@@ -608,8 +609,8 @@
                                 <select class="form-control" name="interest_rate" required>
                                     <option value="1">10%</option>  
                                     <option value="2">Debt</option>  
-                                    <!--                                                    Debt: Mình n? ngkhac
-                                                                                        Receivable: ngkhac n? mình -->
+                                                                                        Debt: Mình n? ngkhac
+                                                                                        Receivable: ngkhac n? mình 
                                 </select>
                             </div>					
                         </div>
@@ -619,8 +620,8 @@
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
+            </div>-->
+        <!--</div>-->
         <!-- Pagination -->
         <jsp:include page="../client/pagination.jsp"></jsp:include>
 
@@ -643,7 +644,27 @@
                 });
             });
         </script>
+ <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                function calculateTotal() {
+                    var amount = document.querySelector('[name="amount"]').value;
+                    var interest = document.querySelector('[name="interest"]').value;
+                    var feeRate = 0.01; // Phí 1%
+                    var due = document.querySelector('[name="due"]').value;
+                    var x = - amount;
+                    // Chuy?n ??i lãi su?t t? ph?n tr?m sang d?ng s? th?p phân và tính t?ng ti?n
+                    var total = (Number(amount) * feeRate) + (Number(amount) * (1 + (Number(interest) / 100) * (Number(due) / 12)));
 
+                    // C?p nh?t giá tr? vào tr??ng totalAmount
+                    document.getElementById('totalAmount').value = total.toFixed(2);
+                }
+
+                // L?ng nghe s? ki?n thay ??i trên các tr??ng input và g?i hàm calculateTotal
+                document.querySelector('[name="amount"]').addEventListener('input', calculateTotal);
+                document.querySelector('[name="interest"]').addEventListener('input', calculateTotal);
+                document.querySelector('[name="due"]').addEventListener('input', calculateTotal);
+            });
+        </script>
 
 
         <!-- View Debt Details Modal -->
@@ -681,7 +702,57 @@
                 </div>
             </div>
         </div>
-
+<div id="addEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="debt" method="post">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Add New Debt</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Debt type</label>
+                                <select class="form-control" name="debtType" required>
+                                    <option value="false">Receivable</option>  
+                                    <option value="true">Debt</option>  
+                                    <!--                                                    Debt: Mình n? ngkhac = true
+                                                                                        Receivable: ngkhac n? mình = false -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control" >
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" class="form-control" name="amount" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Interest Rate (%/year)</label>
+                                <input type="number" class="form-control" name="interest" required>
+                            </div>
+                            <div>
+                                <label>Due(month)</label>
+                                <input type="number" class="form-control" name="due" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Total Amount</label>
+                                <input type="double" class="form-control" id="totalAmount" readonly>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input name="submit" type="submit" class="btn btn-success" value="Add">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     </body>
 </html>
