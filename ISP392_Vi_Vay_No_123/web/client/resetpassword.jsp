@@ -18,11 +18,11 @@
         <jsp:include page="/navigator/toast.jsp" />
         <div class="mainDiv">
             <div class="cardStyle">
-                <form action="verify" method="post" name="signupForm" id="signupForm">
+                <form action="./reset-password" method="post" name="signupForm" id="signupForm">
                     <img src="" id="signupLogo"/>
 
                     <h2 class="formTitle">
-                        Login to your account
+                        Change new password
                     </h2>
 
                     <div class="inputDiv">
@@ -38,13 +38,15 @@
                         <label class="inputLabel">Captcha</label>
                         <input type="text" id="captcha" name="captcha" placeholder="Enter captcha" required>
                     </div>
+                    <input type="hidden" value="${param["e"]}" name="email">
+                    <input type="hidden" value="${param["t"]}" name="token">
 
                     <div class="inputCaptcha"> 
-                        <img src="/ISP392_Vi_Vay_No_123/captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
-                        <img src="/ISP392_Vi_Vay_No_123/assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
+                        <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
+                        <img src="assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
                     </div>
                     <div class="buttonWrapper">
-                        <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">
+                        <button type="submit" id="submitButton"  class="submitButton pure-button pure-button-primary">
                             <span>Continue</span>
                         </button>
                     </div>

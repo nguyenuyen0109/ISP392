@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 import model.Account;
 import utils.Captcha;
+import utils.Hash;
 
 /**
  *
@@ -52,20 +53,12 @@ public class ChangePasswordController extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         // Assuming 'accountId' is stored in session, retrieve it.
         Integer accountId = (Integer) session.getAttribute("account_id");
+//        accountId = 
 
         if (accountId == null) {
             // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
@@ -87,29 +80,30 @@ public class ChangePasswordController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        String newPassword = request.getParameter("password");
 //        String confirmPassword = request.getParameter("confirmPassword");
-        int id = Integer.parseInt(request.getParameter("id"));
+        if (request.getSession().getAttribute("USER") == null) {
+            response.sendRedirect("login");
+        }
         String oldPassword = request.getParameter("oldPassword");
         String newpassword = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
         String capcha = request.getParameter("capcha");
         HttpSession session = request.getSession();
         String generatedCapcha = (String) session.getAttribute("CAPCHA");
-        if (generatedCapcha != null && generatedCapcha.equals(capcha)) {
-            if (newpassword != null && newpassword.trim().equals(confirmPassword.trim())) {
-                String username = (String) session.getAttribute("username");
-                AccountDAO accountDAO = new AccountDAO();
-                if (accountDAO.updatePassword(username, newpassword)) {
-                    response.sendRedirect("changepassword.jsp");
-                } else {
-                    request.setAttribute("alert", "Falied to change password.");
-                    request.getRequestDispatcher("changepassword.jsp").forward(request, response);
-                }
-            } else {
-                request.setAttribute("alert", "Passwords do not match.");
-                request.getRequestDispatcher("changepassword.jsp").forward(request, response);
-            }
-        }
 
+        if (newpassword != null && newpassword.trim().equals(confirmPassword.trim())) {
+            String username = (String) session.getAttribute("username");
+            AccountDAO accountDAO = new AccountDAO();
+            if (accountDAO.updatePassword(username, new Hash().hashPassword(newpassword))) {
+                request.setAttribute("alert", "Change password successfully!");
+                request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
+            } else {
+                request.setAttribute("alert", "Falied to change password.");
+                request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
+            }
+        } else {
+            request.setAttribute("alert", "Passwords do not match.");
+            request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
+        }
     }
 
     /**
