@@ -13004,23 +13004,5 @@ textarea {
     color: #306EE8;
 }
 
-/* CSS for the login button */
-.login-button {
-    background-color: #3053E8;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: 2px solid #ffffff; /* White border */
-    border-radius: 20px; /* Rounded corners like the dropdown button */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase; /* Uppercase text */
-    letter-spacing: 1px; /* Spacing between letters */
-    
-    margin-left: 1000px;
-}
 
-.login-button:hover {
-    background-color: #2036B4;
-    border-color: #ffffff; /* White border on hover */
-}
 

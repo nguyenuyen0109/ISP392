@@ -58,24 +58,6 @@
                 border-color: #dddddd; /* Keeping the border color consistent on hover */
             }
 
-            /* CSS for the login button */
-            /*            .login-button {
-                            background-color: #3053E8;
-                            color: #ffffff;
-                            padding: 10px 30px;
-                            border: 2px solid #ffffff;  White border 
-                            border-radius: 20px;  Rounded corners like the dropdown button 
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            text-transform: uppercase;  Uppercase text 
-                            letter-spacing: 1px;  Spacing between letters 
-                        }
-            
-                        .login-button:hover {
-                            background-color: #2036B4;
-                            border-color: #ffffff;  White border on hover 
-                        }*/
-
 
         </style>
 
@@ -88,14 +70,15 @@
                     <div class="col-2">
                         <a href="#" class="logo m-0 float-start">Debit Note<span class="text-primary"></span></a>
                     </div>
-                    <div class="col-2 text-end">
-                        <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light"><span></span></a>
-                                <%
-                                    if (session != null) {
-                                        Account user = (Account) session.getAttribute("USER");
-                                        Boolean isAdmin = (Boolean) session.getAttribute("Admin");
-                                        if (user != null) {
-                                %>
+                    <!--<div class="col-2 text-end">-->
+                    <!--                        <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light"><span></span></a>-->
+                    <%
+                        if (session != null) {
+                            Account user = (Account) session.getAttribute("USER");
+                            Boolean isAdmin = (Boolean) session.getAttribute("Admin");
+                            if (user != null) {
+                    %>
+                        
                         <div class="dropdown">
                             <button class="dropbtn">Hello, <%= user.getUsername() %></button>
                             <div class="dropdown-content">
@@ -107,30 +90,25 @@
                                 <% } %>
                                 <a href="/ISP392_Vi_Vay_No_123/logout">Logout</a>
                             </div>
-                        </div>
-                        <% 
-                                } else { 
-                        %>
-                        <!--                        <a href="/ISP392_Vi_Vay_No_123/login">
-                                                    <button class="login-button d-flex align-items-center">
-                                                        <span class="icon-login" style="font-size: 24px; margin-right: 8px;"></span>
-                                                        <span style="font-weight: bold; font-size: 16px;">Login</span>
-                                                    </button>
-                                                </a>-->
-                        <a href="/ISP392_Vi_Vay_No_123/login">
-                            <button class="login-button d-flex align-items-center">
-                                <span class="icon-login" style="font-size: 24px; margin-right: 8px;"></span>
-                                <span style="font-weight: bold; font-size: 16px;">Login</span>
-                            </button>
-                        </a>
-                        <%
-                                }
+                        </div>      
+                    
+                    <% 
+                            } else { 
+                    %>
+                    <a href="/ISP392_Vi_Vay_No_123/login">
+                        <button class="login-button d-flex align-items-center">
+                            <span class="icon-login" style="font-size: 24px; margin-right: 8px;"></span>
+                            <span style="font-weight: bold; font-size: 16px;">Login</span>
+                        </button>
+                    </a>
+                    <%
                             }
-                        %>
-                    </div>
+                        }
+                    %>
                 </div>
-
             </div>
-        </header>
-    </body>
+
+        </div>
+    </header>
+</body>
 </html>

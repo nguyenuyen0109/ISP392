@@ -485,27 +485,96 @@
                             </tr>
                         </thead>
                         <c:forEach items="${debtList}" var="debt">
-                            <tbody>
-                                <tr>						
-                                    <td>${debt.id}</td>
-                                    <td>${debt.description}</td>
-                                    <td>${debt.debtType == false ? 'Debt' : 'Receivable'}</td>
-                                    <td>${debt.amount}</td>
-                                    <td>${debt.createAt}</td>                                                                                             
-                                    <td>
-                                        <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                        <!--<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
-                                    </td>
-                                </tr>					
-                            </tbody>
+                            <tr>                        
+                                <td>${debt.id}</td>
+                                <td>${debt.description}</td>
+                                <td>${debt.debtType ? 'Receivable' : 'Debt'}</td>
+                                <td>${debt.amount}</td>
+                                <td><fmt:formatDate value="${debt.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>                                                                                             
+                                <td>
+                                    <button class="btn btn-info view-details-btn" 
+                                            data-id="${debt.id}" 
+                                            data-description="${debt.description}" 
+                                            data-amount="${debt.amount}" 
+                                            data-debttype="${debt.debtType ? 'Receivable' : 'Debt'}" 
+                                            data-createat="<fmt:formatDate value="${debt.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />">
+                                        View Details
+                                    </button>
+                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report <i class="fa fa-flag"></i></button>
+                                </td>
+                            </tr>					
                         </c:forEach>
+
                     </table>
+
+
+                    <!-- Report Modal -->
+                    <script>
+                        $(document).ready(function () {
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+
+                                    reader.onload = function (e) {
+                                        $('#previewImage').attr('src', e.target.result);
+                                        $('#previewImage').show();
+                                    }
+
+                                    reader.readAsDataURL(input.files[0]); 
+                                }
+                            }
+
+                            $("#imageUpload").change(function () {
+                                readURL(this);
+                            });
+                        });
+                    </script>
+                    <script>
+                        $(document).ready(function () {
+                            $('.btn-report').click(function () {
+                                var debtId = $(this).attr('data-id'); 
+                                $('#debtId').val(debtId); 
+                                $('#reportModal').modal('show'); 
+                            });
+                        });
+                    </script>
+                    <!-- Report Modal -->
+                    <div id="reportModal" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="report" method="post" enctype="multipart/form-data">
+                                    <div class="modal-header">                        
+                                        <h4 class="modal-title">Report Issue</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    </div>
+                                    <div class="modal-body">    
+                                        <input type="hidden" name="debtId" id="debtId" value="">
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea class="form-control" name="description" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="imageUpload">Choose an image:</label>
+                                            <input type="file" id="imageUpload" name="img" class="form-control-file" accept="image/*">
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <img id="previewImage" src="#" alt="Image preview" class="img-fluid" style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;"/>
+                                        </div>             
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-danger">Submit Report</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>        
         </div>
         <!-- search -->
-
         <!-- Edit Modal HTML -->
         <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
@@ -553,7 +622,67 @@
             </div>
         </div>
         <!-- Pagination -->
-         <jsp:include page="../client/pagination.jsp"></jsp:include>
+        <jsp:include page="../client/pagination.jsp"></jsp:include>
+
+        <script>
+            $(document).ready(function () {
+                $('.view-details-btn').click(function () {
+                    var description = $(this).data('description');
+                    var amount = $(this).data('amount');
+                    var debtType = $(this).data('debttype');
+                    var createAt = $(this).data('createat');
+
+                    // C?p nh?t modal
+                    $('#viewDebtDetailModal').find('.modal-body .description').text(description);
+                    $('#viewDebtDetailModal').find('.modal-body .amount').text(amount);
+                    $('#viewDebtDetailModal').find('.modal-body .debt-type').text(debtType);
+                    $('#viewDebtDetailModal').find('.modal-body .create-at').text(createAt);
+
+                    // Hi?n th? modal
+                    $('#viewDebtDetailModal').modal('show');
+                });
+            });
+        </script>
+
+
+
+        <!-- View Debt Details Modal -->
+        <div id="viewDebtDetailModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">                        
+                        <h4 class="modal-title">Debt Details</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">                    
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <p class="form-control-static description"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount:</label>
+                            <p class="form-control-static amount"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Debt Type:</label>
+                            <p class="form-control-static debt-type"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Create At:</label>
+                            <p class="form-control-static create-at"></p>
+                        </div>                  
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
     </body>
+</html>
 </html>
