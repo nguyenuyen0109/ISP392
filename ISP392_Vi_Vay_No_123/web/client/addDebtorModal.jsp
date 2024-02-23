@@ -22,7 +22,7 @@
                 return false;
             }
             
-            var nameRegex = /^[a-zA-Z\s]+$/;
+            var nameRegex = /^[a-zA-Z0-9\s]+$/;
             if (!nameRegex.test(address)) {
                 alert("Address must contain only letters and spaces.");
                 return false;
