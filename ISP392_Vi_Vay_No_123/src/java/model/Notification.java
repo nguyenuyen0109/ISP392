@@ -16,6 +16,9 @@ public class Notification {
   private String status;
   private String description;
   private int debtdetails_id;
+  private int debtor_id;
+  private int account_id;
+  private Timestamp deleteAt;
 
     public Notification() {
     }
@@ -26,6 +29,17 @@ public class Notification {
         this.status = status;
         this.description = description;
         this.debtdetails_id = debtdetails_id;
+    }
+
+    public Notification(int id, Timestamp notificationDate, String status, String description, int debtdetails_id, int debtor_id, int account_id, Timestamp deleteAt) {
+        this.id = id;
+        this.notificationDate = notificationDate;
+        this.status = status;
+        this.description = description;
+        this.debtdetails_id = debtdetails_id;
+        this.debtor_id = debtor_id;
+        this.account_id = account_id;
+        this.deleteAt = deleteAt;
     }
 
     public int getId() {
@@ -68,10 +82,36 @@ public class Notification {
         this.debtdetails_id = debtdetails_id;
     }
 
+    public int getDebtor_id() {
+        return debtor_id;
+    }
+
+    public void setDebtor_id(int debtor_id) {
+        this.debtor_id = debtor_id;
+    }
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
+    }
+
+    public Timestamp getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(Timestamp deleteAt) {
+        this.deleteAt = deleteAt;
+    }
+
     @Override
     public String toString() {
-        return "Notification{" + "id=" + id + ", notificationDate=" + notificationDate + ", status=" + status + ", description=" + description + ", debtdetails_id=" + debtdetails_id + '}';
+        return "Notification{" + "id=" + id + ", notificationDate=" + notificationDate + ", status=" + status + ", description=" + description + ", debtdetails_id=" + debtdetails_id + ", debtor_id=" + debtor_id + ", account_id=" + account_id + ", deleteAt=" + deleteAt + '}';
     }
+
+    
   
   
 }

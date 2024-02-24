@@ -5,6 +5,7 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  *
@@ -29,6 +30,10 @@ public class Account {
     private boolean gender; // Assuming true for one gender and false for another
     private int role_id; // Foreign key to Role
     private int salt_id;
+    private Timestamp deleteAt;
+    private String token;
+    private java.util.Date expireTime;
+    
     public Account() {
     }
 
@@ -49,6 +54,27 @@ public class Account {
         this.role_id = role_id;
         this.salt_id = salt_id;
     }
+
+    public Account(int id, String username, String password, String name, String mobileNumber, String emailAddress, String address, boolean isActive, Timestamp updateAt, Timestamp createAt, String avatarUrl, boolean gender, int role_id, int salt_id, Timestamp deleteAt, String token, Date expireTime) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.mobileNumber = mobileNumber;
+        this.emailAddress = emailAddress;
+        this.address = address;
+        this.isActive = isActive;
+        this.updateAt = updateAt;
+        this.createAt = createAt;
+        this.avatarUrl = avatarUrl;
+        this.gender = gender;
+        this.role_id = role_id;
+        this.salt_id = salt_id;
+        this.deleteAt = deleteAt;
+        this.token = token;
+        this.expireTime = expireTime;
+    }
+    
 
     public int getId() {
         return id;
@@ -160,6 +186,35 @@ public class Account {
 
     public void setSalt_id(int salt_id) {
         this.salt_id = salt_id;
+    }
+
+    public Timestamp getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(Timestamp deleteAt) {
+        this.deleteAt = deleteAt;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Date getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Date expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", mobileNumber=" + mobileNumber + ", emailAddress=" + emailAddress + ", address=" + address + ", isActive=" + isActive + ", updateAt=" + updateAt + ", createAt=" + createAt + ", avatarUrl=" + avatarUrl + ", gender=" + gender + ", role_id=" + role_id + ", salt_id=" + salt_id + ", deleteAt=" + deleteAt + ", token=" + token + ", expireTime=" + expireTime + '}';
     }
 
     

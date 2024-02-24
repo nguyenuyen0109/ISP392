@@ -23,7 +23,7 @@ public class Debtor {
     private Timestamp updatedAt;
     private int account_id;
     private int creditor_account_id;
-
+    private Timestamp deletedAt;
     public Debtor() {
     }
      
@@ -67,6 +67,20 @@ public class Debtor {
         this.email = email;
         this.totalDebt = totalDebt;
         this.account_id = account_id;
+    }
+
+    public Debtor(int id, String name, String address, String phone, String email, double totalDebt, Timestamp createdAt, Timestamp updatedAt, int account_id, int creditor_account_id, Timestamp deletedAt) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.totalDebt = totalDebt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.account_id = account_id;
+        this.creditor_account_id = creditor_account_id;
+        this.deletedAt = deletedAt;
     }
 
 
@@ -151,9 +165,19 @@ public class Debtor {
         this.creditor_account_id = creditor_account_id;
     }
 
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public String toString() {
-        return "Debtor{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", creditor_account_id=" + creditor_account_id + '}';
+        return "Debtor{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", creditor_account_id=" + creditor_account_id + ", deletedAt=" + deletedAt + '}';
     }
+
+    
 
 }

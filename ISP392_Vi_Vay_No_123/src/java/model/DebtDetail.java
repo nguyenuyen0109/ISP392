@@ -23,7 +23,7 @@ public class DebtDetail {
     private double interestRate;
     private double due;
     private boolean status; 
-            
+    private Timestamp deletedAt;        
     public DebtDetail() {
     }
 
@@ -86,9 +86,7 @@ public class DebtDetail {
         this.due = due;
     }
 
-    public DebtDetail(String description, boolean debtType, double amount, Integer debtorId, Integer accountId, int interest_rate) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   
 
     public DebtDetail(String description, boolean debtType, double amount, int debtor_IdDebtor, int idAccount, double interestRate) {
         this.description = description;
@@ -196,9 +194,28 @@ public class DebtDetail {
         this.status = status;
     }
 
+    public String getQr() {
+        return qr;
+    }
+
+    public void setQr(String qr) {
+        this.qr = qr;
+    }
+
+    public Timestamp getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
     @Override
     public String toString() {
-        return "DebtDetail{" + "id=" + id + ", description=" + description + ", debtType=" + debtType + ", amount=" + amount + ", image=" + image + ", createAt=" + createAt + ", debtor_IdDebtor=" + debtor_IdDebtor + ", idAccount=" + idAccount + ", qr=" + qr + ", interestRate=" + interestRate + ", due=" + due + ", status=" + status + '}';
+        return "DebtDetail{" + "id=" + id + ", description=" + description + ", debtType=" + debtType + ", amount=" + amount + ", image=" + image + ", createAt=" + createAt + ", debtor_IdDebtor=" + debtor_IdDebtor + ", idAccount=" + idAccount + ", qr=" + qr + ", interestRate=" + interestRate + ", due=" + due + ", status=" + status + ", deletedAt=" + deletedAt + '}';
     }
+
+    
+
  
 }

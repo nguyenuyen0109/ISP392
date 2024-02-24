@@ -8,6 +8,6 @@ package model;
  *
  * @author MINIMONIE
  */
-public class History_Payment {
+public class Feedback {
     
 }
