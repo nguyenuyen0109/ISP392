@@ -23,7 +23,8 @@ public class DebtDetail {
     private double interestRate;
     private double due;
     private boolean status; 
-    private Timestamp deletedAt;        
+    private Timestamp deletedAt;  
+    private boolean isDeleted;
     public DebtDetail() {
     }
 
@@ -210,11 +211,37 @@ public class DebtDetail {
         this.deletedAt = deletedAt;
     }
 
-    @Override
-    public String toString() {
-        return "DebtDetail{" + "id=" + id + ", description=" + description + ", debtType=" + debtType + ", amount=" + amount + ", image=" + image + ", createAt=" + createAt + ", debtor_IdDebtor=" + debtor_IdDebtor + ", idAccount=" + idAccount + ", qr=" + qr + ", interestRate=" + interestRate + ", due=" + due + ", status=" + status + ", deletedAt=" + deletedAt + '}';
+    public DebtDetail(int id, String description, boolean debtType, double amount, String image, Timestamp createAt, int debtor_IdDebtor, int idAccount, String qr, double interestRate, double due, boolean status, Timestamp deletedAt, boolean isDeleted) {
+        this.id = id;
+        this.description = description;
+        this.debtType = debtType;
+        this.amount = amount;
+        this.image = image;
+        this.createAt = createAt;
+        this.debtor_IdDebtor = debtor_IdDebtor;
+        this.idAccount = idAccount;
+        this.qr = qr;
+        this.interestRate = interestRate;
+        this.due = due;
+        this.status = status;
+        this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
     }
 
+    @Override
+    public String toString() {
+        return "DebtDetail{" + "id=" + id + ", description=" + description + ", debtType=" + debtType + ", amount=" + amount + ", image=" + image + ", createAt=" + createAt + ", debtor_IdDebtor=" + debtor_IdDebtor + ", idAccount=" + idAccount + ", qr=" + qr + ", interestRate=" + interestRate + ", due=" + due + ", status=" + status + ", deletedAt=" + deletedAt + ", isDeleted=" + isDeleted + '}';
+    }
+
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    
     
 
  

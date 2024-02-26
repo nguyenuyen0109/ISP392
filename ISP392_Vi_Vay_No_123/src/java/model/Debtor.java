@@ -24,6 +24,7 @@ public class Debtor {
     private int account_id;
     private int creditor_account_id;
     private Timestamp deletedAt;
+    private boolean isDeleted;
     public Debtor() {
     }
      
@@ -173,10 +174,20 @@ public class Debtor {
         this.deletedAt = deletedAt;
     }
 
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public String toString() {
-        return "Debtor{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", creditor_account_id=" + creditor_account_id + ", deletedAt=" + deletedAt + '}';
+        return "Debtor{" + "id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email + ", totalDebt=" + totalDebt + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", account_id=" + account_id + ", creditor_account_id=" + creditor_account_id + ", deletedAt=" + deletedAt + ", isDeleted=" + isDeleted + '}';
     }
+
+    
 
     
 

@@ -19,6 +19,7 @@ public class Notification {
   private int debtor_id;
   private int account_id;
   private Timestamp deleteAt;
+  private boolean isDeleted;
 
     public Notification() {
     }
@@ -40,6 +41,26 @@ public class Notification {
         this.debtor_id = debtor_id;
         this.account_id = account_id;
         this.deleteAt = deleteAt;
+    }
+
+    public Notification(int id, Timestamp notificationDate, String status, String description, int debtdetails_id, int debtor_id, int account_id, Timestamp deleteAt, boolean isDeleted) {
+        this.id = id;
+        this.notificationDate = notificationDate;
+        this.status = status;
+        this.description = description;
+        this.debtdetails_id = debtdetails_id;
+        this.debtor_id = debtor_id;
+        this.account_id = account_id;
+        this.deleteAt = deleteAt;
+        this.isDeleted = isDeleted;
+    }
+
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public int getId() {
@@ -108,8 +129,10 @@ public class Notification {
 
     @Override
     public String toString() {
-        return "Notification{" + "id=" + id + ", notificationDate=" + notificationDate + ", status=" + status + ", description=" + description + ", debtdetails_id=" + debtdetails_id + ", debtor_id=" + debtor_id + ", account_id=" + account_id + ", deleteAt=" + deleteAt + '}';
+        return "Notification{" + "id=" + id + ", notificationDate=" + notificationDate + ", status=" + status + ", description=" + description + ", debtdetails_id=" + debtdetails_id + ", debtor_id=" + debtor_id + ", account_id=" + account_id + ", deleteAt=" + deleteAt + ", isDeleted=" + isDeleted + '}';
     }
+
+    
 
     
   

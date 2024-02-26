@@ -15,6 +15,7 @@ public class Role {
     private Timestamp updateAt;
     private Timestamp createAt;
     private Timestamp deleteAt;
+    private boolean isDeleted;
 
     public Role() {
     }
@@ -58,9 +59,27 @@ public class Role {
         this.deleteAt = deleteAt;
     }
 
+    public Role(String name, Timestamp updateAt, Timestamp createAt, Timestamp deleteAt, boolean isDeleted) {
+        this.name = name;
+        this.updateAt = updateAt;
+        this.createAt = createAt;
+        this.deleteAt = deleteAt;
+        this.isDeleted = isDeleted;
+    }
+
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public String toString() {
-        return "Role{" + "name=" + name + ", updateAt=" + updateAt + ", createAt=" + createAt + ", deleteAt=" + deleteAt + '}';
+        return "Role{" + "name=" + name + ", updateAt=" + updateAt + ", createAt=" + createAt + ", deleteAt=" + deleteAt + ", isDeleted=" + isDeleted + '}';
     }
+
+    
     
 }

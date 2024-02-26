@@ -28,11 +28,11 @@ public class RegisterController extends HttpServlet {
         String password = request.getParameter("pass");
         String rePassword = request.getParameter("re_pass");
         // Perform any validation checks here
-        if (!password.equals(rePassword)) {
-            request.setAttribute("alert", "Passwords do not match. Please try again.");
-            request.getRequestDispatcher("/client/register.jsp").forward(request, response);
-            return;
-        }
+//        if (!password.equals(rePassword)) {
+//            request.setAttribute("alert", "Passwords do not match. Please try again.");
+//            request.getRequestDispatcher("/client/register.jsp").forward(request, response);
+//            return;
+//        }
 
         // You can add more validation logic here
         // Create an instance of AccountDAO

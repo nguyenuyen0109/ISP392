@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Add New Debtor</title>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/validate.js"></script>
     <script>
         function validateForm2() {
             var name = document.forms["debtorForm"]["name"].value.trim();

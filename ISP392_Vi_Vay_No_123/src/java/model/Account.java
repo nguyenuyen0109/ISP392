@@ -31,6 +31,7 @@ public class Account {
     private int role_id; // Foreign key to Role
     private int salt_id;
     private Timestamp deleteAt;
+    private boolean isDeleted;
     private String token;
     private java.util.Date expireTime;
     
@@ -71,6 +72,27 @@ public class Account {
         this.role_id = role_id;
         this.salt_id = salt_id;
         this.deleteAt = deleteAt;
+        this.token = token;
+        this.expireTime = expireTime;
+    }
+
+    public Account(int id, String username, String password, String name, String mobileNumber, String emailAddress, String address, boolean isActive, Timestamp updateAt, Timestamp createAt, String avatarUrl, boolean gender, int role_id, int salt_id, Timestamp deleteAt, boolean isDeleted, String token, Date expireTime) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.mobileNumber = mobileNumber;
+        this.emailAddress = emailAddress;
+        this.address = address;
+        this.isActive = isActive;
+        this.updateAt = updateAt;
+        this.createAt = createAt;
+        this.avatarUrl = avatarUrl;
+        this.gender = gender;
+        this.role_id = role_id;
+        this.salt_id = salt_id;
+        this.deleteAt = deleteAt;
+        this.isDeleted = isDeleted;
         this.token = token;
         this.expireTime = expireTime;
     }
@@ -212,10 +234,20 @@ public class Account {
         this.expireTime = expireTime;
     }
 
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+
     @Override
     public String toString() {
-        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", mobileNumber=" + mobileNumber + ", emailAddress=" + emailAddress + ", address=" + address + ", isActive=" + isActive + ", updateAt=" + updateAt + ", createAt=" + createAt + ", avatarUrl=" + avatarUrl + ", gender=" + gender + ", role_id=" + role_id + ", salt_id=" + salt_id + ", deleteAt=" + deleteAt + ", token=" + token + ", expireTime=" + expireTime + '}';
+        return "Account{" + "id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", mobileNumber=" + mobileNumber + ", emailAddress=" + emailAddress + ", address=" + address + ", isActive=" + isActive + ", updateAt=" + updateAt + ", createAt=" + createAt + ", avatarUrl=" + avatarUrl + ", gender=" + gender + ", role_id=" + role_id + ", salt_id=" + salt_id + ", deleteAt=" + deleteAt + ", isDeleted=" + isDeleted + ", token=" + token + ", expireTime=" + expireTime + '}';
     }
+    
 
     
     
