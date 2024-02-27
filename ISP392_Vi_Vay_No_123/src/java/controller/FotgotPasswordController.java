@@ -38,31 +38,35 @@ public class FotgotPasswordController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String email = request.getParameter("email");
+        try {
+            String email = request.getParameter("email");
 
-        //String captchaResponse = request.getParameter("h-captcha-response");
-        AccountDAO accountDAO = new AccountDAO();
-        Account account = accountDAO.getAccountByEmail(email);
-        String alert = "";
-        String url1 = "";
-        // Check if the username or email already exists
-        if (account != null) {
-            String token = new Token().generateRandomToken(18);
-            String url = "http://" + request.getServerName() + ":" + request.getServerPort()
-                    + request.getContextPath() + "/reset-password?t=" + token + "&e=" + email;
+            //String captchaResponse = request.getParameter("h-captcha-response");
+            AccountDAO accountDAO = new AccountDAO();
+            Account account = accountDAO.getAccountByEmail(email);
+            String alert = "";
+            String url1 = "";
+            // Check if the username or email already exists
+            if (account != null) {
+                String token = new Token().generateRandomToken(18);
+                String url = "http://" + request.getServerName() + ":" + request.getServerPort()
+                        + request.getContextPath() + "/reset-password?t=" + token + "&e=" + email;
 
-            request.getSession().setAttribute("reset_token_" + email, token);
-            
-            new Mail().sendEmail(email, "Reset password", "Click here to reset password: " + url);
-            url1 = "/client/forgotpassword.jsp";
-            alert = "An email was sent!";
-        } else {
-             url1 = "/client/forgotpassword.jsp";
-             alert = "Email is invalid";
-            
+                accountDAO.insertToken(account.getId(), token);
+                new Mail().sendEmail(email, "Reset password", "Click here to reset password: " + url);
+                url1 = "/client/forgotpassword.jsp";
+                alert = "An email was sent!";
+            } else {
+                url1 = "/client/forgotpassword.jsp";
+                alert = "Email is invalid";
+
+            }
+            request.setAttribute("alert", alert);
+            request.getRequestDispatcher(url1).forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        request.setAttribute("alert", alert);
-        request.getRequestDispatcher(url1).forward(request, response);
+
     }
 
 }
