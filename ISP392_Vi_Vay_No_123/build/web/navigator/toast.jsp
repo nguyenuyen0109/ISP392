@@ -24,11 +24,11 @@
         if (alertValue && alertValue.trim() !== '') {
             // Hi?n th? toast n?u có giá tr? alert
             var toastEl = document.querySelector('.toast');
-            var toast = new bootstrap.Toast(toastEl, {delay: 1000000}); // ?i?u ch?nh th?i gian hi?n th? tùy ý
+            var toast = new bootstrap.Toast(toastEl, {delay: 7000}); // ?i?u ch?nh th?i gian hi?n th? tùy ý
             toast.show();
             setTimeout(function () {
                 toast.hide();
-            }, 1000000); // ?i?u ch?nh th?i gian hi?n th? tùy ý
+            }, 7000); // ?i?u ch?nh th?i gian hi?n th? tùy ý
         }
     });
 </script>

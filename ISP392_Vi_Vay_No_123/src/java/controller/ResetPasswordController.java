@@ -56,16 +56,12 @@ public class ResetPasswordController extends HttpServlet {
         if (user == null) {
             alert = "Email not found";
         } else if (token.equals(checkToken)) {
-            if (password.equals(retypePassword)) {
                 user.setPassword(new Hash().hashPassword(password));
                 new AccountDAO().updatePassword(user.getUsername(), new Hash().hashPassword(password));
                 request.getSession().removeAttribute("reset_token_" + email);
                 alert = "Reset password success";
                 url = "client/login.jsp";
-            } else {
-                alert = "2 password not match";
-                url = "client/resetpassword.jsp";
-            }
+            
         } else {
             alert = "Invalid token!";
             url = "client/resetpassword.jsp";

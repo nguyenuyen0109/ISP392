@@ -127,3 +127,14 @@ button[disabled] {
 .captcha img {
     margin-top: 24px;
 }
+
+.is-valid {
+    border-color: #28a745;
+}
+.is-invalid {
+    border-color: #dc3545;
+}
+.validation-feedback {
+    font-size: 80%;
+    color: #dc3545;
+}

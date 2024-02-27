@@ -40,18 +40,12 @@
                                     <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000; width: 40%">
                                     <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 10%; margin-left: 5 px">
                                 </div>
-                                
-                                <div class="form-group">
-                                    <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                                    <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
-                                </div>
 
                                 <div class="form-group form-button">
                                     <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
                                 </div>
 
                                 <input type="hidden" name="uri" value="/client/login.jsp">
-
                             </form>
                             
                         </div>

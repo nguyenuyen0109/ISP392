@@ -66,10 +66,6 @@
 
                             </form>
                         </div>
-                        <div class="signup-image">
-                            <figure><img src="./assets/boostrap/images/signup-image.jpg" alt="sing up image"></figure>
-                            <a href="login" class="signup-image-link">I am already member</a>
-                        </div>
                     </div>
                 </div>
             </section>

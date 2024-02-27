@@ -597,6 +597,40 @@ public class AccountDAO {
             return false;
         }
     }
+    
+    
+    public String getPasswordById(int accountId){
+        String password = null;
+        String sql = "SELECT password FROM account WHERE id = ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, accountId);
+            ResultSet rs = ps.executeQuery();
+            // Lấy kết quả
+            if (rs.next()) {
+                password = rs.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return password;
+    }
+    
+    public String getEmailAddressById(int accountId){
+        String email = null;
+        String sql = "SELECT emailAddress FROM account WHERE id = ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setInt(1, accountId);
+            ResultSet rs = ps.executeQuery();
+            // Lấy kết quả
+            if (rs.next()) {
+                email = rs.getString("emailAddress");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return email;
+    }
+    
     public static void main(String[] args) {
         AccountDAO acc = new AccountDAO();
         int accountId = 12; // Thay đổi ID này tùy vào dữ liệu của bạn

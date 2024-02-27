@@ -83,27 +83,38 @@ public class ChangePasswordController extends HttpServlet {
         if (request.getSession().getAttribute("USER") == null) {
             response.sendRedirect("login");
         }
-        String oldPassword = request.getParameter("oldPassword");
-        String newpassword = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmPassword");
-        String capcha = request.getParameter("capcha");
-        HttpSession session = request.getSession();
-        String generatedCapcha = (String) session.getAttribute("CAPCHA");
-
-        if (newpassword != null && newpassword.trim().equals(confirmPassword.trim())) {
+        try {
+            String oldPassword = request.getParameter("oldPassword");
+            String newpassword = request.getParameter("password");
+            String confirmPassword = request.getParameter("confirmPassword");
+            String capcha = request.getParameter("capcha");
+            HttpSession session = request.getSession();
+            String generatedCapcha = (String) session.getAttribute("CAPCHA");
+            Integer accountId = (Integer) session.getAttribute("account_id");
             String username = (String) session.getAttribute("username");
             AccountDAO accountDAO = new AccountDAO();
-            if (accountDAO.updatePassword(username, new Hash().hashPassword(newpassword))) {
-                request.setAttribute("alert", "Change password successfully!");
-                request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
-            } else {
-                request.setAttribute("alert", "Falied to change password.");
+            if(new Hash().hashPassword(oldPassword).equals(new Hash().hashPassword(newpassword))){
+                request.setAttribute("alert", "New password must be different from old password!");
                 request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
             }
-        } else {
-            request.setAttribute("alert", "Passwords do not match.");
-            request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
+            if (new Hash().hashPassword(oldPassword).equals(accountDAO.getPasswordById(accountId))) {
+                if (accountDAO.updatePassword(username, new Hash().hashPassword(newpassword))) {
+                    request.setAttribute("alert", "Change password successfully!");
+                    Thread.sleep(5000);
+                    session.removeAttribute(String.valueOf(accountId));
+                    request.getRequestDispatcher("/client/login.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("alert", "Falied to change password.");
+                    request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
+                }
+            } else {
+                request.setAttribute("alert", "Wrong old password.");
+                request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
     }
 
     /**

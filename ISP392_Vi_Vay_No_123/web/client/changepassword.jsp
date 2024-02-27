@@ -32,12 +32,14 @@
 
                     <div class="inputDiv">
                         <label class="inputLabel" for="password">New Password</label>
-                        <input type="password" id="password2" name="password" placeholder="Enter password" required>
+                        <input type="password" id="pass" name="password" placeholder="Enter password" required>
+                        <div id="passwordConditionsFeedback" class="validation-feedback"></div>
                     </div>
 
                     <div class="inputDiv">
                         <label class="inputLabel" for="confirmPassword">Confirm Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password">
+                        <input type="password" id="re_pass" name="confirmPassword" placeholder="Re-enter password">
+                        <div id="passwordFeedback" class="validation-feedback"></div>
                     </div>
                     <div class="inputDiv">
                         <label class="inputLabel">Captcha</label>
@@ -61,5 +63,6 @@
         </div>
         <script src="/ISP392_Vi_Vay_No_123/assets/js/changepass.js"></script>
         <script src="/ISP392_Vi_Vay_No_123/assets/js/captcha.js"></script>
+        <script src="/ISP392_Vi_Vay_No_123/assets/js/validate.js"></script>
     </body>
 </html>

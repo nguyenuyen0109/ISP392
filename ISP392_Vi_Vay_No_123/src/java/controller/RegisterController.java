@@ -61,8 +61,10 @@ public class RegisterController extends HttpServlet {
 
         new Mail().sendEmail(email, "Register", "Click here to register: " + url);
 
+        
         request.setAttribute("alert", "An email was sent!");
-        request.getRequestDispatcher("/client/register.jsp").forward(request, response);
+         request.getRequestDispatcher("/client/register.jsp").forward(request, response);
+       
 
     }
 
@@ -76,7 +78,7 @@ public class RegisterController extends HttpServlet {
             request.getRequestDispatcher("client/register.jsp").forward(request, response);
             return;
         }
-
+        String url= null;
         String checkToken = (String) request.getSession().getAttribute("register_token_" + email);
         Account newAccount = (Account) request.getSession().getAttribute("register_" + email);
 
@@ -86,12 +88,13 @@ public class RegisterController extends HttpServlet {
             
             new AccountDAO().insertAccount(newAccount);
             request.setAttribute("alert", "Register success");
-
+            url = "/client/login.jsp";
         } else {
             request.setAttribute("alert", "Invalid token");
+            url = "/client/register.jsp";
         }
 
-        request.getRequestDispatcher("/client/register.jsp").forward(request, response);
+        request.getRequestDispatcher(url).forward(request, response);
     }
 
     @Override
