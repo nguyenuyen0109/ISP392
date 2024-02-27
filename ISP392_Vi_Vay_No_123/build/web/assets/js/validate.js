@@ -125,5 +125,5 @@ document.getElementById("pass").onblur= validatePasswordConditions;
 document.getElementById("re_pass").onblur = validatePassword;
 document.getElementById("email").onblur = validateEmail;
 document.getElementById("phone").onblur = validatePhone;
-document.getElementById("username").onblur = validateUsername;
+document.getElementById("username").oninput = validateUsername;
 

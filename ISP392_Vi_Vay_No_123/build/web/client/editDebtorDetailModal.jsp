@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="bootstrap.min.css">
 <script src="jquery.min.js"></script>
 <script src="bootstrap.min.js"></script>
-
+<script src="ISP392_Vi_Vay_No_123/assets/js/validate.js"></script>
 <!-- Modal -->
 <div class="modal fade" id="editDebtorDetailModal" tabindex="-1"
     role="dialog" aria-labelledby="editDebtorDetailModalLabel"
@@ -36,12 +36,14 @@
                         <label for="phone">Phone:</label>
                         <input type="text" class="form-control" id="phone"
                             name="phone" placeholder="Enter phone" required>
+                         <div id="phoneFeedback" class="validation-feedback"></div>
                         <div id="phoneError" class="error" style="color: #FF0000"></div>
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <input type="email" class="form-control" id="email"
                             name="email" placeholder="Enter email" required>
+                         <div id="emailFeedback" class="validation-feedback"></div>
                         <div id="emailError" class="error" style="color: #FF0000"></div>
                     </div>
                     <div class="form-group">
@@ -62,61 +64,4 @@
 </div>
 
 <!-- JavaScript code to set the values of fields in the modal and validate -->
-<script>
-    function editDebtorDetailModal(id, name, address, phone, email, totalDebt) {
-        document.getElementById('id').value = id;
-        document.getElementById('name').value = name;
-        document.getElementById('address').value = address;
-        document.getElementById('phone').value = phone;
-        document.getElementById('email').value = email;
-        document.getElementById('totalDebt').value = totalDebt;
-    }
 
-    // Function to validate form
-    function validateForm() {
-        var name = $('#name').val();
-        var address = $('#address').val();
-        var phone = $('#phone').val();
-        var email = $('#email').val();
-        var valid = true;
-
-        // Validate name (only letters)
-        if (!/^[a-zA-Z\s]+$/.test(name)) {
-            $('#nameError').html('Name must contain only letters');
-            valid = false;
-        } else {
-            $('#nameError').html('');
-        }
-
-        // Validate address (letters and numbers)
-        if (!/^[a-zA-Z0-9\s]+$/.test(address)) {
-            $('#addressError').html('Address must contain only letters and number');
-            valid = false;
-        } else {
-            $('#addressError').html('');
-        }
-
-        // Validate phone (only numbers)
-       if (!/^[0-9]{10,}$/.test(phone)) {
-    $('#phoneError').html('Phone must contain at least 10 numbers');
-    valid = false;
-} else {
-    $('#phoneError').html('');
-}
-
-        // Validate email format
-        if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-            $('#emailError').html('Invalid email address');
-            valid = false;
-        } else {
-            $('#emailError').html('');
-        }
-
-        return valid;
-    }
-
-    // Attach validation function to form submission
-    $('#editDebtorDetailForm').submit(function () {
-        return validateForm();
-    });
-</script>
