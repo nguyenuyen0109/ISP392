@@ -1,30 +1,23 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : Feb 22, 2024, 1:44:02 AM
-    Author     : MINIMONIE
-*/
-
 body, h1, nav, ul, li, a, button {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
 }
 
-header {
-    background-color: #007bff; /* A vibrant blue background */
+.header-container {
+    background-color: #3053E8; /* A vibrant blue background */
     color: white;
     padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .container {
     width: 80%;
-    margin: 0 auto;
+    margin: auto;
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 h1 {
@@ -48,21 +41,20 @@ nav ul li a {
 }
 
 .login-button {
-    padding: 10px 20px;
-    border: none;
     background-color: #0056b3; /* Slightly darker blue background for the button */
+    border: none;
+    padding: 10px 20px;
     border-radius: 20px;
     color: white;
     font-weight: bold;
     cursor: pointer;
-    /*margin-left: 700px;*/
 }
 
 .login-button:hover {
     background-color: #004494; /* Even darker blue for hover effect */
 }
 
-/* Media query for responsive design */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -77,9 +69,7 @@ nav ul li a {
     }
 }
 
-/* CSS for dropdown menu and login button as provided */
-
-/* CSS for dropdown menu */
+/* Dropdown Menu CSS */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -92,7 +82,7 @@ nav ul li a {
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    border-radius: 20px; /* Rounded corners like the login button */
+    border-radius: 20px;
 }
 
 .dropdown-content a {
@@ -111,91 +101,11 @@ nav ul li a {
     color: white;
     padding: 16px;
     font-size: 16px;
-    border: 1px solid #dddddd; /* Adding a border similar to the dropdown */
-    border-radius: 20px; /* Increasing border radius for rounded edges */
+    border: none;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase; /* Uppercase text */
-    letter-spacing: 1px; /* Spacing between letters */
 }
 
 .dropbtn:hover {
     background-color: #2036B4;
-    border-color: #dddddd; /* Keeping the border color consistent on hover */
 }
-
-/* CSS for the login button */
-.login-button {
-    background-color: #3053E8;
-    color: #ffffff;
-    padding: 10px 30px;
-    border: 2px solid #ffffff; /* White border */
-    border-radius: 20px; /* Rounded corners like the dropdown button */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase; /* Uppercase text */
-    letter-spacing: 1px; /* Spacing between letters */
-}
-
-.login-button:hover {
-    background-color: #2036B4;
-    border-color: #ffffff; /* White border on hover */
-}
-
-.site-nav {
-    position: absolute;
-    top: 40px;
-    z-index: 9;
-    width: 100%;
-}
-
-.site-nav {
-    padding-bottom: 20px;
-}
-
-
-
-.row {
-    --bs-gutter-x: 1.5rem;
-    --bs-gutter-y: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-top: calc(-1 * var(--bs-gutter-y));
-    margin-right: calc(-.5 * var(--bs-gutter-x));
-    margin-left: calc(-.5 * var(--bs-gutter-x));
-}
-
-
-.hero, .hero > .container > .row {
-    height: 100vh;
-    min-height: 680px;
-}
-@media (max-width: 991.98px) {
-    .hero, .hero > .container > .row {
-        height: auto;
-        padding-top: 4rem;
-        padding-bottom: 4rem;
-    }
-}
-.hero.inner-page, .hero.inner-page > .container > .row {
-    height: 50vh;
-    min-height: 450px;
-}
-@media (max-width: 991.98px) {
-    .hero.inner-page, .hero.inner-page > .container > .row {
-        height: auto;
-        padding-top: 4rem;
-        padding-bottom: 4rem;
-    }
-}
-
-.col-2 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 auto;
-    flex: 0 0 auto;
-    width: 16.66667%;
-}
-

@@ -10,12 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.sql.Timestamp;
 /**
  *
  * @author minimonie
@@ -27,8 +29,7 @@ public class AccountDAO {
     public AccountDAO() {
         db = DBContext.getInstance();
     }
-    
-    
+
     private static final int MIN_LENGTH = 8;
     private static final int MAX_LENGTH = 20;
     private static final Pattern HAS_NUMBER = Pattern.compile("\\d");
@@ -58,7 +59,7 @@ public class AccountDAO {
         }
         return true;
     }
-    
+
     public Account findByUsernameAndPassword(String username, String password) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -189,6 +190,24 @@ public class AccountDAO {
         return null;
     }
 
+    public String checkToken(String email, String token) {
+        String query = "SELECT emailAddress FROM account WHERE emailAddress = ? and token = ? and  expiretime > CURRENT_TIME()";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, token);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    System.out.println("có email");
+                    return resultSet.getString("emailAddress");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT * FROM account";
@@ -263,6 +282,39 @@ public class AccountDAO {
         return n;
     }
 
+    public void insertToken(int id, String token) {
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+        // Add 30 minutes to the current timestamp
+        long millisecondsIn30Minutes = 30 * 60 * 1000;
+        Timestamp next30MinutesTimestamp = new Timestamp(currentTimestamp.getTime() + millisecondsIn30Minutes);
+        String sql = "update account set \n"
+                + " token = '" + token + "'" + ", expiretime = ?"
+                + " where id = " + id;
+        System.out.println(sql);
+        try {
+            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+            ps.setTimestamp(1, next30MinutesTimestamp);
+            ps.executeUpdate();
+            System.out.println(sql);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    public void ResettToken(int id) {
+        String sql = "update account set \n"
+                + " token = ''" + ""
+                + " where id = " + id;
+        System.out.println(sql);
+        try {
+            PreparedStatement ps = db.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            System.out.println(sql);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     public boolean usernameExists(String username) {
         try {
             String sql = "SELECT COUNT(*) FROM account WHERE Username = ?";
@@ -373,7 +425,7 @@ public class AccountDAO {
 
         String sql = "UPDATE account SET name = ?, mobileNumber = ?, emailAddress = ?, address = ?, avatarUrl = ? WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
-            
+
             ps.setString(1, acc.getName());
             ps.setString(2, acc.getMobileNumber());
             ps.setString(3, acc.getEmailAddress());
@@ -597,9 +649,8 @@ public class AccountDAO {
             return false;
         }
     }
-    
-    
-    public String getPasswordById(int accountId){
+
+    public String getPasswordById(int accountId) {
         String password = null;
         String sql = "SELECT password FROM account WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
@@ -614,8 +665,8 @@ public class AccountDAO {
         }
         return password;
     }
-    
-    public String getEmailAddressById(int accountId){
+
+    public String getEmailAddressById(int accountId) {
         String email = null;
         String sql = "SELECT emailAddress FROM account WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
@@ -630,35 +681,35 @@ public class AccountDAO {
         }
         return email;
     }
-    
+
     public static void main(String[] args) {
         AccountDAO acc = new AccountDAO();
         int accountId = 12; // Thay đổi ID này tùy vào dữ liệu của bạn
 
         // Lấy thông tin tài khoản hiện tại dựa trên ID
-        Account accountToUpdate = acc.getAccountById(accountId);
-
-        if (accountToUpdate != null) {
-            // Cập nhật một số thông tin của tài khoản
-            accountToUpdate.setName("New Name");
-            accountToUpdate.setMobileNumber("New Mobile Phone");
-            accountToUpdate.setEmailAddress("New Email");
-            accountToUpdate.setAddress("New Address");
-            accountToUpdate.setPassword("New Pass");
-            // Tiếp tục cập nhật các trường khác tùy ý
-
-            // Gọi hàm updateAccount để cập nhật thông tin tài khoản trong cơ sở dữ liệu
-            Account updatedAccount = acc.updateAccount(accountToUpdate);
-
-            if (updatedAccount != null) {
-                System.out.println("Cập nhật thông tin tài khoản thành công.");
-            } else {
-                System.out.println("Có lỗi xảy ra, không thể cập nhật thông tin tài khoản.");
-            }
-        } else {
-            System.out.println("Không tìm thấy tài khoản với ID: " + accountId);
-        }
+//        Account accountToUpdate = acc.getAccountById(accountId);
+//
+//        if (accountToUpdate != null) {
+//            // Cập nhật một số thông tin của tài khoản
+//            accountToUpdate.setName("New Name");
+//            accountToUpdate.setMobileNumber("New Mobile Phone");
+//            accountToUpdate.setEmailAddress("New Email");
+//            accountToUpdate.setAddress("New Address");
+//            accountToUpdate.setPassword("New Pass");
+//            // Tiếp tục cập nhật các trường khác tùy ý
+//
+//            // Gọi hàm updateAccount để cập nhật thông tin tài khoản trong cơ sở dữ liệu
+//            Account updatedAccount = acc.updateAccount(accountToUpdate);
+//
+//            if (updatedAccount != null) {
+//                System.out.println("Cập nhật thông tin tài khoản thành công.");
+//            } else {
+//                System.out.println("Có lỗi xảy ra, không thể cập nhật thông tin tài khoản.");
+//            }
+//        } else {
+//            System.out.println("Không tìm thấy tài khoản với ID: " + accountId);
+//        }
+        acc.checkToken("minhnguyenhoang021@gmail.com", "ueilhDAoabHmpRy0aNi2Pidu");
     }
-       
- }
 
+}

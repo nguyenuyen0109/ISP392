@@ -45,8 +45,6 @@ public class ResetPasswordController extends HttpServlet {
         String password = request.getParameter("password");
         String retypePassword = request.getParameter("confirmPassword");
 
-        String checkToken = (String) request.getSession().getAttribute("reset_token_" + email);
-
         Account user = new AccountDAO().getAccountByEmail(email);
         AccountDAO dao = new AccountDAO();
         Boolean valid = dao.validatePassword(password);
@@ -55,10 +53,10 @@ public class ResetPasswordController extends HttpServlet {
 
         if (user == null) {
             alert = "Email not found";
-        } else if (token.equals(checkToken)) {
+        } else if (dao.checkToken(email, token)!=null) {
                 user.setPassword(new Hash().hashPassword(password));
                 new AccountDAO().updatePassword(user.getUsername(), new Hash().hashPassword(password));
-                request.getSession().removeAttribute("reset_token_" + email);
+                new AccountDAO().ResettToken(user.getId());
                 alert = "Reset password success";
                 url = "client/login.jsp";
             
