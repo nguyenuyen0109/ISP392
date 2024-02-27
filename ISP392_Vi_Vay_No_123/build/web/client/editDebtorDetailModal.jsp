@@ -89,7 +89,7 @@
         }
 
         // Validate address (letters and numbers)
-        if (!/^[a-zA-Z\s]+$/.test(address)) {
+        if (!/^[a-zA-Z0-9\s]+$/.test(address)) {
             $('#addressError').html('Address must contain only letters');
             valid = false;
         } else {

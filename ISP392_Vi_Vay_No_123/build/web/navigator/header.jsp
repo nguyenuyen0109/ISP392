@@ -13,7 +13,6 @@
     <!-- Styles are kept as you provided -->
     <style>
         /* CSS for dropdown menu and login button as provided */
-            <style>
             /* CSS for dropdown menu */
             .dropdown {
                 position: relative;

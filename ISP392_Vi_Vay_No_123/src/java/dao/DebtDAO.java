@@ -34,19 +34,22 @@ public class DebtDAO {
         String sql = "insert into debtdetails ("
                 + "description, "
                 + "debtType, "
+                + "image, "
                 + "amount, "
                 + "interestRate,"
+                + "due,"
                 + "debtor_id,"
-                + "debtor_account_id,"
-                + "values (?,?,?,?,?,?);"
-                + "where debtor_id = ? and account_debtor_id = ? ";
+                + "debtor_account_id)"
+                + "values (?,?,?,?,?,?,?,?);";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, debt.getDescription());
-            ps.setBoolean(2, debt.isDebtType()); //true=ngta vay, false= mình nợ
-            ps.setDouble(3, debt.getAmount()*debt.getInterestRate());
-            ps.setDouble(4, debt.getInterestRate());
-            ps.setInt(5,debtorid);
-            ps.setInt(6, accountid);
+            ps.setBoolean(2, debt.isDebtType()); //true=Debt, false= Receivable
+            ps.setString(3, debt.getImage());
+            ps.setDouble(4, debt.getAmount());
+            ps.setDouble(5, debt.getInterestRate());
+            ps.setDouble(6, debt.getDue());
+            ps.setInt(7,debtorid);
+            ps.setInt(8, accountid);
             n = ps.executeUpdate();
             System.out.println(sql);
         } catch (SQLException ex) {
@@ -58,16 +61,20 @@ public class DebtDAO {
         List<DebtDetail> debtList = new ArrayList<>();
         String sql = "select * from debtdetails where debtor_id=? and debtor_account_id = ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
-            preparedStatement.setInt(2, accountid);
             preparedStatement.setInt(1, idDebtor);
+            preparedStatement.setInt(2, accountid);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String description = rs.getString("description");
+                    String image = rs.getString("image");
                     boolean debtType = rs.getBoolean("debtType");
-                    double amount = rs.getDouble("amount");
                     Timestamp createAt = rs.getTimestamp("createdAt");
-                    DebtDetail debt = new DebtDetail(id, description, debtType, amount, createAt);
+                    double amount = rs.getDouble("amount");
+                    double interest = rs.getDouble("interestRate");
+                    double due = rs.getDouble("due");
+                    DebtDetail debt = new DebtDetail(id, description, debtType, amount, image, createAt, 
+                            idDebtor, accountid, interest, due, debtType);
                     debtList.add(debt);
                 }
             }} catch (SQLException ex) {
@@ -229,7 +236,22 @@ public List<DebtDetail> findByPage(int accountId, int debtorId, int page) {
             debt.setDebtType(resultSet.getBoolean("debtType"));
             debt.setAmount(resultSet.getDouble("amount"));
             debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+            //viet them
+            debt.setInterestRate(resultSet.getDouble("interestRate"));
+            debt.setDue(resultSet.getDouble("due"));
             debtList.add(debt);
+            
+//            int id = rs.getInt("id");
+//                    String description = rs.getString("description");
+//                    String image = rs.getString("image");
+//                    boolean debtType = rs.getBoolean("debtType");
+//                    Timestamp createAt = rs.getTimestamp("createdAt");
+//                    double amount = rs.getDouble("amount");
+//                    double interest = rs.getDouble("interestRate");
+//                    double due = rs.getDouble("due");
+//                    DebtDetail debt = new DebtDetail(id, description, debtType, amount, image, createAt, 
+//                            idDebtor, accountid, interest, due, debtType);
+//                    debtList.add(debt);
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -538,12 +560,17 @@ public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, boolea
 //        for (DebtDetail debtDetail : list2) {
 //            System.out.println(debtDetail);
 //        }
-    List<DebtDetail> list = dao.searchDebtByDescription(1,2, "test");
-       for (DebtDetail debtDetail : list) {
-            System.out.println(debtDetail);
-        }
-    System.out.println("-------List---------");
-    
+//    List<DebtDetail> list = dao.searchDebtByDescription(1,2, "test");
+//       for (DebtDetail debtDetail : list) {
+//            System.out.println(debtDetail);
+//        }
+//    System.out.println("-------List---------");
+//    DebtDetail debt = new DebtDetail("vay mua DT", true, 100000, null, 142, 10, 0.01, 2);
+//    int n = dao.addDebt(debt, 10, 142);
+    DBContext db = DBContext.getInstance();
+    ResultSet rs = db.getData("select SUM(amount*0.01+debtdetails.amount*(1+(interestRate/100)*(due/12))) as totalDebt\n"
+                + "from debtdetails where debtor_account_id = 2 and debtor_id=1");
+        System.out.println(rs);
 //    List<DebtDetail> list2 = dao.sortDebtByAmountHightLow(1, 2);
 //        for (DebtDetail debtDetail : list2) {
 //            System.out.println(debtDetail);
