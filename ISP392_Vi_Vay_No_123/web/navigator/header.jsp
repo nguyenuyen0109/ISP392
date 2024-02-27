@@ -29,62 +29,43 @@
 
     </head>
     <body>
-        <nav class="site-nav">
+        <header class="header-container">
             <div class="container">
-                <div class="menu-bg-wrap">
-                    <div class="site-navigation">
-                        <div class="row g-0 align-items-center">
-                            <div class="col-2">
-                                <a href="homepage.jsp" class="logo m-0 float-start">Debit Note<span class="text-primary">.</span></a>
-                            </div>
-                            <div class="col-8 text-center">
-                                <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
-                                    <li class="active"><a href="client/homepage.jsp">Home</a></li>
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="services.html">Services</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-2 text-end">
-                                <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light"><span></span></a>
-                                        <%
-                                            if (session != null) {
-                                                Account user = (Account) session.getAttribute("USER");
-                                                Boolean isAdmin = (Boolean) session.getAttribute("Admin");
-                                                if (user != null) {
-                                        %>
-                                <div class="dropdown">
-                                    <button class="dropbtn">Hello, <%= user.getUsername() %></button>
-                                    <div class="dropdown-content">
-                                        <a href="changepassword.jsp">Change Password</a>
-                                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
-                                        <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
-                                        <% if (isAdmin != null && isAdmin) { %>
-                                        <a href="dashboard.jsp">Dashboard</a>
-                                        <% } %>
-                                        <a href="../logout">Logout</a>
-                                    </div>
-                                </div>
-                                <% 
-                                        } else { 
-                                %>
-                                <a href="../login">
-                                    <button class="login-button d-flex align-items-center">
-                                        <span class="icon-login" style="font-size: 24px; margin-right: 8px;"></span>
-                                        <span style="font-weight: bold; font-size: 16px;">Login</span>
-                                    </button>
-                                </a>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </div>
-                        </div>
+                <h1><a href="homepage.jsp" class="logo">Debit Note<span class="text-primary">.</span></a></h1>
+                <nav>
+                    <ul>
+                        <li class="active"><a href="client/homepage.jsp">Home</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </nav>
+                <% if (session != null && session.getAttribute("USER") != null) {
+                    Account user = (Account) session.getAttribute("USER");
+                    Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
+                %>
+                <div class="dropdown">
+                    <button class="dropbtn">Hello, <%= user.getUsername() %></button>
+                    <div class="dropdown-content">
+                        <a href="changepassword.jsp">Change Password</a>
+                        <a href="/editprofile">Edit Profile</a>
+                        <a href="/viewdebtorlist">View Debtor List</a>
+                        <% if (isAdmin != null && isAdmin) { %>
+                        <a href="dashboard.jsp">Dashboard</a>
+                        <% } %>
+                        <a href="../logout">Logout</a>
                     </div>
                 </div>
+                <% } else { %>
+                <a href="../login">
+                    <button class="login-button">
+                        Login
+                    </button>
+                </a>
+                <% } %>
             </div>
-        </nav>
+        </header>
 
         <script src="ISP392_Vi_Vay_No_123/assets/js/bootstrap.bundle.min.js"></script>
         <script src="ISP392_Vi_Vay_No_123/assets/js/tiny-slider.js"></script>
