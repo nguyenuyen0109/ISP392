@@ -35,10 +35,10 @@
                 <nav>
                     <ul>
                         <li class="active"><a href="client/homepage.jsp">Home</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+                         <a href="/ISP392_Vi_Vay_No_123/changepassword.jsp">Change Password</a>
+                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
+                        <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
+                        
                     </ul>
                 </nav>
                 <% if (session != null && session.getAttribute("USER") != null) {
@@ -48,13 +48,13 @@
                 <div class="dropdown">
                     <button class="dropbtn">Hello, <%= user.getUsername() %></button>
                     <div class="dropdown-content">
-                        <a href="changepassword.jsp">Change Password</a>
-                        <a href="/editprofile">Edit Profile</a>
-                        <a href="/viewdebtorlist">View Debtor List</a>
+                        <a href="/ISP392_Vi_Vay_No_123/changepassword.jsp">Change Password</a>
+                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
+                        <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                         <% if (isAdmin != null && isAdmin) { %>
                         <a href="dashboard.jsp">Dashboard</a>
                         <% } %>
-                        <a href="../logout">Logout</a>
+                        <a href="/ISP392_Vi_Vay_No_123/logout">Logout</a>
                     </div>
                 </div>
                 <% } else { %>

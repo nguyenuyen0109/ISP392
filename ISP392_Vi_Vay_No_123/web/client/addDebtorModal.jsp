@@ -2,7 +2,42 @@
 <html>
 <head>
     <title>Add New Debtor</title>
-    <script src="ISP392_Vi_Vay_No_123/assets/js/validate.js"></script>
+    <script>
+        function validateForm2() {
+            var name = document.forms["debtorForm"]["name"].value.trim();
+            var email = document.forms["debtorForm"]["email"].value.trim();
+            var address = document.forms["debtorForm"]["address"].value.trim();
+            var phone = document.forms["debtorForm"]["phone"].value.trim();
+            
+
+            if (name === "" || email === "" || address === "" || phone === "") {
+                alert("Please fill in all fields.");
+                return false;
+            }
+
+            
+            var nameRegex = /^[a-zA-Z0-9\s]+$/;
+            if (!nameRegex.test(address)) {
+                alert("Address must contain letters and number.");
+                return false;
+            }
+
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email !== '' && !emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+ 
+            var phoneRegex = /^\d{10,}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Phone must be a number with at least 10 digits.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </head>
 <body>
     <div id="addDebtorModal" class="modal fade">
@@ -20,8 +55,7 @@
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" class="form-control" name="email" id="email" required>
-                            <div id="emailFeedback" class="validation-feedback"></div>
+                            <input type="text" class="form-control" name="email" required>
                         </div>
                         <div class="form-group">
                             <label>Address</label>
@@ -29,8 +63,7 @@
                         </div>
                         <div class="form-group">
                             <label>Phone</label>
-                            <input type="text" class="form-control" name="phone" id="phone" required>
-                             <div id="phoneFeedback" class="validation-feedback"></div>
+                            <input type="text" class="form-control" name="phone" required>
                         </div>	
                         <!-- New textbox for "Total" with a default value of 0 -->
                         <div class="form-group">

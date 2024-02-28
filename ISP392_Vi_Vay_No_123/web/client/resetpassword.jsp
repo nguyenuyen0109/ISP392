@@ -42,7 +42,7 @@
                     </div>
                     <input type="hidden" value="${param["e"]}" name="email">
                     <input type="hidden" value="${param["t"]}" name="token">
-                    
+
                     <div class="inputCaptcha"> 
                         <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000;">
                         <img src="assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
@@ -56,8 +56,26 @@
                 </form>
             </div>
         </div>
+                    <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("signupForm").addEventListener("submit", function (event) {
+                    var password = document.getElementById("pass").value;
+                    var confirmPassword = document.getElementById("re_pass").value;
+
+                    if (password !== confirmPassword) {
+                        event.preventDefault(); // Ngăn form được gửi đi
+                        document.getElementById("passwordFeedback").innerText = "Passwords do not match";
+                        alert = "Please correct the information!";
+                    } else {
+                        document.getElementById("passwordFeedback").innerText = "";
+                    }
+                });
+            });
+        </script>
         <script src="/ISP392_Vi_Vay_No_123/assets/js/changepass.js"></script>
         <script src="/ISP392_Vi_Vay_No_123/assets/js/captcha.js"></script>
         <script src="/ISP392_Vi_Vay_No_123/assets/js/validate.js"></script>
+        
     </body>
 </html>

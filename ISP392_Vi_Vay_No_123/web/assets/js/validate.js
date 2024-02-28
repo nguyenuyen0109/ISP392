@@ -53,6 +53,7 @@ function validatePassword() {
         password.classList.add("is-invalid");
         confirmPassword.classList.add("is-invalid");
         feedback.textContent = 'Passwords do not match';
+        
     } else {
         password.classList.remove("is-invalid");
         confirmPassword.classList.remove("is-invalid");
@@ -69,6 +70,7 @@ function validateEmail() {
     if (!re.test(email.value)) {
         email.classList.add("is-invalid");
         feedback.textContent = 'Invalid email address';
+        
     } else {
         email.classList.remove("is-invalid");
         feedback.textContent = ''; // Clear feedback
@@ -115,11 +117,31 @@ function validatePasswordConditions() {
     if (!re.test(password.value)) {
         password.classList.add("is-invalid");
         feedback.textContent = 'Password must be at least 8 characters long and include lowercase and uppercase letters, numbers, and special characters';
+        event.preventDefault();
     } else {
         password.classList.remove("is-invalid");
         feedback.textContent = ''; // Clear feedback
     }
 }
+
+$('#register-form').submit(function(event) {
+    // Kiểm tra điều kiện của biểu mẫu ở đây
+    if (!isValidCondition) { // isValidCondition là biến kiểm tra điều kiện
+        // Nếu điều kiện không thỏa mãn, ngăn chặn hành động mặc định của sự kiện
+        event.preventDefault();
+        // Hiển thị thông báo hoặc xử lý lỗi khác tùy thuộc vào trường hợp của bạn
+        alert('Please correct the information!'); // Thay bằng thông báo hoặc xử lý lỗi khác
+    }
+});
+//$('#signupform').submit(function(event) {
+//    // Kiểm tra điều kiện của biểu mẫu ở đây
+//    if (passwordFeedback !== null || passwordConditionsFeedback !== null) { // isValidCondition là biến kiểm tra điều kiện
+//        // Nếu điều kiện không thỏa mãn, ngăn chặn hành động mặc định của sự kiện
+//        event.preventDefault();
+//        // Hiển thị thông báo hoặc xử lý lỗi khác tùy thuộc vào trường hợp của bạn
+//        alert('Please correct the information!'); // Thay bằng thông báo hoặc xử lý lỗi khác
+//    }
+//});
 
 document.getElementById("pass").onblur= validatePasswordConditions;
 document.getElementById("re_pass").onblur = validatePassword;
