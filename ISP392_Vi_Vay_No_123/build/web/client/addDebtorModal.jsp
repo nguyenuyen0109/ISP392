@@ -10,7 +10,7 @@
             var phone = document.forms["debtorForm"]["phone"].value.trim();
             
 
-            if (name === "" || email === "" || address === "" || phone === "") {
+            if (name === "" || address === "" || phone === "") {
                 alert("Please fill in all fields.");
                 return false;
             }
@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="text" class="form-control" name="email" required>
+                            <input type="text" class="form-control" name="email">
                         </div>
                         <div class="form-group">
                             <label>Address</label>
