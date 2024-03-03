@@ -5,7 +5,9 @@
 package controller;
 
 //import com.mysql.cj.protocol.Resultset;
+import dal.DBContext;
 import dao.DebtDAO;
+import java.sql.ResultSet;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,30 +32,37 @@ public class DebtController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DebtDAO dao = new DebtDAO();
+        DBContext db = DBContext.getInstance();
         PageControl pageControl = new PageControl();
-         HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         // Assuming 'accountId' is stored in session, retrieve it.
         Integer accountId = (Integer) session.getAttribute("account_id");
         String debtorId = request.getParameter("debtorid");
-        
+
         if (accountId == null) {
             // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
             response.sendRedirect("login"); // Example redirection to login page
             return; // Stop further execution in this case.
         }
-        
-        if (debtorId!= null && !debtorId.isEmpty()) {
-        try {
-            int debtorId1 = Integer.parseInt(debtorId);
-            session.setAttribute("debtorid", debtorId1);
-        //Integer accountId = (Integer) session.getAttribute("debtor_account_id");
-       // Integer debtorId = (Integer) session.getAttribute("debtor_id");
-         }catch (NumberFormatException e) {
-            // Handle the exception if debtorId is not a valid integer
-        }
+
+        if (debtorId != null && !debtorId.isEmpty()) {
+            try {
+                int debtorId1 = Integer.parseInt(debtorId);
+                session.setAttribute("debtorid", debtorId1);
+                //Integer accountId = (Integer) session.getAttribute("debtor_account_id");
+                // Integer debtorId = (Integer) session.getAttribute("debtor_id");
+            } catch (NumberFormatException e) {
+                // Handle the exception if debtorId is not a valid integer
+            }
         }
         List<DebtDetail> debtList = pagination(request, pageControl);
         session.setAttribute("debtList", debtList);
+        ResultSet rsDebtType = db.getData("select * from debtdetails ddt\n"
+                + "inner join debttype dt on ddt.debtTypeId = dt.id\n"
+                + "where debtor_account_id = " + accountId + " and debtor_id= " + debtorId );
+        ResultSet rsDebttype = db.getData("select * from debttype");
+        request.setAttribute("rsDebtType", rsDebtType);
+        request.setAttribute("debtTypeName", rsDebttype);
         request.setAttribute("pageControl", pageControl);
         System.out.println(pageControl);
         RequestDispatcher dispatch = request.getRequestDispatcher("/client/debtList.jsp");
@@ -64,17 +73,20 @@ public class DebtController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Add new debt
-         HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         // Assuming 'accountId' is stored in session, retrieve it.
         Integer accountId = (Integer) session.getAttribute("account_id");
         Integer debtorId = (Integer) session.getAttribute("debtorid");
         String description = request.getParameter("description");
-        boolean debtType = Boolean.parseBoolean(request.getParameter("debtType"));
+        int debtTypeId = Integer.parseInt(request.getParameter("debtType"));
+        String image = request.getParameter("Image");
         double amount = Double.parseDouble(request.getParameter("amount"));
-        int interest_rate = Integer.parseInt(request.getParameter("interest_rate"));
+        double interest_rate = Double.parseDouble(request.getParameter("interest"));
+        double due = Double.parseDouble(request.getParameter("due"));
         DebtDAO dao = new DebtDAO();
-        DebtDetail debt = new DebtDetail(description, debtType, amount, debtorId,accountId, interest_rate);
-        int n = dao.addDebt(debt,accountId,debtorId);
+        DebtDetail debt = new DebtDetail(description, debtTypeId, amount, image, debtorId,
+                accountId, interest_rate, due);
+        int n = dao.addDebt(debt, accountId, debtorId);
         response.sendRedirect("debt");
     }
 
@@ -98,7 +110,6 @@ public class DebtController extends HttpServlet {
 //        request.getRequestDispatcher("client/debtList.jsp").forward(request, response);
 //
 //    }
-
 //    private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 //        // Add new debt
 //         HttpSession session = request.getSession();
@@ -118,7 +129,7 @@ public class DebtController extends HttpServlet {
         HttpSession session = request.getSession();
         Integer accountId = (Integer) session.getAttribute("account_id");
         Integer debtorId = (Integer) session.getAttribute("debtorid");
-     //get page
+        //get page
         String pageRaw = request.getParameter("page");
         DebtDAO debtDAO = new DebtDAO();
         //valid page
@@ -148,11 +159,11 @@ public class DebtController extends HttpServlet {
                     case "amount":
                         double amount;
                         try {
-                        amount = Double.parseDouble(keyword);
-                    } catch (NumberFormatException e) {
-                        pageControl.setUrlPattern("debt?");
-                        break;
-                    }
+                            amount = Double.parseDouble(keyword);
+                        } catch (NumberFormatException e) {
+                            pageControl.setUrlPattern("debt?");
+                            break;
+                        }
                         totalRecord = debtDAO.findTotalRecordByAmount(accountId, debtorId, Double.parseDouble(keyword));
                         debtList = debtDAO.findByPageByAmount(accountId, debtorId, Double.parseDouble(keyword), page);
                         pageControl.setUrlPattern("debt?action=search&searchType=amount&searchQuery=" + keyword + "&");
@@ -166,47 +177,47 @@ public class DebtController extends HttpServlet {
                         break;
                 }
                 break;
-                case "sortByOldest":
-                     totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
-                    debtList = debtDAO.findByPageAndSortByOldest(accountId, debtorId, page);
-                    pageControl.setUrlPattern("debt?action=sortByOldest&");
-                    //request.setAttribute("debtList", debtList);
-                    break;
-                    
-                case "sortByNewest":
-                     totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
-                     debtList = debtDAO.findByPageAndSortByNewest(accountId, debtorId, page);
-                    pageControl.setUrlPattern("debt?action=sortByNewest&");
-                    //request.setAttribute("debtList", debtList);
+            case "sortByOldest":
+                totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
+                debtList = debtDAO.findByPageAndSortByOldest(accountId, debtorId, page);
+                pageControl.setUrlPattern("debt?action=sortByOldest&");
+                //request.setAttribute("debtList", debtList);
+                break;
 
-                    break;
-                case "sortByHighLow":
-                     totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
-                    debtList = debtDAO.findByPageAndSortDebtByAmountHighLow(accountId, debtorId, page);
-                    pageControl.setUrlPattern("debt?action=sortByHighLow&");
-                    //request.setAttribute("debtList", debtList);
+            case "sortByNewest":
+                totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
+                debtList = debtDAO.findByPageAndSortByNewest(accountId, debtorId, page);
+                pageControl.setUrlPattern("debt?action=sortByNewest&");
+                //request.setAttribute("debtList", debtList);
 
-                    break;
-                case "sortByLowHigh":
-                    totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
-                    debtList = debtDAO.findByPageAndSortDebtByAmountLowHigh(accountId, debtorId, page);
-                    pageControl.setUrlPattern("debt?action=sortByLowHigh&");
-                    //request.setAttribute("debtList", debtList);
+                break;
+            case "sortByHighLow":
+                totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
+                debtList = debtDAO.findByPageAndSortDebtByAmountHighLow(accountId, debtorId, page);
+                pageControl.setUrlPattern("debt?action=sortByHighLow&");
+                //request.setAttribute("debtList", debtList);
 
-                    break;
-                case "Receivable":
-                    totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, true);
-                    debtList = debtDAO.findByPageByDebtType(accountId, debtorId, true, page);
-                    pageControl.setUrlPattern("debt?action=Receivable&");
-                    //request.setAttribute("debtList", debtList);
-                    
-                    break;
-                case "Debt":
-                    totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, false);
-                    debtList = debtDAO.findByPageByDebtType(accountId, debtorId, false, page);
-                    pageControl.setUrlPattern("debt?action=Debt&");
-                    //request.setAttribute("debtList", debtList);
-                    break;
+                break;
+            case "sortByLowHigh":
+                totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
+                debtList = debtDAO.findByPageAndSortDebtByAmountLowHigh(accountId, debtorId, page);
+                pageControl.setUrlPattern("debt?action=sortByLowHigh&");
+                //request.setAttribute("debtList", debtList);
+
+                break;
+            case "Receivable":
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, true);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, true, page);
+                pageControl.setUrlPattern("debt?action=Receivable&");
+                //request.setAttribute("debtList", debtList);
+
+                break;
+            case "Debt":
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, false);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, false, page);
+                pageControl.setUrlPattern("debt?action=Debt&");
+                //request.setAttribute("debtList", debtList);
+                break;
             default:
                 //phan trang o trang home
                 //tim ve totalRecord
@@ -214,16 +225,16 @@ public class DebtController extends HttpServlet {
                 debtList = debtDAO.findByPage(accountId, debtorId, page);
                 pageControl.setUrlPattern("debt?");
         }
-        
+
         //tim xem tong co bao nhieu page
-         int totalPage = (totalRecord % Pagination.RECORD_PER_PAGE) == 0
+        int totalPage = (totalRecord % Pagination.RECORD_PER_PAGE) == 0
                 ? (totalRecord / Pagination.RECORD_PER_PAGE)
                 : (totalRecord / Pagination.RECORD_PER_PAGE) + 1;
         //set nhung gia tri vao pageControl
         pageControl.setPage(page);
         pageControl.setTotalPage(totalPage);
         pageControl.setTotalRecord(totalRecord);
-        
+
         return debtList;
     }
 }
