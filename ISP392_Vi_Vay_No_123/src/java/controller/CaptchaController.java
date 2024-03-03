@@ -66,6 +66,7 @@ public class CaptchaController extends HttpServlet {
         BufferedImage captchaImage = c.generateCaptchaImage(text);
         response.setContentType("image/png");
         session.setAttribute("captchaText", text);
+        session.setAttribute("captchaText", text);
         OutputStream outputStream = response.getOutputStream();
         ImageIO.write(captchaImage, "png", outputStream);
         outputStream.close();

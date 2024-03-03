@@ -17,15 +17,15 @@
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
-        <link rel="stylesheet" href="../assets/css/tiny-slider.css">
-        <link rel="stylesheet" href="../assets/css/aos.css">
-        <link rel="stylesheet" href="../assets/css/glightbox.min.css">
-        <link rel="stylesheet" href="../assets/css/homepage.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/tiny-slider.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/aos.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/glightbox.min.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/homepage.css">
 
-        <link rel="stylesheet" href="../assets/css/flatpickr.min.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/flatpickr.min.css">
 
 
-        <link rel="stylesheet" href="../assets/css/header.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/header.css">
 
     </head>
     <body>
@@ -35,7 +35,7 @@
                 <nav>
                     <ul>
                         <li class="active"><a href="client/homepage.jsp">Home</a></li>
-                         <a href="/ISP392_Vi_Vay_No_123/changepassword.jsp">Change Password</a>
+                         <a href="/ISP392_Vi_Vay_No_123/client/changepassword.jsp">Change Password</a>
                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                         <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                         
@@ -48,7 +48,7 @@
                 <div class="dropdown">
                     <button class="dropbtn">Hello, <%= user.getUsername() %></button>
                     <div class="dropdown-content">
-                        <a href="/ISP392_Vi_Vay_No_123/changepassword.jsp">Change Password</a>
+                        <a href="/ISP392_Vi_Vay_No_123/client/changepassword.jsp">Change Password</a>
                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                         <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                         <% if (isAdmin != null && isAdmin) { %>

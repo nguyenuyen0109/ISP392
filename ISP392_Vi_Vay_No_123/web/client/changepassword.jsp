@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/changepass.css"/>
     </head>
     <body>
-      <jsp:include page="/navigator/toast.jsp" />
+        <jsp:include page="/navigator/toast.jsp" />
         <jsp:include page="/navigator/header.jsp" />
         <div class="mainDiv">
             <div class="cardStyle">
@@ -51,7 +51,7 @@
                         <img src="/ISP392_Vi_Vay_No_123/assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 8%; margin-left: 15px">
                     </div>
                     <input type="hidden" value="/client/changepassword.jsp" name="uri">
-                  
+
                     <div class="buttonWrapper">
                         <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">
                             <span>Continue</span>
@@ -63,6 +63,57 @@
         </div>
         <script src="/ISP392_Vi_Vay_No_123/assets/js/changepass.js"></script>
         <script src="/ISP392_Vi_Vay_No_123/assets/js/captcha.js"></script>
-        <script src="/ISP392_Vi_Vay_No_123/assets/js/validate.js"></script>
+        <script>
+                            function validatePasswordConditions() {
+                                var password = document.getElementById("pass");
+                                var feedback = document.getElementById("passwordConditionsFeedback");
+
+                                // Điều kiện mật khẩu: ít nhất 8 ký tự, bao gồm chữ thường, chữ hoa, số và ký tự đặc biệt
+                                var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+                                if (!re.test(password.value)) {
+                                    password.classList.add("is-invalid");
+                                    feedback.textContent = 'Password must be at least 8 characters long and include lowercase and uppercase letters, numbers, and special characters';
+                                    // event.preventDefault();
+                                } else {
+                                    password.classList.remove("is-invalid");
+                                    feedback.textContent = ''; // Clear feedback
+                                }
+                            }
+
+                            function validatePassword() {
+                                var password = document.getElementById("pass");
+                                var confirmPassword = document.getElementById("re_pass");
+                                var feedback = document.getElementById("passwordFeedback");
+
+                                if (password.value !== confirmPassword.value) {
+                                    password.classList.add("is-invalid");
+                                    confirmPassword.classList.add("is-invalid");
+                                    feedback.textContent = 'Passwords do not match';
+
+                                } else {
+                                    password.classList.remove("is-invalid");
+                                    confirmPassword.classList.remove("is-invalid");
+                                    feedback.textContent = ''; // Clear feedback
+                                }
+                            }
+                            document.getElementById("pass").onblur = validatePasswordConditions;
+                            document.getElementById("re_pass").onblur = validatePassword;
+
+                            document.getElementById("signupForm").addEventListener("submit", function (event) {
+                                // Kiểm tra điều kiện của biểu mẫu ở đây
+                                var pw = document.getElementById("passwordFeedback").textContent;
+                                var pwc = document.getElementById("passwordConditionsFeedback").textContent;
+                                var o = document.getElementById("password1").textContent;
+                                    if (pw !== '' && pwc !== '' || o === '') {
+                                        event.preventDefault();
+                                        // Hiển thị thông báo hoặc xử lý lỗi khác tùy thuộc vào trường hợp của bạn
+                                        alert('Please correct the information!'); // Thay bằng thông báo hoặc xử lý lỗi khác
+                                    }
+
+                                
+                            });
+
+        </script>
     </body>
 </html>

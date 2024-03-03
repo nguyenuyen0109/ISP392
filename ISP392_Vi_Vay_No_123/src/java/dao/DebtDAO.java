@@ -73,6 +73,8 @@ public class DebtDAO {
                     double amount = rs.getDouble("amount");
                     double interest = rs.getDouble("interestRate");
                     double due = rs.getDouble("due");
+                    //viet them
+            
                     DebtDetail debt = new DebtDetail(id, description, debtType, amount, image, createAt, 
                             idDebtor, accountid, interest, due, debtType);
                     debtList.add(debt);

@@ -93,6 +93,9 @@ public class ChangePasswordController extends HttpServlet {
             Integer accountId = (Integer) session.getAttribute("account_id");
             String username = (String) session.getAttribute("username");
             AccountDAO accountDAO = new AccountDAO();
+            if(!newpassword.equals(confirmPassword)){
+                request.setAttribute("alert","Password do not match");
+            }
             if(new Hash().hashPassword(oldPassword).equals(new Hash().hashPassword(newpassword))){
                 request.setAttribute("alert", "New password must be different from old password!");
                 request.getRequestDispatcher("/client/changepassword.jsp").forward(request, response);

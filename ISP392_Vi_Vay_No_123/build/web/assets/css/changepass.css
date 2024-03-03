@@ -138,3 +138,15 @@ button[disabled] {
     font-size: 80%;
     color: #dc3545;
 }
+
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+
+
+.register-form {
+    width: 100%;
+}

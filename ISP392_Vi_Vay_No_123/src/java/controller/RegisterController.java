@@ -44,6 +44,9 @@ public class RegisterController extends HttpServlet {
             request.getRequestDispatcher("/client/register.jsp").forward(request, response);
             return;
         }
+        if(!password.equals(rePassword)){
+            request.setAttribute("alert", "Password do not match");
+        }
 
         // Create an Account object to store the registration information
         Account newAccount = new Account();

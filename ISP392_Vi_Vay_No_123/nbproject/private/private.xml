@@ -3,7 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/FotgotPasswordController.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/LoginController.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/CaptchaController.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/client/addDebtorModal.jsp</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/DebtorController.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/client/register.jsp</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/navigator/header.jsp</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/assets/js/validate.js</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/client/login.jsp</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/VerifyCaptchaController.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/ResetPasswordController.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/dao/DebtDAO.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/model/PageControl.java</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/client/resetpassword.jsp</file>
+            <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/client/editDebtorDetailModal.jsp</file>
         </group>
     </open-files>
 </project-private>
