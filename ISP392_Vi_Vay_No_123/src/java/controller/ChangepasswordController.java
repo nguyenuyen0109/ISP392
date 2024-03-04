@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import model.Account;
 import utils.Captcha;
 import utils.Hash;
+import utils.Validate;
 
 /**
  *
@@ -93,6 +94,10 @@ public class ChangePasswordController extends HttpServlet {
             Integer accountId = (Integer) session.getAttribute("account_id");
             String username = (String) session.getAttribute("username");
             AccountDAO accountDAO = new AccountDAO();
+            if(!Validate.isValidPassword(newpassword)){
+            request.setAttribute("alert", "Invalid information");
+            return;
+            }
             if(!newpassword.equals(confirmPassword)){
                 request.setAttribute("alert","Password do not match");
             }
@@ -131,3 +136,4 @@ public class ChangePasswordController extends HttpServlet {
     }// </editor-fold>
 
 }
+

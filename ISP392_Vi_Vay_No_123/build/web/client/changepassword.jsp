@@ -53,7 +53,7 @@
                     <input type="hidden" value="/client/changepassword.jsp" name="uri">
 
                     <div class="buttonWrapper">
-                        <button type="submit" id="submitButton" onclick="validateSignupForm()" class="submitButton pure-button pure-button-primary">
+                        <button type="submit" id="submitButton"  class="submitButton pure-button pure-button-primary">
                             <span>Continue</span>
                         </button>
                     </div>
@@ -105,7 +105,7 @@
                                 var pw = document.getElementById("passwordFeedback").textContent;
                                 var pwc = document.getElementById("passwordConditionsFeedback").textContent;
                                 var o = document.getElementById("password1").textContent;
-                                    if (pw !== '' && pwc !== '' || o === '') {
+                                    if (pw !== '' || pwc !== '' || o === '') {
                                         event.preventDefault();
                                         // Hiển thị thông báo hoặc xử lý lỗi khác tùy thuộc vào trường hợp của bạn
                                         alert('Please correct the information!'); // Thay bằng thông báo hoặc xử lý lỗi khác

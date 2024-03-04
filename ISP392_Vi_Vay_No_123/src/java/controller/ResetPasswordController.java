@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
 import utils.Hash;
+import utils.Validate;
 
 /**
  *
@@ -47,30 +48,33 @@ public class ResetPasswordController extends HttpServlet {
 
         Account user = new AccountDAO().getAccountByEmail(email);
         AccountDAO dao = new AccountDAO();
-        Boolean valid = dao.validatePassword(password);
         String alert = "";
         String url = "";
-        if (password.equals(retypePassword)) {
-            if (user == null) {
-                alert = "Email not found";
-            } else if (dao.checkToken(email, token) != null) {
-                user.setPassword(new Hash().hashPassword(password));
-                new AccountDAO().updatePassword(user.getUsername(), new Hash().hashPassword(password));
-                new AccountDAO().ResettToken(user.getId());
-                alert = "Reset password success";
-                url = "client/login.jsp";
+        if (Validate.isValidPassword(password)) {
+            if (password.equals(retypePassword)) {
+                if (user == null) {
+                    alert = "Email not found";
+                } else if (dao.checkToken(email, token) != null) {
+                    user.setPassword(new Hash().hashPassword(password));
+                    new AccountDAO().updatePassword(user.getUsername(), new Hash().hashPassword(password));
+                    new AccountDAO().ResettToken(user.getId());
+                    alert = "Reset password success";
+                    url = "client/login.jsp";
 
-            } else {
-                alert = "Invalid token!";
-                url = "client/resetpassword.jsp";
+                } else {
+                    alert = "Invalid token!";
+                    url = "client/resetpassword.jsp";
+                }
+
             }
-            request.setAttribute("alert", alert);
-            request.setAttribute("token", token);
-            request.setAttribute("email", email);
-
-            request.getRequestDispatcher(url).forward(request, response);
-        }else{
-            alert ="Fail to reset password";
+        } else {
+             url = "client/resetpassword.jsp";
+            alert = "Fail to reset password";
         }
+        request.setAttribute("alert", alert);
+        request.setAttribute("token", token);
+        request.setAttribute("email", email);
+
+        request.getRequestDispatcher(url).forward(request, response);
     }
 }

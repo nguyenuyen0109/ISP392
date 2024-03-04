@@ -16,7 +16,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/5bd22a55e3.js" crossorigin="anonymous"></script>
         <style>
- .actions {
+            .actions {
                 display: flex;
                 align-items: center;
                 justify-content: center; /* ?i?u ch?nh này d?a theo cách b?n mu?n các bi?u t??ng ???c hi?n th? */
@@ -304,18 +304,18 @@
                 border-radius: 2px;
             }
             .search-selection{
-                    color: #757575;
-                    position: relative;
-                    border-left: 1px solid #ccc;
-                    padding-left: 14px;
+                color: #757575;
+                position: relative;
+                border-left: 1px solid #ccc;
+                padding-left: 14px;
             }
             .search-selection-label{
-                    font-size: 14px;
-                    color: #757575;
-                    border: none !important;
-                    outline: none !important;
-            } 
-            
+                font-size: 14px;
+                color: #757575;
+                border: none !important;
+                outline: none !important;
+            }
+
             .search-selection-item{
                 background-color: #fff;
                 padding: 8px 8px;
@@ -344,7 +344,7 @@
             .search-btn:hover{
                 background-color: #4D6380;
             }
-             /* tu viet them phan sap xep */
+            /* tu viet them phan sap xep */
             .home-filter{
                 font-size: 13px;
                 display: flex;
@@ -430,6 +430,10 @@
                 justify-content: center;
                 /* line-height: 1.6rem; */
             }
+            .validation-feedback {
+                font-size: 80%;
+                color: #dc3545;
+            }
         </style>
         <script>
             $(document).ready(function () {
@@ -461,102 +465,102 @@
 
     </head>
     <body>
-    <jsp:include page="/navigator/toast.jsp" />
-    <jsp:include page="/navigator/header.jsp" />
-    <div class="container-xl">
-        <div class="table-responsive">
-            <div class="table-wrapper">
-                <div class="table-title">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h2>Debtor <b>List</b></h2>
-                        </div>
-                        <form action="debtor" method="get" class="search">
-                            <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery">
-                            <div class="search-selection">
-                                <select class="search-selection-label" name="searchType" >
-                                    <option class="search-selection-item">Search by</option>
-                                    <option class="search-selection-item" value="name">Name</option>
-                                    <option class="search-selection-item" value="address">Address</option>
-                                    <option class="search-selection-item" value="phone">Phone</option>
-                                    <option class="search-selection-item" value="email">Email</option>
-                                </select>
+        <jsp:include page="/navigator/toast.jsp" />
+        <jsp:include page="/navigator/header.jsp" />
+        <div class="container-xl">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2>Debtor <b>List</b></h2>
                             </div>
-                            <button class="search-btn" type="submit" name="action" value="search">
-                                <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </form>
+                            <form action="debtor" method="get" class="search">
+                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery">
+                                <div class="search-selection">
+                                    <select class="search-selection-label" name="searchType" >
+                                        <option class="search-selection-item">Search by</option>
+                                        <option class="search-selection-item" value="name">Name</option>
+                                        <option class="search-selection-item" value="address">Address</option>
+                                        <option class="search-selection-item" value="phone">Phone</option>
+                                        <option class="search-selection-item" value="email">Email</option>
+                                    </select>
+                                </div>
+                                <button class="search-btn" type="submit" name="action" value="search">
+                                    <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
 
-                        <div class="col-sm-6">
-                            <a href="#addDebtorModal" class="btn btn-success" id="add-new-debtor-btn" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debtor</span></a>
+                            <div class="col-sm-6">
+                                <a href="#addDebtorModal" class="btn btn-success" id="add-new-debtor-btn" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debtor</span></a>
+                            </div>
                         </div>
-                    </div>
-                        
-                </div>
 
-                
-                <div class="home-filter">
-                    <div class="selection-input">
-                        <span class="select-input__label">Sorted by</span>
-                        <i class="sort-icon fa-solid fa-angle-down"></i>	
-                        <ul class="select-input__list">
-                            <li class="select-input_item">
-                                <a href="debtor?action=sortByOldest" class="select-input__link">Oldest</a>
-                            </li>
-                            <li class="select-input_item">
-                                <a href="debtor?action=sortByNewest" class="select-input__link">Newest</a>
-                            </li>
-                            <li class="select-input_item">
-                                <a href="debtor?action=sortByHighLow" class="select-input__link">Amount from high to low</a>
-                            </li>
-                            <li class="select-input_item">
-                                <a href="debtor?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
-                            </li>
-                        </ul>
                     </div>
 
-                </div>
-                
+
+                    <div class="home-filter">
+                        <div class="selection-input">
+                            <span class="select-input__label">Sorted by</span>
+                            <i class="sort-icon fa-solid fa-angle-down"></i>	
+                            <ul class="select-input__list">
+                                <li class="select-input_item">
+                                    <a href="debtor?action=sortByOldest" class="select-input__link">Oldest</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debtor?action=sortByNewest" class="select-input__link">Newest</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debtor?action=sortByHighLow" class="select-input__link">Amount from high to low</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debtor?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
 
 
 
 
 
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>                       
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Total Debt</th>
-                            <th>Created At</th>
-                            <th>Update At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <c:forEach items="${listDebtor}" var="debtor">
-                        
-              
-                     <tbody>
-                            <tr>						
-                                <td>${debtor.id}</td>
-                                <td>${debtor.name}</td>
-                                <td>${debtor.address}</td>
-                                <td>${debtor.phone}</td>
-                                <td>${debtor.email}</td>
-                                <td>${debtor.totalDebt}</td>
-                                <td><fmt:formatDate value="${debtor.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                <td><fmt:formatDate value="${debtor.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>                                                                                                
 
-                                <td class="actions">
-                                    <!--<a href="./debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                    <a href="/ISP392_Vi_Vay_No_123/debt?debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
-                                    <!--<a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-<!--                                    <a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                    <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
-                                    <!-- Edit Debtor detail -->
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>                       
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Total Debt</th>
+                                <th>Created At</th>
+                                <th>Update At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <c:forEach items="${listDebtor}" var="debtor">
+
+
+                            <tbody>
+                                <tr>						
+                                    <td>${debtor.id}</td>
+                                    <td>${debtor.name}</td>
+                                    <td>${debtor.address}</td>
+                                    <td>${debtor.phone}</td>
+                                    <td>${debtor.email}</td>
+                                    <td>${debtor.totalDebt}</td>
+                                    <td><fmt:formatDate value="${debtor.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                    <td><fmt:formatDate value="${debtor.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>                                                                                                
+
+                                    <td class="actions">
+                                        <!--<a href="./debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
+                                        <a href="/ISP392_Vi_Vay_No_123/debt?debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                                        <!--<a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
+                                        <!--                                    <a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
+                                        <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
+                                        <!-- Edit Debtor detail -->
                                         <i class="fa fa-edit fa-2x"
                                            style="color: #469408"
                                            data-toggle="modal"
@@ -572,31 +576,31 @@
 
 
                                         &nbsp;&nbsp;&nbsp;
-                                </td>
+                                    </td>
 
-                            </tr>					
-                         </tbody>
-                    </c:forEach>
-                </table>
-            </div>
-        </div>        
-    </div>
-    <!-- Add Modal HTML -->
+                                </tr>					
+                            </tbody>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>        
+        </div>
+        <!-- Add Modal HTML -->
         <jsp:include page="../client/addDebtorModal.jsp"></jsp:include>
-        
-    <!-- Edit Debtor detail Modal  -->
-        <jsp:include page="../client/editDebtorDetailModal.jsp"></jsp:include>
-   
-    <!-- Pagination  -->
-        <jsp:include page="../client/pagination.jsp"></jsp:include>
-   
-    
 
-    
-    
-    
-    
-   
-    
-</body>
+            <!-- Edit Debtor detail Modal  -->
+        <jsp:include page="../client/editDebtorDetailModal.jsp"></jsp:include>
+
+            <!-- Pagination  -->
+        <jsp:include page="../client/pagination.jsp"></jsp:include>
+
+
+
+
+
+
+
+
+
+    </body>
 </html>

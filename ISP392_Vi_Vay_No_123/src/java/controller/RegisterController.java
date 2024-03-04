@@ -14,6 +14,7 @@ import utils.Captcha;
 import utils.Hash;
 import utils.Mail;
 import utils.Token;
+import utils.Validate;
 
 @WebServlet(name = "RegisterController", urlPatterns = {"/register"})
 public class RegisterController extends HttpServlet {
@@ -37,8 +38,12 @@ public class RegisterController extends HttpServlet {
         // You can add more validation logic here
         // Create an instance of AccountDAO
         AccountDAO accountDAO = new AccountDAO();
-
+        
         // Check if the username or email already exists
+        if(!Validate.isValidUsername(username) || !Validate.isValidEmail(email) || !Validate.isValidPassword(password)){
+           request.setAttribute("alert", "Invalid information");
+            return;
+        }
         if (accountDAO.checkUsernameAndEmailExists(username, email)) {
             request.setAttribute("alert", "Username or Email already exists. Please choose a different username or email.");
             request.getRequestDispatcher("/client/register.jsp").forward(request, response);
@@ -46,6 +51,7 @@ public class RegisterController extends HttpServlet {
         }
         if(!password.equals(rePassword)){
             request.setAttribute("alert", "Password do not match");
+            return;
         }
 
         // Create an Account object to store the registration information
