@@ -18,6 +18,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/5bd22a55e3.js" crossorigin="anonymous"></script>
         <script src="./assets/js/aboutDebtList.js"></script>
+        <script src="./assets/js/description.js"></script>
         <script>
             $(document).ready(function () {
                 // Activate tooltip
@@ -47,7 +48,7 @@
     <body>
         <jsp:include page="/navigator/header.jsp" />
         <%
-            ResultSet rsDebtType = (ResultSet)request.getAttribute("rsDebtType");
+            ResultSet rsDebtorName = (ResultSet)session.getAttribute("debtorName");
         %>
         <div class="container-xl">
             <div class="table-responsive">
@@ -55,6 +56,10 @@
                     <div class="table-title">
                         <div>
                             <h2>Debt List</h2>
+                            <h3 style="font-size: 13px; margin-top: 9px">Debtor Name: 
+                            <%if(rsDebtorName.next()){%>
+                                <%=rsDebtorName.getString("name")%>
+                                <%}%></h3>
                         </div>
                         <form action="debt" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
@@ -110,18 +115,22 @@
                                 <th>Description</th>						
                                 <th>Debt Type</th>
                                 <th>Amount</th>
-                                <th>Create At</th>
+                                <th>Interest Rate</th>
+                                <th>Due</th>
+                                <th>Total Amount</th>
+                                <th>Debt issuance</th>
                             </tr>
                         </thead>
                         <c:forEach items="${debtList}" var="debt">
                             <tr>                        
                                 <td>${debt.id}</td>
-                                <td>${debt.description}</td>
-                                <td><%if(rsDebtType.next()){%>
-                                    <%=rsDebtType.getString("name")%>
-                                    <%}%></td>
-                                <td>${debt.amount}</td>
-                                <td><fmt:formatDate value="${debt.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>                                                                                             
+                                <td class="description">${debt.description}</td>
+                                <td>${debt.debtTypeName}</td>
+                                <td><fmt:formatNumber value="${debt.amount}" pattern="#,##0"/></td>
+                                <td>${debt.interestRate}</td>
+                                <td>${debt.due}</td>
+                                <td><fmt:formatNumber value="${debt.totalAmount}" pattern="#,##0"/></td>
+                                <td><fmt:formatDate value="${debt.debtIssuance}" pattern="yyyy-MM-dd" /></td>                                                                                             
                                 <td>
                                     <button class="btn btn-info view-details-btn" 
                                             data-id="${debt.id}" 
@@ -283,7 +292,7 @@
                                 <label>Description</label>
                                 <input type="text" class="form-control" name="description" required>
                             </div>
-                            <div class="form-group">
+                            <div class="search-selection-item">
                                 <label>Debt Type:</label>
                                 <select name="debtType">
                                     <%while(rsDebtname.next()){%>
@@ -293,9 +302,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="Image">Image</label>
-                                <!-- Image element to display the selected image -->
                                 <img class="w-100 rounded mt-2 mb-2" id="previewimage" src="" alt="Preview Image">
-                                <input type="file" class="form-control" id="FileInput" onchange="handleFileSelect(event)">
+                                <input type="file" class="form-control-file" id="FileInput" onchange="handleFileSelect(event)">
                                 <input type="hidden" name="Image">
                             </div>
                             <div class="form-group">
@@ -306,9 +314,13 @@
                                 <label>Interest Rate (%/year)</label>
                                 <input type="number" class="form-control" name="interest" required>
                             </div>
-                            <div>
+                            <div class="form-group">
                                 <label>Due(month)</label>
                                 <input type="number" class="form-control" name="due" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Date issuance </label>
+                                <input type="date" class="form-control" name="dateIssuance">
                             </div>
                             <div class="form-group">
                                 <label>Total Amount</label>

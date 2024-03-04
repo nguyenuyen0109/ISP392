@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // L?ng nghe s? ki?n thay ??i trên các tr??ng input và g?i hàm calculateTotal
     document.querySelector('[name="amount"]').addEventListener('input', calculateTotal);
     document.querySelector('[name="interest"]').addEventListener('input', calculateTotal);
-    document.querySelector('[name="due"]').addEventListener('input', calculateTotal);
+    document.querySelector('[name="due"]').addEventListener('input', calculateTotal);                                                                                                                                                                                                                                  
 
     function handleFileSelect(event) {
         const file = event.target.files[0];

@@ -16,8 +16,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DebtDetail;
 import model.PageControl;
 import utils.Pagination;
@@ -48,7 +54,9 @@ public class DebtController extends HttpServlet {
         if (debtorId != null && !debtorId.isEmpty()) {
             try {
                 int debtorId1 = Integer.parseInt(debtorId);
+                ResultSet rsDebtorName = db.getData("select name from debtor where id = " + debtorId1);
                 session.setAttribute("debtorid", debtorId1);
+                session.setAttribute("debtorName", rsDebtorName);
                 //Integer accountId = (Integer) session.getAttribute("debtor_account_id");
                 // Integer debtorId = (Integer) session.getAttribute("debtor_id");
             } catch (NumberFormatException e) {
@@ -57,11 +65,7 @@ public class DebtController extends HttpServlet {
         }
         List<DebtDetail> debtList = pagination(request, pageControl);
         session.setAttribute("debtList", debtList);
-        ResultSet rsDebtType = db.getData("select * from debtdetails ddt\n"
-                + "inner join debttype dt on ddt.debtTypeId = dt.id\n"
-                + "where debtor_account_id = " + accountId + " and debtor_id= " + debtorId );
         ResultSet rsDebttype = db.getData("select * from debttype");
-        request.setAttribute("rsDebtType", rsDebtType);
         request.setAttribute("debtTypeName", rsDebttype);
         request.setAttribute("pageControl", pageControl);
         System.out.println(pageControl);
@@ -83,48 +87,26 @@ public class DebtController extends HttpServlet {
         double amount = Double.parseDouble(request.getParameter("amount"));
         double interest_rate = Double.parseDouble(request.getParameter("interest"));
         double due = Double.parseDouble(request.getParameter("due"));
+        String dateIssuanceStr = request.getParameter("dateIssuance");
+        Date dateUtil = null; // Sử dụng java.util.Date để parse hoặc khởi tạo
+        if (dateIssuanceStr != null && !dateIssuanceStr.isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                dateUtil = formatter.parse(dateIssuanceStr);
+            } catch (ParseException ex) {
+                Logger.getLogger(DebtController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            dateUtil = new Date(); // ngay hien tai
+        }
+        java.sql.Date dateSql = new java.sql.Date(dateUtil.getTime()); //chuyen tu util.Date sang sql.Date de luu vao database
         DebtDAO dao = new DebtDAO();
-        DebtDetail debt = new DebtDetail(description, debtTypeId, amount, image, debtorId,
-                accountId, interest_rate, due);
+        DebtDetail debt = new DebtDetail(description, amount, image, debtorId, accountId,
+                interest_rate, due, debtTypeId, dateSql );
         int n = dao.addDebt(debt, accountId, debtorId);
         response.sendRedirect("debt");
     }
-
-//    private void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String searchQuery = request.getParameter("searchQuery");
-//        String searchType = request.getParameter("searchType");
-//         HttpSession session = request.getSession();
-//        // Assuming 'accountId' is stored in session, retrieve it.
-//        Integer accountId = (Integer) session.getAttribute("debtor_account_id");
-//        Integer debtorId = (Integer) session.getAttribute("debtor_id");
-//        List<DebtDetail> debtList;
-//        DebtDAO dao = new DebtDAO();
-//        if ("amount".equals(searchType)) {
-//            debtList = dao.searchDebtByAmount(debtorId,accountId,searchQuery);
-//            request.setAttribute("debtList", debtList);
-//        }else if("description".equals(searchType)){
-//            debtList = dao.searchDebtByDescription(debtorId,accountId, searchQuery);
-//            request.setAttribute("debtList", debtList);
-//        }
-//        
-//        request.getRequestDispatcher("client/debtList.jsp").forward(request, response);
-//
-//    }
-//    private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-//        // Add new debt
-//         HttpSession session = request.getSession();
-//        // Assuming 'accountId' is stored in session, retrieve it.
-//        Integer accountId = (Integer) session.getAttribute("debtor_account_id");
-//        Integer debtorId = (Integer) session.getAttribute("debtor_id");
-//        String description = request.getParameter("description");
-//        boolean debtType = Boolean.parseBoolean(request.getParameter("debtType"));
-//        double amount = Double.parseDouble(request.getParameter("amount"));
-//        int interest_rate = Integer.parseInt(request.getParameter("interest_rate"));
-//        DebtDAO dao = new DebtDAO();
-//        DebtDetail debt = new DebtDetail(description, debtType, amount, debtorId,accountId, interest_rate);
-//        int n = dao.addDebt(debt,accountId,debtorId);
-//        response.sendRedirect("debt");
-//    }
+    
     private List<DebtDetail> pagination(HttpServletRequest request, PageControl pageControl) {
         HttpSession session = request.getSession();
         Integer accountId = (Integer) session.getAttribute("account_id");
@@ -148,34 +130,37 @@ public class DebtController extends HttpServlet {
                 : request.getParameter("action");
         switch (action) {
             case "search":
-                String searchType = request.getParameter("searchType");
+//                String searchType = request.getParameter("searchType");
                 String keyword = request.getParameter("searchQuery");
-                switch (searchType) {
-                    case "description":
-                        totalRecord = debtDAO.findTotalRecordByDescription(accountId, debtorId, keyword);
-                        debtList = debtDAO.findByPageByDescription(accountId, debtorId, keyword, page);
-                        pageControl.setUrlPattern("debt?action=search&searchType=description&searchQuery=" + keyword + "&");
-                        break;
-                    case "amount":
-                        double amount;
-                        try {
-                            amount = Double.parseDouble(keyword);
-                        } catch (NumberFormatException e) {
-                            pageControl.setUrlPattern("debt?");
-                            break;
-                        }
-                        totalRecord = debtDAO.findTotalRecordByAmount(accountId, debtorId, Double.parseDouble(keyword));
-                        debtList = debtDAO.findByPageByAmount(accountId, debtorId, Double.parseDouble(keyword), page);
-                        pageControl.setUrlPattern("debt?action=search&searchType=amount&searchQuery=" + keyword + "&");
-                        break;
-                    default:
-                        //neu ko chon 
-                        totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
-                        //tim ve danh sach debt o trang chi dinh
-                        debtList = debtDAO.findByPage(accountId, debtorId, page);
-                        pageControl.setUrlPattern("debt?");
-                        break;
-                }
+                totalRecord = debtDAO.findTotalRecordToSearch(accountId, debtorId, keyword);
+                debtList = debtDAO.findByPageToSearch(accountId, debtorId, keyword, page);
+                pageControl.setUrlPattern("debt?");
+//                switch (searchType) {
+//                    case "description":
+//                        totalRecord = debtDAO.findTotalRecordByDescription(accountId, debtorId, keyword);
+//                        debtList = debtDAO.findByPageByDescription(accountId, debtorId, keyword, page);
+//                        pageControl.setUrlPattern("debt?action=search&searchType=description&searchQuery=" + keyword + "&");
+//                        break;
+//                    case "amount":
+//                        double amount;
+//                        try {
+//                            amount = Double.parseDouble(keyword);
+//                        } catch (NumberFormatException e) {
+//                            pageControl.setUrlPattern("debt?");
+//                            break;
+//                        }
+//                        totalRecord = debtDAO.findTotalRecordByAmount(accountId, debtorId, Double.parseDouble(keyword));
+//                        debtList = debtDAO.findByPageByAmount(accountId, debtorId, Double.parseDouble(keyword), page);
+//                        pageControl.setUrlPattern("debt?action=search&searchType=amount&searchQuery=" + keyword + "&");
+//                        break;
+//                    default:
+//                        //neu ko chon 
+//                        totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
+//                        //tim ve danh sach debt o trang chi dinh
+//                        debtList = debtDAO.findByPage(accountId, debtorId, page);
+//                        pageControl.setUrlPattern("debt?");
+//                        break;
+//                }
                 break;
             case "sortByOldest":
                 totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
