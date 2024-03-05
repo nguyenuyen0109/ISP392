@@ -69,7 +69,7 @@ public class DebtController extends HttpServlet {
         Integer accountId = (Integer) session.getAttribute("account_id");
         Integer debtorId = (Integer) session.getAttribute("debtorid");
         String description = request.getParameter("description");
-        boolean debtType = Boolean.parseBoolean(request.getParameter("debtType"));
+        int debtType = Integer.parseInt(request.getParameter("debtType"));
         double amount = Double.parseDouble(request.getParameter("amount"));
         int interest_rate = Integer.parseInt(request.getParameter("interest_rate"));
         DebtDAO dao = new DebtDAO();
@@ -195,15 +195,15 @@ public class DebtController extends HttpServlet {
 
                     break;
                 case "Receivable":
-                    totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, true);
-                    debtList = debtDAO.findByPageByDebtType(accountId, debtorId, true, page);
+                    totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 1);
+                    debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 1, page);
                     pageControl.setUrlPattern("debt?action=Receivable&");
                     //request.setAttribute("debtList", debtList);
                     
                     break;
                 case "Debt":
-                    totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, false);
-                    debtList = debtDAO.findByPageByDebtType(accountId, debtorId, false, page);
+                    totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 2);
+                    debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 2, page);
                     pageControl.setUrlPattern("debt?action=Debt&");
                     //request.setAttribute("debtList", debtList);
                     break;
@@ -223,7 +223,6 @@ public class DebtController extends HttpServlet {
         pageControl.setPage(page);
         pageControl.setTotalPage(totalPage);
         pageControl.setTotalRecord(totalRecord);
-        
         return debtList;
     }
 }

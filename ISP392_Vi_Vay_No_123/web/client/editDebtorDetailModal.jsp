@@ -18,7 +18,7 @@
             </div>
             <div class="modal-body">
                 <!-- Your form for editing debtor details -->
-                <form id="editDebtorDetailForm" action="debtor?action=update" method="post">
+                <form id="editDebtorDetailForm" action="debtor?action=update" method="post"id ="validForm">
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
                         <label for="name">Name:</label>
@@ -29,18 +29,18 @@
                     <div class="form-group">
                         <label for="address">Address:</label>
                         <input type="text" class="form-control" id="address"
-                               name="address" placeholder="Enter address" required>
+                               name="address" placeholder="Enter address" >
                         <div id="addressError" class="error" style="color: #FF0000"></div>
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone:</label>
                         <input type="text" class="form-control" id="phone"
-                               name="phone" placeholder="Enter phone" required>
+                               name="phone" placeholder="Enter phone" >
                         <div id="phoneError" class="error" style="color: #FF0000"></div>
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email"
+                        <input type="text" class="form-control" id="email"
                                name="email" placeholder="Enter email" >
                         <div id="emailError" class="error" style="color: #FF0000"></div>
                     </div>
@@ -61,7 +61,6 @@
     </div>
 </div>
 
-<!-- JavaScript code to set the values of fields in the modal and validate -->
 <script>
     function editDebtorDetailModal(id, name, address, phone, email, totalDebt) {
         document.getElementById('id').value = id;
@@ -71,53 +70,38 @@
         document.getElementById('email').value = email;
         document.getElementById('totalDebt').value = totalDebt;
     }
-
-    // Function to validate form
-    function validateForm() {
-        var name = $('#name').val();
-        var address = $('#address').val();
-        var phone = $('#phone').val();
-        var email = $('#email').val();
-        var valid = true;
-
-        // Validate name (only letters)
-        if (!name.trim()) {
-            $('#nameError').html('Name cannot be empty');
-            valid = false;
-        } else {
-            $('#nameError').html('');
-        }
-
-
-        // Validate address (letters and numbers)
-        if (!/^[a-zA-Z0-9\s]+$/.test(address)) {
-            $('#addressError').html('Address must contain only letters and number');
-            valid = false;
-        } else {
-            $('#addressError').html('');
-        }
-
-        // Validate phone (only numbers)
-        if (!/^[0-9]{10,}$/.test(phone)) {
-            $('#phoneError').html('Phone must contain at least 10 numbers');
-            valid = false;
-        } else {
-            $('#phoneError').html('');
-        }
-
-        // Validate email format
-        if (email !== '' && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-            $('#emailError').html('Invalid email address');
-            valid = false;
-        } else {
-//            $('#emailError').html('');
-        }
-
-        return valid;
+function validateEmail(email) {
+    if (email.trim() === "")
+        return true; 
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
     }
+    return true;
+}
 
-    // Attach validation function to form submission
-    $('#editDebtorDetailForm').submit(function () {
-        return validateForm();
-    });
+function validatePhone(phone) {
+    if (phone.trim() === "")
+        return true; 
+    var phoneRegex = /^\d{10,}$/;
+    if (!phoneRegex.test(phone)) {
+        alert("Phone must be a number with at least 10 digits.");
+        return false;
+    }
+    return true;
+}
+
+document.getElementById("validForm").addEventListener("submit", function (event) {
+    var email = document.forms["debtorForm"]["email"].value.trim();
+    var phone = document.forms["debtorForm"]["phone"].value.trim();
+    
+    if (!validateEmail(email) || !validatePhone(phone)) {
+        event.preventDefault();
+        alert("Please correct the information");
+    }
+});
 </script>
+
+
+

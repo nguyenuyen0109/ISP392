@@ -33,7 +33,7 @@ public class DebtDAO {
         int n = 0;
         String sql = "insert into debtdetails ("
                 + "description, "
-                + "debtType, "
+                + "debtTypeId, "
                 + "image, "
                 + "amount, "
                 + "interestRate,"
@@ -43,7 +43,7 @@ public class DebtDAO {
                 + "values (?,?,?,?,?,?,?,?);";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, debt.getDescription());
-            ps.setBoolean(2, debt.isDebtType()); //true=Debt, false= Receivable
+            ps.setInt(2, debt.isDebtType());
             ps.setString(3, debt.getImage());
             ps.setDouble(4, debt.getAmount());
             ps.setDouble(5, debt.getInterestRate());
@@ -68,14 +68,14 @@ public class DebtDAO {
                     int id = rs.getInt("id");
                     String description = rs.getString("description");
                     String image = rs.getString("image");
-                    boolean debtType = rs.getBoolean("debtType");
+                    int debtType = rs.getInt("debtTypeId");
                     Timestamp createAt = rs.getTimestamp("createdAt");
                     double amount = rs.getDouble("amount");
                     double interest = rs.getDouble("interestRate");
                     double due = rs.getDouble("due");
                     //viet them
             
-                    DebtDetail debt = new DebtDetail(id, description, debtType, amount, image, createAt, 
+                    DebtDetail debt = new DebtDetail(id, description, amount, image, createAt, 
                             idDebtor, accountid, interest, due, debtType);
                     debtList.add(debt);
                 }
@@ -133,7 +133,7 @@ public class DebtDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String description = rs.getString("description");
-                boolean debtType = rs.getBoolean("debtType");
+                int debtType = rs.getInt("debtTypeId");
                 double amount = rs.getDouble("amount");
                 Timestamp createAt = rs.getTimestamp("createdAt");
                 DebtDetail debt = new DebtDetail(id, description, debtType, amount, createAt);
@@ -156,7 +156,7 @@ public class DebtDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String description = rs.getString("description");
-                boolean debtType = rs.getBoolean("debtType");
+                int debtType = rs.getInt("debtTypeId");
                 double amount = rs.getDouble("amount");
                 Timestamp createAt = rs.getTimestamp("createdAt");
                 DebtDetail debt = new DebtDetail(id, description, debtType, amount, createAt);
@@ -170,18 +170,18 @@ public class DebtDAO {
         return debtList;
     }
 
-    public List<DebtDetail> filterByReceivable(int idDebtor, int accountid, String action) {
+    public List<DebtDetail> filterByReceivable(int idDebtor, int accountid, int debttypeid) {
         List<DebtDetail> debtList = new ArrayList<>();
-        String sql = "select * from debtdetails where debtor_id= and debtor_account_id and debtType like ?";
+        String sql = "select * from debtdetails where debtor_id= and debtor_account_id=? and debtTypeId = ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(2, accountid);
             preparedStatement.setInt(1, idDebtor);
-            preparedStatement.setString(3, "%"+action+"%");
+            preparedStatement.setInt(3,debttypeid );
             try (ResultSet rs = preparedStatement.executeQuery()) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String description = rs.getString("description");
-                boolean debtType = rs.getBoolean("debtType");
+                int debtType = rs.getInt("debtTypeId");
                 double amount = rs.getDouble("amount");
                 Timestamp createAt = rs.getTimestamp("createdAt");
                 DebtDetail debt = new DebtDetail(id, description, debtType, amount, createAt);
@@ -235,7 +235,7 @@ public List<DebtDetail> findByPage(int accountId, int debtorId, int page) {
             DebtDetail debt = new DebtDetail();
             debt.setId(resultSet.getInt("id"));
             debt.setDescription(resultSet.getString("description"));
-            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setDebtType(resultSet.getInt("debtTypeId"));
             debt.setAmount(resultSet.getDouble("amount"));
             debt.setCreatAt(resultSet.getTimestamp("createdAt"));
             //viet them
@@ -325,7 +325,7 @@ public List<DebtDetail> findByPageByDescription(int accountId, int debtorId, Str
             DebtDetail debt = new DebtDetail();
             debt.setId(resultSet.getInt("id"));
             debt.setDescription(resultSet.getString("description"));
-            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setDebtType(resultSet.getInt("debtTypeId"));
             debt.setAmount(resultSet.getDouble("amount"));
             debt.setCreatAt(resultSet.getTimestamp("createdAt"));
             debtList.add(debt);
@@ -369,7 +369,7 @@ public int findTotalRecordByAmount(int accountId, int debtorId, double amount) {
                     DebtDetail debt = new DebtDetail();
                     debt.setId(resultSet.getInt("id"));
                     debt.setDescription(resultSet.getString("description"));
-                    debt.setDebtType(resultSet.getBoolean("debtType"));
+                    debt.setDebtType(resultSet.getInt("debtTypeId"));
                     debt.setAmount(resultSet.getDouble("amount"));
                     debt.setCreatAt(resultSet.getTimestamp("createdAt"));
                     debtList.add(debt);
@@ -400,7 +400,7 @@ public List<DebtDetail> findByPageAndSortByOldest(int accountId, int debtorId, i
             DebtDetail debt = new DebtDetail();
             debt.setId(resultSet.getInt("id"));
             debt.setDescription(resultSet.getString("description"));
-            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setDebtType(resultSet.getInt("debtTypeId"));
             debt.setAmount(resultSet.getDouble("amount"));
             debt.setCreatAt(resultSet.getTimestamp("createdAt"));
             debtList.add(debt);
@@ -433,7 +433,7 @@ public List<DebtDetail> findByPageAndSortByNewest(int accountId, int debtorId, i
             DebtDetail debt = new DebtDetail();
             debt.setId(resultSet.getInt("id"));
             debt.setDescription(resultSet.getString("description"));
-            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setDebtType(resultSet.getInt("debtTypeId"));
             debt.setAmount(resultSet.getDouble("amount"));
             debt.setCreatAt(resultSet.getTimestamp("createdAt"));
             debtList.add(debt);
@@ -474,7 +474,7 @@ private List<DebtDetail> findByPageAndSortDebtAmount(int accountId, int debtorId
             DebtDetail debt = new DebtDetail();
             debt.setId(resultSet.getInt("id"));
             debt.setDescription(resultSet.getString("description"));
-            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setDebtType(resultSet.getInt("debtTypeId"));
             debt.setAmount(resultSet.getDouble("amount"));
             debt.setCreatAt(resultSet.getTimestamp("createdAt"));
             debtList.add(debt);
@@ -486,17 +486,17 @@ private List<DebtDetail> findByPageAndSortDebtAmount(int accountId, int debtorId
     return debtList;
 }
 
-public int findTotalRecordByDebtType(int accountId, int debtorId, boolean isDebtType) {
+public int findTotalRecordByDebtType(int accountId, int debtorId, int debtType) {
     int totalRecord = 0;
     PreparedStatement ps = null;
     ResultSet resultSet = null;
 
     try {
-        String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtType = ?";
+        String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtTypeId = ?";
         ps = db.getConnection().prepareStatement(sql);
         ps.setInt(1, accountId);
         ps.setInt(2, debtorId);
-        ps.setBoolean(3, isDebtType);
+        ps.setInt(3, debtType);
         resultSet = ps.executeQuery();
 
         if (resultSet.next()) {
@@ -511,18 +511,18 @@ public int findTotalRecordByDebtType(int accountId, int debtorId, boolean isDebt
     return totalRecord;
 }
 
-public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, boolean isDebtType, int page) {
+public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, int debtType, int page) {
     List<DebtDetail> debtList = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet resultSet = null;
 
     try {
         int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
-        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtType = ? LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtTypeId = ? LIMIT ? OFFSET ?";
         ps = db.getConnection().prepareStatement(sql);
         ps.setInt(1, accountId);
         ps.setInt(2, debtorId);
-        ps.setBoolean(3, isDebtType);
+        ps.setInt(3, debtType);
         ps.setInt(4, Pagination.RECORD_PER_PAGE);
         ps.setInt(5, offset);
         resultSet = ps.executeQuery();
@@ -531,7 +531,7 @@ public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, boolea
             DebtDetail debt = new DebtDetail();
             debt.setId(resultSet.getInt("id"));
             debt.setDescription(resultSet.getString("description"));
-            debt.setDebtType(resultSet.getBoolean("debtType"));
+            debt.setDebtType(resultSet.getInt("debtTypeId"));
             debt.setAmount(resultSet.getDouble("amount"));
             debt.setCreatAt(resultSet.getTimestamp("createdAt"));
             debtList.add(debt);
@@ -567,7 +567,7 @@ public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, boolea
 //            System.out.println(debtDetail);
 //        }
     System.out.println("-------List---------");
-    DebtDetail debt = new DebtDetail("vay mua DT", true, 100000, null, 142, 10, 0.01, 2);
+    DebtDetail debt = new DebtDetail("vay mua DT", 3, 100000, null, 142, 10, 0.01, 2);
     int n = dao.addDebt(debt, 10, 142);
     
 //    List<DebtDetail> list2 = dao.sortDebtByAmountHightLow(1, 2);
