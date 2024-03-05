@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="../assets/css/flatpickr.min.css">
 
 
-        <title>Financing &mdash; Free Bootstrap 5 Website Template by Untree.co</title>
+        <title>DEBIT NOTE</title>
 
     </head>
     <body>

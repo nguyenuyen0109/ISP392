@@ -44,7 +44,7 @@
         </div>
     </div>
 </div>
-<script>
+<!--<script>
     function validateEmail(email) {
         if (email === "")
             return true; // Email có th? tr?ng
@@ -102,6 +102,41 @@
             alert("Please correct the information");
         }
     });
-</script>
+</script>-->
+
+<script>
+    function validateEmail() {
+        var email = document.forms["debtorForm"]["email"].value.trim();
+        if (email === "")
+            return true; 
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(email)){
+            alert("Please enter a valid email address.");
+            return false;
+        }
+        return true;
+    }
+    
+    function validatePhone() {
+        var phone = document.forms["debtorForm"]["phone"].value.trim();
+        if (phone === "")
+            return true; 
+        var phoneRegex = /^\d{10,}$/;
+        if(!phoneRegex.test(phone)){
+            alert("Phone must be a number with at least 10 digits.");
+           return false;
+        }
+        return true;
+    }
+
+    document.getElementById("debtorForm").addEventListener("submit", function (event) {
+        if (!validateEmail()|| !validatePhone()) {
+            event.preventDefault();
+            alert("Please correct the information");
+        }
+    });
+    
+    
+    </script>
 </body>
 </html>
