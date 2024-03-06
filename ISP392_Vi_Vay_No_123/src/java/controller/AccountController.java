@@ -54,13 +54,14 @@ public class AccountController extends HttpServlet {
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String mobileNumber = req.getParameter("mobileNumber");
+        
         String emailAddress = req.getParameter("emailAddress");
         String address = req.getParameter("address");
         boolean isActive = Boolean.parseBoolean(req.getParameter("isActive"));
         String avatarUrl = req.getParameter("avatarUrl");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
         int role = Integer.parseInt(req.getParameter("roleId"));
-
+       
         Account newAccount = new Account();
         newAccount.setUsername(username);
         newAccount.setPassword(password);

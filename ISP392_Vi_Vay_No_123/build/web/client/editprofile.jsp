@@ -95,29 +95,29 @@
             </div>
         </form>
         <script>
-            function editDebtorDetailModal(address, phone) {
-                document.getElementById('phone').value = phone;
-            }
+        function editDebtorDetailModal(address, phone) {
+            document.getElementById('phone').value = phone;
+        }
 
-            function validatePhone(phone) {
-                if (phone.trim() === "")
-                    return true;
-                var phoneRegex = /^\d{10,}$/;
-                if (!phoneRegex.test(phone)) {
-                    alert("Phone must be a number with at least 10 digits.");
-                    return false;
-                }
+        function validatePhone(phone) {
+            if (phone.trim() === "")
                 return true;
+            var phoneRegex = /^\d{10,}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Phone must be a number with at least 10 digits.");
+                return false;
             }
+            return true;
+        }
 
-            document.getElementById("validForm").addEventListener("submit", function (event) {
-                var phone = document.forms["debtorForm"]["phone"].value.trim();
+        document.getElementById("editProfile").addEventListener("submit", function (event) {
+            var phone = document.forms["editProfile"]["phone"].value.trim();
 
-                if (!validateEmail(email) || !validatePhone(phone)) {
-                    event.preventDefault();
-                    alert("Please correct the information");
-                }
-            });
-        </script>                     
+            if (!validatePhone(phone)) {
+                event.preventDefault();
+                alert("Please correct the information");
+            }
+        });
+    </script>                      
     </body>
 </html>
