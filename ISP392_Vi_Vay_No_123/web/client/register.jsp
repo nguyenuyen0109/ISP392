@@ -112,13 +112,14 @@
                                                 feedback.textContent = ''; // Clear feedback
                                             }
                                         }
-           
+         
                                         function validateUsername() {
                                             var username = document.getElementById("username");
                                             var feedback = document.getElementById("usernameFeedback");
                                             var re = /^[a-zA-Z0-9._]+$/;
+                                            
 
-                                            if (!re.test(username.value) || username.value.includes(" ")) {
+                                            if (!re.test(username.value) || username.value.includes(" ") || username.value.trim() !== username.value) {
                                                 username.classList.add("is-invalid");
                                                 feedback.textContent = 'Invalid username. Username cannot contain spaces or special characters';
                 
@@ -126,6 +127,7 @@
                                                 username.classList.remove("is-invalid");
                                                 feedback.textContent = ''; // Clear feedback
                
+
                                             }
                                         }
 
@@ -153,10 +155,9 @@
                                         document.getElementById("register-form").addEventListener("submit", function (event) {
                                             var passwordFeedback = document.getElementById("passwordFeedback").textContent;
                                             var emailFeedback = document.getElementById("emailFeedback").textContent;
-                                            var phoneFeedback = document.getElementById("phoneFeedback").textContent;
+//                                            var phoneFeedback = document.getElementById("phoneFeedback").textContent;
                                             var usernameFeedback = document.getElementById("usernameFeedback").textContent;
                                             var passwordConditionsFeedback = document.getElementById("passwordConditionsFeedback").textContent;
-
                                             if (passwordFeedback !== '' || emailFeedback !== ''||
                                                     usernameFeedback !== '' || passwordConditionsFeedback !== '') {
                                                 event.preventDefault();
