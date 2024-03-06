@@ -112,19 +112,6 @@
                                                 feedback.textContent = ''; // Clear feedback
                                             }
                                         }
-                                        function validatePhone() {
-                                            var phone = document.getElementById("phone");
-                                            var feedback = document.getElementById("phoneFeedback");
-                                            var re = /^\d{10,11}$/;
-
-                                            if (!re.test(phone.value)) {
-                                                phone.classList.add("is-invalid");
-                                                feedback.textContent = 'Invalid phone number';
-                                            } else {
-                                                phone.classList.remove("is-invalid");
-                                                feedback.textContent = ''; // Clear feedback
-                                            }
-                                        }
            
                                         function validateUsername() {
                                             var username = document.getElementById("username");
@@ -134,11 +121,11 @@
                                             if (!re.test(username.value) || username.value.includes(" ")) {
                                                 username.classList.add("is-invalid");
                                                 feedback.textContent = 'Invalid username. Username cannot contain spaces or special characters';
-                                                return false;
+                
                                             } else {
                                                 username.classList.remove("is-invalid");
                                                 feedback.textContent = ''; // Clear feedback
-                                                return true;
+               
                                             }
                                         }
 
@@ -161,7 +148,6 @@
                                         document.getElementById("pass").onblur = validatePasswordConditions;
                                         document.getElementById("re_pass").onblur = validatePassword;
                                         document.getElementById("email").onblur = validateEmail;
-                                        document.getElementById("phone").onblur = validatePhone;
                                         document.getElementById("username").onblur = validateUsername;
 
                                         document.getElementById("register-form").addEventListener("submit", function (event) {
@@ -171,7 +157,7 @@
                                             var usernameFeedback = document.getElementById("usernameFeedback").textContent;
                                             var passwordConditionsFeedback = document.getElementById("passwordConditionsFeedback").textContent;
 
-                                            if (passwordFeedback !== '' || emailFeedback !== '' || phoneFeedback !== '' ||
+                                            if (passwordFeedback !== '' || emailFeedback !== ''||
                                                     usernameFeedback !== '' || passwordConditionsFeedback !== '') {
                                                 event.preventDefault();
                                                 alert('Please correct the information!');
