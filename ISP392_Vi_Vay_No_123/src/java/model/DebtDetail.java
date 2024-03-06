@@ -94,44 +94,47 @@ public class DebtDetail {
         this.debtIssuance = debtIssuance;
     }
 
+    public DebtDetail(int id, String description, double amount, String image, Timestamp createAt, int debtor_IdDebtor, int debtTypeId,double interest, double due) {
+        this.id = id;
+        this.description = description;
+        this.amount = amount;
+        this.image = image;
+        this.createAt = createAt;
+        this.debtor_IdDebtor = debtor_IdDebtor;
+        this.debtTypeId = debtTypeId;
+        this.interestRate = interest;
+        this.due = due;
+    }
+
+
+
+    public DebtDetail(int id, String description, double amount, String image, Timestamp createAt, int debtor_IdDebtor, int idAccount, double interestRate, double due, int debtTypeId) {
+        this.id = id;
+        this.description = description;
+        this.amount = amount;
+        this.image = image;
+        this.createAt = createAt;
+        this.debtor_IdDebtor = debtor_IdDebtor;
+        this.idAccount = idAccount;
+        this.interestRate = interestRate;
+        this.due = due;
+        this.debtTypeId = debtTypeId;
+    }
+
+    public DebtDetail(int id, String description, int debtTypeId, double amount, String image, 
+            Timestamp createAt, int idDebtor, int accountid, double interest, double due) {
+        this.id = id;
+        this.description = description;
+        this.debtTypeId = debtTypeId;
+        this.amount = amount;
+        this.image = image;
+        this.createAt = createAt;
+        this.debtor_IdDebtor = idDebtor;
+        this.idAccount = accountid;
+        this.interestRate = interest;
+        this.due = due;
+    }
     
-
-//    public DebtDetail(int id, String description, int debtTypeId, double amount, String image, Timestamp createAt, int debtor_IdDebtor, int idAccount, double interestRate, double due) {
-//        this.id = id;
-//        this.description = description;
-//        this.debtTypeId = debtTypeId;
-//        this.amount = amount;
-//        this.image = image;
-//        this.createAt = createAt;
-//        this.debtor_IdDebtor = debtor_IdDebtor;
-//        this.idAccount = idAccount;
-//        this.interestRate = interestRate;
-//        this.due = due;
-//    }
-//
-//    public DebtDetail(int id, String description, int debtTypeId, double amount, String image, Timestamp createAt, int debtor_IdDebtor, int idAccount, String qr, double interestRate, double due) {
-//        this.id = id;
-//        this.description = description;
-//        this.debtTypeId = debtTypeId;
-//        this.amount = amount;
-//        this.image = image;
-//        this.createAt = createAt;
-//        this.debtor_IdDebtor = debtor_IdDebtor;
-//        this.idAccount = idAccount;
-//        this.qr = qr;
-//        this.interestRate = interestRate;
-//        this.due = due;
-//    }
-//
-//    public DebtDetail(String description, int debtTypeId, double amount, int debtor_IdDebtor, int idAccount, double interestRate) {
-//        this.description = description;
-//        this.debtTypeId = debtTypeId;
-//        this.amount = amount;
-//        this.debtor_IdDebtor = debtor_IdDebtor;
-//        this.idAccount = idAccount;
-//        this.interestRate = interestRate;
-//    }
-
     public int getId() {
         return id;
     }

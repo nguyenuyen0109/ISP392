@@ -412,7 +412,7 @@ public class DebtDAO {
                 debt.setDescription(resultSet.getString("description"));
                 debt.setDebtTypeId(resultSet.getInt("debtTypeId"));
                 debt.setAmount(resultSet.getDouble("amount"));
-                debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+                debt.setCreateAt(resultSet.getTimestamp("createdAt"));
                 debtList.add(debt);
             }
         } catch (SQLException e) {
@@ -456,7 +456,7 @@ public class DebtDAO {
                     debt.setDescription(resultSet.getString("description"));
                     debt.setDebtTypeId(resultSet.getInt("debtTypeId"));
                     debt.setAmount(resultSet.getDouble("amount"));
-                    debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+                    debt.setCreateAt(resultSet.getTimestamp("createdAt"));
                     debtList.add(debt);
                 }
             }
@@ -677,7 +677,7 @@ public class DebtDAO {
                 debt.setDescription(resultSet.getString("description"));
                 debt.setDebtTypeId(resultSet.getInt("debtTypeId"));
                 debt.setAmount(resultSet.getDouble("amount"));
-                debt.setCreatAt(resultSet.getTimestamp("createdAt"));
+                debt.setCreateAt(resultSet.getTimestamp("createdAt"));
                 debtList.add(debt);
             }
         } catch (SQLException e) {
@@ -710,7 +710,7 @@ public class DebtDAO {
 //            System.out.println(debtDetail);
 //        }
 //        System.out.println("-------List---------");
-        DebtDetail debt = new DebtDetail("nhuc dau ghe", 12000, null, 171, 16, 0, 0, 2, "2024-02-02");
+        
 
     }
 }
