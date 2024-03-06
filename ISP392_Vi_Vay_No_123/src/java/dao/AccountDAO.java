@@ -423,15 +423,15 @@ public class AccountDAO {
             return null; //
         }
 
-        String sql = "UPDATE account SET name = ?, mobileNumber = ?, emailAddress = ?, address = ?, avatarUrl = ? WHERE id = ?";
+        String sql = "UPDATE account SET name = ?, mobileNumber = ?, emailAddress = ?, address = ?, avatarUrl = ?, updateAt= ?  WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
-
             ps.setString(1, acc.getName());
             ps.setString(2, acc.getMobileNumber());
             ps.setString(3, acc.getEmailAddress());
             ps.setString(4, acc.getAddress());
             ps.setString(5, acc.getAvatarUrl());
-            ps.setInt(6, acc.getId());
+            ps.setInt(7, acc.getId());
+            ps.setTimestamp(6,acc.getCreateAt());
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 return acc;
