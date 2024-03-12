@@ -461,8 +461,6 @@
             });
         </script>
 
-
-
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
@@ -498,33 +496,27 @@
 
                     </div>
 
-
                     <div class="home-filter">
                         <div class="selection-input">
                             <span class="select-input__label">Sorted by</span>
                             <i class="sort-icon fa-solid fa-angle-down"></i>	
                             <ul class="select-input__list">
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByOldest" class="select-input__link">Oldest</a>
+                                    <a href="dashboardadmin?action=sortByOldest&idAccounts=${idAccount}" class="select-input__link">Oldest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByNewest" class="select-input__link">Newest</a>
+                                    <a href="dashboardadmin?action=sortByNewest&idAccounts=${idAccount}" class="select-input__link">Newest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByHighLow" class="select-input__link">Amount from high to low</a>
+                                    <a href="dashboardadmin?action=sortByHighLow&idAccounts=${idAccount}" class="select-input__link">Amount from high to low</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
+                                    <a href="dashboardadmin?action=sortByLowHigh&idAccounts=${idAccount}" class="select-input__link">Amount from low to high</a>
                                 </li>
                             </ul>
                         </div>
 
                     </div>
-
-
-
-
-
 
                     <table class="table table-striped table-hover">
                         <thead>
@@ -541,8 +533,6 @@
                             </tr>
                         </thead>
                         <c:forEach items="${listDebtor}" var="debtor">
-
-
                             <tbody>
                                 <tr>						
                                     <td>${debtor.id}</td>
@@ -555,10 +545,7 @@
                                     <td><fmt:formatDate value="${debtor.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>                                                                                                
 
                                     <td class="actions">
-                                        <!--<a href="./debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                        <a href="/ISP392_Vi_Vay_No_123/debt?debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
-                                        <!--<a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                        <!--                                    <a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
+                                        <a href="/ISP392_Vi_Vay_No_123/dashboardadmin?action=adminViewDebt&idAccountDebtor=${debtor.account_id}&debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
                                         <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
                                         <!-- Edit Debtor detail -->
                                         <i class="fa fa-edit fa-2x"
@@ -594,14 +581,6 @@
 
             <!-- Pagination  -->
         <jsp:include page="../client/pagination.jsp"></jsp:include>
-
-
-
-
-
-
-
-
 
     </body>
 </html>

@@ -22,7 +22,7 @@ public class VerifyCaptchaController extends HttpServlet {
     private final String REGISTER_PAGE = "/client/register.jsp";
     private final String FORGOT_PAGE = "/client/forgotpassword.jsp";
     private final String CHANGEPASSWORD_PAGE = "/client/changepassword.jsp";
-    private final String RESETPASSWORD_PAGE = "/client/resetpassword.jsp";
+    private final String RESETPASSWORD_PAGE = "/client/resetpassword.jsp";  
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

@@ -96,8 +96,27 @@ public class Account {
         this.token = token;
         this.expireTime = expireTime;
     }
-    
 
+    public Account(int id, String username, String password, String name, String mobileNumber, String emailAddress, String address, boolean isActive, Timestamp updateAt, Timestamp createAt, String avatarUrl, boolean gender, int role_id, Timestamp deleteAt, boolean isDeleted, String token, Date expireTime) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.mobileNumber = mobileNumber;
+        this.emailAddress = emailAddress;
+        this.address = address;
+        this.isActive = isActive;
+        this.updateAt = updateAt;
+        this.createAt = createAt;
+        this.avatarUrl = avatarUrl;
+        this.gender = gender;
+        this.role_id = role_id;
+        this.deleteAt = deleteAt;
+        this.isDeleted = isDeleted;
+        this.token = token;
+        this.expireTime = expireTime;
+    }
+    
     public int getId() {
         return id;
     }

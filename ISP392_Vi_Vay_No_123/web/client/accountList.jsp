@@ -1,179 +1,53 @@
-<%@ page language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%-- 
+    Document   : accountList
+    Created on : Mar 4, 2024, 11:59:32 PM
+    Author     : Admin
+--%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-        <!-- DataTables CSS -->
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
-        <!-- Popper.js -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-
-        <!-- Bootstrap JS -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-        <!-- DataTables JS -->
-        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/styleAccountList.css"/>
         <title>Account List</title>
     </head>
     <body>
+        <div class="container">
+            <div class="main-body">
 
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="main-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">User Grid</li>
+                    </ol>
+                </nav>
+                <!-- /Breadcrumb -->
 
-        <%@ include file="/navigator/header.jsp" %>
-<jsp:include page="/navigator/toast.jsp" />
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="mb-4">Account List</h2>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 gutters-sm">
+                    <c:forEach items="${accounts}" var="acc">
+                        <div class="col mb-3">
+                            <div class="card">
+                                <img src="/ISP392_Vi_Vay_No_123/assets/images/cover.jpg" alt="Cover" class="card-img-top">
+                                <div class="card-body text-center">
+                                    <img src="${!empty acc.avatarUrl ? acc.avatarUrl : '//bootdey.com/img/Content/avatar/avatar7.png'}" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
+                                    <h5 class="card-title">${acc.username}</h5>
+                                    <p class="text-secondary mb-1">${acc.name}</p>
+                                    <p class="text-muted font-size-sm" style="color: red !important">${acc.isActive ? 'Active':'Deactive'}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="/ISP392_Vi_Vay_No_123/dashboardadmin?action=viewDetail&idAccount=${acc.id}" class="btn btn-light btn-sm bg-white has-icon btn-block" id="viewAccountDetail"><i class="material-icons">View Detail</i></a>
+                                    <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
-            <table id="accountTable" class="table table-striped table-borderless" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Name</th>
-                        <th>Email Address</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${accounts}" var="account">
-                        <tr>
-                            <td>${account.idAccount}</td>
-                            <td>${account.username}</td>
-                            <td>${account.name}</td>
-                            <td>${account.emailAddress}</td>
-                            <td>${account.roleIdRole == 1 ? 'Admin' : 'User'}</td>
-                            <td>
-                                <!-- Edit Button -->
-                                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#editModal-${account.idAccount}">
-                                    Edit
-                                </button>
-
-                                <!-- Edit Modal -->
-                                <div class="modal fade" id="editModal-${account.idAccount}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel-${account.idAccount}" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="editModalLabel-${account.idAccount}">Edit Account</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- Editable Form Fields -->
-                                                <form action="account?action=update" method="post">
-                                                    <input type="hidden" name="id" value="${account.idAccount}">
-
-                                                    <!-- Editable Fields -->
-                                                    <div class="form-group" style="display: none;">
-                                                        <label for="editUsername">Username:</label>
-                                                        <input type="text" class="form-control" name="username" value="${account.username}">
-                                                    </div>
-
-                                                    <div class="form-group" style="display: none;">
-                                                        <label for="editAmount">Amount:</label>
-                                                        <input type="text" class="form-control" name="amount" value="${account.amount}">
-                                                    </div>
-
-                                                    <div class="form-group" style="display: none;">
-                                                        <label for="editPassword">Password:</label>
-                                                        <input type="password" class="form-control" name="password" value="${account.password}">
-                                                    </div>
-
-                                                    <!-- Add more editable fields as needed -->
-
-                                                    <div class="form-group">
-                                                        <label for="editName">Name:</label>
-                                                        <input type="text" class="form-control" name="name" value="${account.name}">
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="editMobileNumber">Mobile Number:</label>
-                                                        <input type="text" class="form-control" name="mobileNumber" value="${account.mobileNumber}">
-                                                    </div>
-
-                                                    <div class="form-group" style="display: none;">
-                                                        <label for="editEmailAddress">Email Address:</label>
-                                                        <input type="text" class="form-control" name="emailAddress" value="${account.emailAddress}">
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="editAddress">Address:</label>
-                                                        <input type="text" class="form-control" name="address" value="${account.address}">
-                                                    </div>
-
-                                                    <div class="form-group" style="display: none;">
-                                                        <label for="editAvatarUrl">Avatar URL:</label>
-                                                        <input type="text" class="form-control" name="avatarUrl" value="${account.avatarUrl}">
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="editGender">Gender:</label>
-                                                        <select class="form-control" name="gender">
-                                                            <option value="true" ${account.gender ? 'selected' : ''}>Male</option>
-                                                            <option value="false" ${!account.gender ? 'selected' : ''}>Female</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="editIsActive">Active:</label>
-                                                        <select class="form-control" name="isActive">
-                                                            <option value="true" ${account.isActive ? 'selected' : ''}>Active</option>
-                                                            <option value="false" ${!account.isActive ? 'selected' : ''}>Deactivate</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="editRoleIdRole">Role:</label>
-                                                        <select class="form-control" name="roleIdRole">
-                                                            <option value="1" ${account.roleIdRole == 1 ? 'selected' : ''}>Admin</option>
-                                                            <option value="2" ${account.roleIdRole == 2 ? 'selected' : ''}>User</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <button type="submit" class="btn btn-primary">Update</button>
-                                                </form>
-                                              </div>
-                                            <!-- Add additional modal content as needed -->
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
-
-        <script>
-            $(document).ready(function () {
-                $('#accountTable').DataTable({
-                    "pageLength": 10,
-                    "lengthChange": false,
-                    "info": false
-                });
-            });
-        </script>
-
     </body>
 </html>

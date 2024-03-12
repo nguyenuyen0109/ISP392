@@ -38,12 +38,12 @@
                          <a href="/ISP392_Vi_Vay_No_123/client/changepassword.jsp">Change Password</a>
                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                         <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
-                        
+                        <a href="/ISP392_Vi_Vay_No_123/dashboardadmin">View Account List</a>
                     </ul>
                 </nav>
                 <% if (session != null && session.getAttribute("USER") != null) {
                     Account user = (Account) session.getAttribute("USER");
-                    Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
+                    Boolean isAdmin = (Boolean) session.getAttribute("Admin");
                 %>
                 <div class="dropdown">
                     <button class="dropbtn">Hello, <%= user.getUsername() %></button>
@@ -52,7 +52,7 @@
                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                         <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                         <% if (isAdmin != null && isAdmin) { %>
-                        <a href="dashboard.jsp">Dashboard</a>
+                        <a href="/ISP392_Vi_Vay_No_123/account">View Account List</a>
                         <% } %>
                         <a href="/ISP392_Vi_Vay_No_123/logout">Logout</a>
                     </div>
