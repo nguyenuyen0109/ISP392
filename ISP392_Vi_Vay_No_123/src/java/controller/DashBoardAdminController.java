@@ -61,6 +61,7 @@ public class DashBoardAdminController extends HttpServlet {
                 case "sortByNewest":
                 case "sortByHighLow":
                 case "sortByLowHigh":
+                case "search":
                     handleAdminViewDebtor(request, response, pageControl);
                     break;
                 case "adminViewDebt":
@@ -70,6 +71,9 @@ public class DashBoardAdminController extends HttpServlet {
                 case "sortByLowHighDebt":
                 case "ReceivableOfDebt":
                 case "DebtOfDebt":
+                case "LoanOfDebt":
+                case "LendOfDebt":
+                case "searchDebt":
                     handleAdminViewDebt(request, response, pageControl);
                     break;
                 // Các trường hợp khác
@@ -151,29 +155,29 @@ public class DashBoardAdminController extends HttpServlet {
                     case "name":
                         totalRecord = debtorDAO.findTotalRecordByName(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByName(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=name&searchQuery=" + keyword + "&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=name&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
                         break;
                     case "address":
                         totalRecord = debtorDAO.findTotalRecordByAddress(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByAddress(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=address&searchQuery=" + keyword + "&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=address&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
                         break;
                     case "phone":
                         totalRecord = debtorDAO.findTotalRecordByPhone(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByPhone(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=phone&searchQuery=" + keyword + "&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=phone&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
                         break;
                     case "email":
                         totalRecord = debtorDAO.findTotalRecordByEmail(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByEmail(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=email&searchQuery=" + keyword + "&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=email&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
                         break;
                     default:
                         // Xử lý mặc định nếu không có lựa chọn nào phù hợp
                         totalRecord = debtorDAO.findTotalRecord(idAccount);
                         //tim ve danh sach debt o trang chi dinh
                         listDebtor = debtorDAO.findByPage(idAccount, page);
-                        pageControl.setUrlPattern("dashboardadmin?");
+                        pageControl.setUrlPattern("dashboardadmin?action=adminViewDebtor&idAccounts=" + idAccount + "&");
                         break;
                 }
                 break;
@@ -247,12 +251,12 @@ public class DashBoardAdminController extends HttpServlet {
                 ? "defaultFindAll"
                 : request.getParameter("action");
         switch (action) {
-            case "search":
+            case "searchDebt":
 //                String searchType = request.getParameter("searchType");
                 String keyword = request.getParameter("searchQuery");
                 totalRecord = debtDAO.findTotalRecordToSearch(accountId, debtorId, keyword);
                 debtList = debtDAO.findByPageToSearch(accountId, debtorId, keyword, page);
-                pageControl.setUrlPattern("dashboardadmin?");
+                pageControl.setUrlPattern("dashboardadmin?action=searchDebt&idAccountDebtor="+accountId + "&debtorid=" + debtorId + "&");
                 break;
             case "sortByOldestDebt":
                 totalRecord = debtDAO.findTotalRecord(accountId, debtorId);
@@ -283,16 +287,28 @@ public class DashBoardAdminController extends HttpServlet {
 
                 break;
             case "ReceivableOfDebt":
-                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, true);
-                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, true, page);
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 3);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 3, page);
                 pageControl.setUrlPattern("dashboardadmin?action=ReceivableOfDebt&idAccountDebtor=" + accountId + "&debtorid=" + debtorId + "&");
                 //request.setAttribute("debtList", debtList);
 
                 break;
             case "DebtOfDebt":
-                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, false);
-                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, false, page);
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 4);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 4, page);
                 pageControl.setUrlPattern("dashboardadmin?action=DebtOfDebt&idAccountDebtor=" + accountId + "&debtorid=" + debtorId + "&");
+                //request.setAttribute("debtList", debtList);
+                break;
+            case "LoanOfDebt":
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 1);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 1, page);
+                pageControl.setUrlPattern("dashboardadmin?action=LoanOfDebt&idAccountDebtor=" + accountId + "&debtorid=" + debtorId + "&");
+                //request.setAttribute("debtList", debtList);
+                break;
+            case "LendOfDebt":
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 2);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 2, page);
+                pageControl.setUrlPattern("dashboardadmin?action=LendOfDebt&idAccountDebtor=" + accountId + "&debtorid=" + debtorId + "&");
                 //request.setAttribute("debtList", debtList);
                 break;
             default:

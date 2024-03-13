@@ -114,7 +114,7 @@
                                             <div class="row gutters">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <div class="text-right" style="margin-top: 35px;">
-                                                        <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+                                                        <a href="/ISP392_Vi_Vay_No_123/dashboardadmin" class="btn btn-secondary">Cancel</a>
                                                         <button type="submit" id="submitButton" class="btn btn-primary">Update</button>
                                                     </div>
                                                 </div>

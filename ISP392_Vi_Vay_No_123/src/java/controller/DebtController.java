@@ -191,15 +191,15 @@ public class DebtController extends HttpServlet {
 
                 break;
             case "Receivable":
-                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, true);
-                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, true, page);
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 3);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 3, page);
                 pageControl.setUrlPattern("debt?action=Receivable&");
                 //request.setAttribute("debtList", debtList);
 
                 break;
             case "Debt":
-                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, false);
-                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, false, page);
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 4);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 4, page);
                 pageControl.setUrlPattern("debt?action=Debt&");
                 //request.setAttribute("debtList", debtList);
                 break;

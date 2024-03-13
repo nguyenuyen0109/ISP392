@@ -52,9 +52,11 @@
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
-
-                        <form action="debt" method="get" class="search">
+                        <div><h2>DebtList</h2></div>
+                        <form action="dashboardadmin" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
+                            <input type="hidden" class="search-input" name="idAccountDebtor" value="${idAccount}">
+                            <input type="hidden" class="search-input" name="debtorid" value="${idDebtor}">
                             <div class="search-selection">
                                 <select class="search-selection-label" name="searchType" >
                                     <option class="search-selection-item">Search by</option>
@@ -62,13 +64,10 @@
                                     <option class="search-selection-item" value="amount">Amount</option>
                                 </select>
                             </div>
-                            <button class="search-btn" type="submit" name="action" value="search">
+                            <button class="search-btn" type="submit" name="action" value="searchDebt">
                                 <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                             </button>
                         </form>
-                        <div>
-                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debt</span></a>
-                        </div>
 
                     </div>
 
@@ -94,6 +93,12 @@
                                 </li>
                                 <li class="select-input_item">
                                     <a href="dashboardadmin?action=DebtOfDebt&idAccountDebtor=${idAccount}&debtorid=${idDebtor}" class="select-input__link">Debt</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="dashboardadmin?action=LoanOfDebt&idAccountDebtor=${idAccount}&debtorid=${idDebtor}" class="select-input__link">Loan</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="dashboardadmin?action=LendOfDebt&idAccountDebtor=${idAccount}&debtorid=${idDebtor}" class="select-input__link">Lend</a>
                                 </li>
                             </ul>
                         </div>
@@ -267,9 +272,6 @@
                     </div>
                 </div>
             </div>
-
-        
-
     </body>
 </html>
 </html>
