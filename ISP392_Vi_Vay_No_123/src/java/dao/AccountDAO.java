@@ -61,6 +61,19 @@ public class AccountDAO {
         return true;
     }
 
+    public int updateIsActive(String username, boolean isActive) {
+        int n = 0;
+        String sql = "UPDATE account SET isActive = ? WHERE username = ? ";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            ps.setBoolean(1, isActive);
+            ps.setString(2, username);
+            n = ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return n;
+    }
+    
     public Account findByUsernameAndPassword(String username, String password) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -129,25 +142,24 @@ public class AccountDAO {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     int id = resultSet.getInt("id");
-
-                    String avatarUrl = resultSet.getString("avatarUrl");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
                     String mobileNumber = resultSet.getString("mobileNumber");
                     String emailAddress = resultSet.getString("emailAddress");
-                    String password = resultSet.getString("Password");
-                    String name = resultSet.getString("Name");
-                    String address = resultSet.getString("Address");
-                    boolean isActive = resultSet.getBoolean("IsActive");
-                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("UpdateAt");
-                    java.sql.Timestamp createdAt = resultSet.getTimestamp("CreateAt");
-                    double amount = resultSet.getDouble("Amount");
-                    // String avatarUrl = resultSet.getString("avatarUrl");
+                    String address = resultSet.getString("address");
+                    boolean isActive = resultSet.getBoolean("isActive");
+                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
+                    java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
+                    String avatarUrl = resultSet.getString("avatarUrl");
                     boolean gender = resultSet.getBoolean("gender");
                     int roleId = resultSet.getInt("role_id");
+                    java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
+                    String token = resultSet.getString("token");
+                    Date expiretime = resultSet.getDate("expiretime");
+                    boolean isDeleted = resultSet.getBoolean("isDeleted");
 
-                    return new Account(id, username, password, name,
-                            mobileNumber, emailAddress, address, isActive,
-                            updatedAt, createdAt, avatarUrl, gender,
-                            roleId);
+                    return new Account(id, username, password, name, mobileNumber, emailAddress,
+                            address, isActive, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
                 }
             }
         } catch (SQLException e) {
@@ -215,26 +227,25 @@ public class AccountDAO {
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                String username = resultSet.getString("Username");
-
-                String password = resultSet.getString("Password");
-                String name = resultSet.getString("Name");
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                String name = resultSet.getString("name");
                 String mobileNumber = resultSet.getString("mobileNumber");
                 String emailAddress = resultSet.getString("emailAddress");
-                String address = resultSet.getString("Address");
-                boolean isActive = resultSet.getBoolean("IsActive");
-                java.sql.Timestamp updatedAt = resultSet.getTimestamp("UpdateAt");
-                java.sql.Timestamp createdAt = resultSet.getTimestamp("CreateAt");
+                String address = resultSet.getString("address");
+                boolean isActive = resultSet.getBoolean("isActive");
+                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
+                java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
                 String avatarUrl = resultSet.getString("avatarUrl");
                 boolean gender = resultSet.getBoolean("gender");
                 int roleId = resultSet.getInt("role_id");
+                java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
+                String token = resultSet.getString("token");
+                Date expiretime = resultSet.getDate("expiretime");
+                boolean isDeleted = resultSet.getBoolean("isDeleted");
 
-                //Account account = new Account();
-                Account account;
-                account = new Account(id, username, password, name,
-                        mobileNumber, emailAddress, address, isActive,
-                        updatedAt, createdAt, avatarUrl, gender,
-                        roleId);
+                Account account = new Account(id, username, password, name, mobileNumber, emailAddress,
+                        address, isActive, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
                 accounts.add(account);
             }
         } catch (SQLException e) {
@@ -688,23 +699,5 @@ public class AccountDAO {
         return email;
     }
 
-    public static void main(String[] args) {
-        AccountDAO acc = new AccountDAO();
-        int accountId = 2; // Thay đổi ID này tùy vào dữ liệu của bạn
-        Account accountToUpdate = acc.getAccountById(accountId);
-        if (accountToUpdate != null) {
-            // Cập nhật một số thông tin của tài khoản
-            accountToUpdate.setMobileNumber("0213899324");
-            Account updatedAccount = acc.updateAccount(accountToUpdate);
-            if (updatedAccount != null) {
-                System.out.println("Cập nhật thông tin tài khoản thành công.");
-            } else {
-                System.out.println("Có lỗi xảy ra, không thể cập nhật thông tin tài khoản.");
-            }
-        } else {
-            System.out.println("Không tìm thấy tài khoản với ID: " + accountId);
-        }
-//        acc.checkToken("minhnguyenhoang021@gmail.com", "ueilhDAoabHmpRy0aNi2Pidu");
-    }
 
 }
