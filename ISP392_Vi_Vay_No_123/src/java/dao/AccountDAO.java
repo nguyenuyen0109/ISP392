@@ -93,6 +93,7 @@ public class AccountDAO {
                 account.setEmailAddress(email);
                 account.setMobileNumber(mobileNumber);
                 account.setAddress(address);
+                account.setRole_id(rs.getInt("role_id"));
                 // Ví dụ: account.setUsername(rs.getString("username"));
                 //        account.setPassword(rs.getString("password"));
                 // Thêm các trường khác tương tự

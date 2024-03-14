@@ -95,6 +95,7 @@
             </div>
         </form>
         <script>
+
         function editDebtorDetailModal(address, phone) {
             document.getElementById('phone').value = phone;
         }

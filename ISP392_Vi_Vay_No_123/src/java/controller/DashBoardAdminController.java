@@ -71,6 +71,7 @@ public class DashBoardAdminController extends HttpServlet {
         AccountDAO accDB = new AccountDAO();
         List<Account> accs = accDB.getAllAccounts();
         request.setAttribute("accs", accs);
+        response.getWriter().print("abc");
     } 
 
     /** 
