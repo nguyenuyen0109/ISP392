@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.sql.Timestamp;
+
 /**
  *
  * @author minimonie
@@ -301,6 +302,7 @@ public class AccountDAO {
             ex.printStackTrace();
         }
     }
+
     public void ResettToken(int id) {
         String sql = "update account set \n"
                 + " token = ''" + ""
@@ -314,7 +316,7 @@ public class AccountDAO {
             ex.printStackTrace();
         }
     }
-    
+
     public boolean usernameExists(String username) {
         try {
             String sql = "SELECT COUNT(*) FROM account WHERE Username = ?";
@@ -423,15 +425,18 @@ public class AccountDAO {
             return null; //
         }
 
-        String sql = "UPDATE account SET name = ?, mobileNumber = ?, emailAddress = ?, address = ?, avatarUrl = ? WHERE id = ?";
+        String sql = "UPDATE account SET name = ?, mobileNumber = ?, emailAddress = ?, address = ?, avatarUrl = ?, updateAt= ?  WHERE id = ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
-
             ps.setString(1, acc.getName());
             ps.setString(2, acc.getMobileNumber());
             ps.setString(3, acc.getEmailAddress());
             ps.setString(4, acc.getAddress());
             ps.setString(5, acc.getAvatarUrl());
-            ps.setInt(6, acc.getId());
+            ps.setInt(7, acc.getId());
+            // Lấy thời gian hiện tại và chuyển đổi thành Timestamp
+            Timestamp currentTimestamp = new Timestamp(new Date().getTime());
+            ps.setTimestamp(6, currentTimestamp);
+
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
                 return acc;
@@ -628,7 +633,7 @@ public class AccountDAO {
         String sql = "UPDATE account SET "
                 + "Name = ?, "
                 + "mobileNumber = ?, "
-                + "emailAddress = ?, "
+                + "updateAt = ?,"
                 + "Address = ?, "
                 + "avatarUrl = ?, "
                 + "WHERE username = ?";
@@ -636,7 +641,8 @@ public class AccountDAO {
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, updatedAccount.getName());
             ps.setString(2, updatedAccount.getMobileNumber());
-            ps.setString(3, updatedAccount.getEmailAddress());
+            Timestamp currentTimestamp = new Timestamp(new Date().getTime());
+            ps.setTimestamp(3, currentTimestamp);
             ps.setString(4, updatedAccount.getAddress());
             ps.setString(5, updatedAccount.getAvatarUrl());
             ps.setBoolean(6, updatedAccount.isGender());
@@ -684,32 +690,21 @@ public class AccountDAO {
 
     public static void main(String[] args) {
         AccountDAO acc = new AccountDAO();
-        int accountId = 12; // Thay đổi ID này tùy vào dữ liệu của bạn
-
-        // Lấy thông tin tài khoản hiện tại dựa trên ID
-//        Account accountToUpdate = acc.getAccountById(accountId);
-//
-//        if (accountToUpdate != null) {
-//            // Cập nhật một số thông tin của tài khoản
-//            accountToUpdate.setName("New Name");
-//            accountToUpdate.setMobileNumber("New Mobile Phone");
-//            accountToUpdate.setEmailAddress("New Email");
-//            accountToUpdate.setAddress("New Address");
-//            accountToUpdate.setPassword("New Pass");
-//            // Tiếp tục cập nhật các trường khác tùy ý
-//
-//            // Gọi hàm updateAccount để cập nhật thông tin tài khoản trong cơ sở dữ liệu
-//            Account updatedAccount = acc.updateAccount(accountToUpdate);
-//
-//            if (updatedAccount != null) {
-//                System.out.println("Cập nhật thông tin tài khoản thành công.");
-//            } else {
-//                System.out.println("Có lỗi xảy ra, không thể cập nhật thông tin tài khoản.");
-//            }
-//        } else {
-//            System.out.println("Không tìm thấy tài khoản với ID: " + accountId);
-//        }
-        acc.checkToken("minhnguyenhoang021@gmail.com", "ueilhDAoabHmpRy0aNi2Pidu");
+        int accountId = 2; // Thay đổi ID này tùy vào dữ liệu của bạn
+        Account accountToUpdate = acc.getAccountById(accountId);
+        if (accountToUpdate != null) {
+            // Cập nhật một số thông tin của tài khoản
+            accountToUpdate.setMobileNumber("0213899324");
+            Account updatedAccount = acc.updateAccount(accountToUpdate);
+            if (updatedAccount != null) {
+                System.out.println("Cập nhật thông tin tài khoản thành công.");
+            } else {
+                System.out.println("Có lỗi xảy ra, không thể cập nhật thông tin tài khoản.");
+            }
+        } else {
+            System.out.println("Không tìm thấy tài khoản với ID: " + accountId);
+        }
+//        acc.checkToken("minhnguyenhoang021@gmail.com", "ueilhDAoabHmpRy0aNi2Pidu");
     }
 
 }

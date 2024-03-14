@@ -4,18 +4,18 @@
  */
 package model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 /**
  *
  * @author MINIMONIE
  */
 public class Feedback {
+
     private int id;
-    private int debtdetails_id;
-    private int debtor_id;
-    private String status;
-    private String description;
+    private int account_id;
+    private String feedback;
+    private double rate;
     private String img;
     private Timestamp createAt;
     private Timestamp deleteAt;
@@ -24,12 +24,11 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(int id, int debtdetails_id, int debtor_id, String status, String description, String img, Timestamp createAt, Timestamp deleteAt, boolean isDeleted) {
+    public Feedback(int id, int account_id, String feedback, double rate, String img, Timestamp createAt, Timestamp deleteAt, boolean isDeleted) {
         this.id = id;
-        this.debtdetails_id = debtdetails_id;
-        this.debtor_id = debtor_id;
-        this.status = status;
-        this.description = description;
+        this.account_id = account_id;
+        this.feedback = feedback;
+        this.rate = rate;
         this.img = img;
         this.createAt = createAt;
         this.deleteAt = deleteAt;
@@ -44,36 +43,28 @@ public class Feedback {
         this.id = id;
     }
 
-    public int getDebtdetails_id() {
-        return debtdetails_id;
+    public int getAccount_id() {
+        return account_id;
     }
 
-    public void setDebtdetails_id(int debtdetails_id) {
-        this.debtdetails_id = debtdetails_id;
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
     }
 
-    public int getDebtor_id() {
-        return debtor_id;
+    public String getFeedback() {
+        return feedback;
     }
 
-    public void setDebtor_id(int debtor_id) {
-        this.debtor_id = debtor_id;
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
     }
 
-    public String getStatus() {
-        return status;
+    public double getRate() {
+        return rate;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
     public String getImg() {
@@ -110,7 +101,7 @@ public class Feedback {
 
     @Override
     public String toString() {
-        return "Feedback{" + "id=" + id + ", debtdetails_id=" + debtdetails_id + ", debtor_id=" + debtor_id + ", status=" + status + ", description=" + description + ", img=" + img + ", createAt=" + createAt + ", deleteAt=" + deleteAt + ", isDeleted=" + isDeleted + '}';
+        return "Feedback{" + "id=" + id + ", account_id=" + account_id + ", feedback=" + feedback + ", rate=" + rate + ", img=" + img + ", createAt=" + createAt + ", deleteAt=" + deleteAt + ", isDeleted=" + isDeleted + '}';
     }
-    
+
 }

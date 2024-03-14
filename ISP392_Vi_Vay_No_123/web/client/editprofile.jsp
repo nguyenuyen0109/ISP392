@@ -10,7 +10,7 @@
     <body>
         <jsp:include page="/navigator/toast.jsp" />
         <jsp:include page="/navigator/header.jsp" />
-        <form action="editprofile" method="post">
+        <form action="editprofile" method="post" id = "editProfile">
             <div class="container bootstrap snippets bootdey">
                 <h1 class="text-primary">Edit Profile</h1>
                 <div class="row">
@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Full name:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="name" value="${sessionScope.account.name}" required>
+                                <input class="form-control" type="text" name="name" id="name" value="${sessionScope.account.name}" required>
                             </div>
                         </div>
                         <!--Username form group--> 
@@ -62,21 +62,21 @@
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Phone:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="phone" value="${sessionScope.account.mobileNumber}" required>
+                                <input class="form-control" type="text" name="phone" id="phone" value="${sessionScope.account.mobileNumber}" >
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Address:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="address" value="${sessionScope.account.address}" required>
+                                <input class="form-control" type="text" name="address" id ="address" value="${sessionScope.account.address}" >
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Email:</label>
                             <div class="col-lg-8">
-                                <input class="form-control" type="text" name="email" value="${sessionScope.account.emailAddress}" disabled>
+                                <input class="form-control" type="text" name="email" id = "email" value="${sessionScope.account.emailAddress}" disabled>
                             </div>
                         </div>
 
@@ -94,5 +94,32 @@
                 </div>
             </div>
         </form>
+        <script>
+
+        function editDebtorDetailModal(address, phone) {
+            document.getElementById('phone').value = phone;
+        }
+
+        function validatePhone(phone) {
+            if (phone.trim() === "")
+                return true;
+            var phoneRegex = /^\d{10,}$/;
+            if (!phoneRegex.test(phone)) {
+                alert("Phone must be a number with at least 10 digits.");
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById("editProfile").addEventListener("submit", function (event) {
+            var phone = document.forms["editProfile"]["phone"].value.trim();
+
+            if (!validatePhone(phone)) {
+                event.preventDefault();
+                alert("Please correct the information");
+            }
+        });
+    </script>                      
+
     </body>
 </html>
