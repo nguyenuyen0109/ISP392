@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Edit Profile</title>
-        <link rel="stylesheet" href="../css/editprofile.css">
+        <link rel="stylesheet" href="/assets/css/editprofile.css">
         <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css'>
     </head>
     <body>
@@ -95,6 +95,7 @@
             </div>
         </form>
         <script>
+
         function editDebtorDetailModal(address, phone) {
             document.getElementById('phone').value = phone;
         }
