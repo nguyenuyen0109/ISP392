@@ -7,7 +7,11 @@ package dao;
 import dal.DBContext;
 import model.Feedback;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import utils.Pagination;
 
 /**
  *
@@ -46,6 +50,8 @@ public class FeedbackDAO {
             return false;
         }
     }
+    
+    
 
     public static void main(String[] args) {
         // Tạo một đối tượng Feedback
@@ -66,4 +72,57 @@ public class FeedbackDAO {
             System.out.println("Failed to add feedback.");
         }
     }
+
+    public int findTotalRecord() {
+        int totalRecords = 0;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Chuẩn bị truy vấn để lấy tổng số bản ghi
+            String sql = "SELECT COUNT(*) FROM feedback";
+            statement = db.getConnection().prepareStatement(sql);
+
+            // Thực thi truy vấn
+            resultSet = statement.executeQuery();
+
+            // Lấy tổng số bản ghi từ kết quả
+            if (resultSet.next()) {
+                totalRecords = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            // Xử lý ngoại lệ SQL
+            e.printStackTrace();
+        }
+
+        return totalRecords;
+    }
+
+     public List<Feedback> findByPage(int pageNumber) {
+        List<Feedback> listFeedback = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+
+        try {
+            int offset = (pageNumber - 1) * Pagination.RECORD_PER_PAGE;
+            String sql = "SELECT * FROM feedback ORDER BY id LIMIT ? OFFSET ?";
+            ps = db.getConnection().prepareStatement(sql);
+            ps.setInt(1, Pagination.RECORD_PER_PAGE);
+            ps.setInt(2, offset);
+            resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(resultSet.getInt("id"));
+                feedback.setRate(resultSet.getDouble("rate"));
+                feedback.setCreateAt(resultSet.getTimestamp("createAt"));
+                feedback.setFeedback(resultSet.getString("feedback"));
+                listFeedback.add(feedback);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listFeedback;
+    }
+    
 }
