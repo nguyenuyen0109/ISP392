@@ -81,6 +81,7 @@ public class DashBoardAdminController extends HttpServlet {
         }
     }
 
+
     private void handleListAccounts(HttpServletRequest request, HttpServletResponse response, AccountDAO acc) throws ServletException, IOException {
         List<Account> accounts = acc.getAllAccounts();
         request.setAttribute("accounts", accounts);
@@ -329,6 +330,7 @@ public class DashBoardAdminController extends HttpServlet {
         pageControl.setTotalRecord(totalRecord);
 
         return debtList;
+
     }
 
     @Override
