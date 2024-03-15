@@ -113,18 +113,28 @@ public class FeedbackController extends HttpServlet {
                 pageControl.setUrlPattern("feedback?");
                 break;
             case "sortByOldest":
-//                totalRecord = feedbackDAO.findTotalRecord(accountId, debtorId);
-//                listFeedback = feedbackDAO.findByPageAndSortByOldest(accountId, debtorId, page);
+                totalRecord = feedbackDAO.findTotalRecord();
+                listFeedback = feedbackDAO.findByPageAndSortByOldest(page);
                 pageControl.setUrlPattern("feedback?action=sortByOldest&");
                 //request.setAttribute("debtList", debtList);
                 break;
 
             case "sortByNewest":
-//                totalRecord = feedbackDAO.findTotalRecord(accountId, debtorId);
-//                listFeedback = feedbackDAO.findByPageAndSortByNewest(accountId, debtorId, page);
+                totalRecord = feedbackDAO.findTotalRecord();
+                listFeedback = feedbackDAO.findByPageAndSortByNewest(page);
                 pageControl.setUrlPattern("feedback?action=sortByNewest&");
                 //request.setAttribute("debtList", debtList);
-
+                break;
+            case "sortByLowRate":
+                totalRecord = feedbackDAO.findTotalRecord();
+                listFeedback = feedbackDAO.findByPageAndSortByLowRate();
+                pageControl.setUrlPattern("feedback?action=sortByLowRate&");
+                break;
+                
+            case "sortByHighRate":
+                totalRecord = feedbackDAO.findTotalRecord();
+                listFeedback = feedbackDAO.findByPageAndSortByHightRate();
+                pageControl.setUrlPattern("feedback?action=sortByHighRate&");
                 break;
             default:
                 //phan trang o trang home

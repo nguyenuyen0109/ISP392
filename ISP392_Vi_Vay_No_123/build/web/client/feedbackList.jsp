@@ -15,6 +15,7 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/5bd22a55e3.js" crossorigin="anonymous"></script>
+        
         <style>
             .actions {
                 display: flex;
@@ -460,9 +461,6 @@
                 });
             });
         </script>
-
-
-
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
@@ -491,10 +489,7 @@
                                 </button>
                             </form>
                         </div>
-
                     </div>
-
-
                     <div class="home-filter">
                         <div class="selection-input">
                             <span class="select-input__label">Sorted by</span>
@@ -506,16 +501,15 @@
                                 <li class="select-input_item">
                                     <a href="feedback?action=sortByNewest" class="select-input__link">Newest</a>
                                 </li>
+                                <li class="select-input_item">
+                                    <a href="feedback?action=sortByLowRate" class="select-input__link">Low Rate</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="feedback?action=sortByHighRate" class="select-input__link">High Rate</a>
+                                </li>
                             </ul>
                         </div>
-
                     </div>
-
-
-
-
-
-
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>                       
@@ -535,9 +529,7 @@
                                     <td>${feedback.rate}</td>
                                     <td>${feedback.feedback}</td>
                                     <td><fmt:formatDate value="${feedback.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>  
-                                                                                                                                
-
-                                    <td>
+                                   <td>
                                         <button class="btn btn-info view-details-btn" 
                                                 data-id="${feedback.id}" 
                                                 data-rate="${feedback.rate}" 
@@ -595,23 +587,11 @@
                                 <p class="form-control-static create-at"></p>
                             </div>                  
                         </div>
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
     </body>
 </html>

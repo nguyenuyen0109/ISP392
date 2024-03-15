@@ -124,5 +124,109 @@ public class FeedbackDAO {
         }
         return listFeedback;
     }
-    
+
+    public List<Feedback> findByPageAndSortByOldest(int pageNumber) {
+        List<Feedback> listFeedback = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+
+        try {
+            int offset = (pageNumber - 1) * Pagination.RECORD_PER_PAGE;
+            String sql = "SELECT * FROM feedback ORDER BY createAt ASC LIMIT ? OFFSET ?";
+            ps = db.getConnection().prepareStatement(sql);
+            ps.setInt(1, Pagination.RECORD_PER_PAGE);
+            ps.setInt(2, offset);
+            resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(resultSet.getInt("id"));
+                feedback.setRate(resultSet.getDouble("rate"));
+                feedback.setCreateAt(resultSet.getTimestamp("createAt"));
+                feedback.setFeedback(resultSet.getString("feedback"));
+                listFeedback.add(feedback);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listFeedback;
+    }
+
+    public List<Feedback> findByPageAndSortByNewest(int pageNumber) {
+        List<Feedback> listFeedback = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+
+        try {
+            int offset = (pageNumber - 1) * Pagination.RECORD_PER_PAGE;
+            String sql = "SELECT * FROM feedback ORDER BY createAt DESC LIMIT ? OFFSET ?";
+            ps = db.getConnection().prepareStatement(sql);
+            ps.setInt(1, Pagination.RECORD_PER_PAGE);
+            ps.setInt(2, offset);
+            resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(resultSet.getInt("id"));
+                feedback.setRate(resultSet.getDouble("rate"));
+                feedback.setCreateAt(resultSet.getTimestamp("createAt"));
+                feedback.setFeedback(resultSet.getString("feedback"));
+                listFeedback.add(feedback);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listFeedback;
+    }
+
+    public List<Feedback> findByPageAndSortByLowRate() {
+        List<Feedback> listFeedback = new ArrayList<>();
+        try {
+            try (PreparedStatement statement = db.getConnection().prepareStatement(
+                    "SELECT * FROM feedback ORDER BY rate ASC")) {
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Feedback feedback = new Feedback();
+                        feedback.setId(resultSet.getInt("id"));
+                        feedback.setRate(resultSet.getDouble("rate"));
+                        feedback.setCreateAt(resultSet.getTimestamp("createAt"));
+                        feedback.setFeedback(resultSet.getString("feedback"));
+
+                        listFeedback.add(feedback);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            // Xử lý hoặc ghi log cho exception
+            e.printStackTrace();
+        }
+        return listFeedback;
+    }
+
+     public List<Feedback> findByPageAndSortByHightRate() {
+        List<Feedback> listFeedback = new ArrayList<>();
+        try {
+            try (PreparedStatement statement = db.getConnection().prepareStatement(
+                    "SELECT * FROM feedback ORDER BY rate DESC")) {
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Feedback feedback = new Feedback();
+                        feedback.setId(resultSet.getInt("id"));
+                        feedback.setRate(resultSet.getDouble("rate"));
+                        feedback.setCreateAt(resultSet.getTimestamp("createAt"));
+                        feedback.setFeedback(resultSet.getString("feedback"));
+
+                        listFeedback.add(feedback);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            // Xử lý hoặc ghi log cho exception
+            e.printStackTrace();
+        }
+        return listFeedback;
+    }
+
 }
