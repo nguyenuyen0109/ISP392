@@ -2,11 +2,23 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< Updated upstream
         <group>
             <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/client/debtList.jsp</file>
             <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/DebtController.java</file>
             <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/LoginController.java</file>
             <file>file:/D:/ISP392/ISP392/ISP392_Vi_Vay_No_123/web/client/homepage.jsp</file>
+=======
+        <group/>
+        <group name="Normal">
+            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/controller/FeedbackController.java</file>
+            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/web/client/accountList.jsp</file>
+            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/web/client/feedbackList.jsp</file>
+            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/web/client/debtList.jsp</file>
+            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/dao/FeedbackDAO.java</file>
+            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/dao/DebtorDAO.java</file>
+            <file>file:/D:/ISP392/ISP392_Vi_Vay_No_123/src/java/model/Feedback.java</file>
+>>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>
