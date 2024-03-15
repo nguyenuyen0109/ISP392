@@ -5,13 +5,17 @@
 package controller;
 
 
+import dal.DBContext;
 import dao.AccountDAO;
+import dao.DebtorDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.ResultSet;
 import java.security.Timestamp;
 import java.util.List;
 import model.Account;
@@ -24,27 +28,52 @@ import model.Account;
 public class AccountController extends HttpServlet {
 
     private final AccountDAO accountDAO = new AccountDAO();
-
+    private final DebtorDAO debtorDao = new DebtorDAO();
+    DBContext db = DBContext.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
-
-        if (action == null || action.equals("list")) {
-            List<Account> accounts = accountDAO.getAllAccounts();
-            req.setAttribute("accounts", accounts);
-            req.getRequestDispatcher("client/accountList.jsp").forward(req, resp);
-        }
+//        HttpSession session = req.getSession();
+//        // Assuming 'accountId' is stored in session, retrieve it.
+//        Integer accountId = (Integer) session.getAttribute("account_id");
+//
+//        if (accountId == null) {
+//            // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
+//            resp.sendRedirect("login"); // Example redirection to login page
+//            return; // Stop further execution in this case.
+//        }
+//        String action = req.getParameter("action");
+//        if (action == null || action.equals("list")) {
+//            List<Account> accounts = accountDAO.getAllAccounts();
+//            req.setAttribute("accounts", accounts);
+//            req.getRequestDispatcher("client/accountList.jsp").forward(req, resp);
+//        }else if (action.equals("viewDetail")) {
+//            int idAccount = Integer.parseInt(req.getParameter("idAccount"));
+//            Account accDetail = accountDAO.getAccountById(idAccount);
+//            ResultSet roleName = db.getData("select * from account a\n"
+//                    + "inner join role r on a.role_id=r.id\n"
+//                    + "where a.id = '" + idAccount +"'");
+//            int totalDebtor = debtorDao.findTotalRecord(idAccount);
+//            req.setAttribute("accDetail", accDetail);
+//            req.setAttribute("totalDebtor", totalDebtor);
+//            req.setAttribute("roleName", roleName);
+//            req.getRequestDispatcher("client/accountDetail.jsp").forward(req, resp);
+//        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-
         if (action != null) {
             if (action.equals("create")) {
                 createAccount(req, resp);
             } else if (action.equals("update")) {
                 updateAccount(req, resp);
+            } else if(action.equals("updateIsActive")){
+                int idAccount = Integer.parseInt(req.getParameter("idAccount"));
+                String userName = req.getParameter("userName");
+                boolean isActive = Boolean.parseBoolean(req.getParameter("status"));
+                accountDAO.updateIsActive(userName, isActive);
+                resp.sendRedirect("dashboardadmin?action=viewDetail&idAccount="+idAccount);
             }
         }
     }

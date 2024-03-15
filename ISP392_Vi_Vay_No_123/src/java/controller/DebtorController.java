@@ -26,7 +26,8 @@ import utils.Pagination;
 public class DebtorController extends HttpServlet {
 
     DebtorDAO debtor = new DebtorDAO();
-
+    private final String ACCOUNT_DETAIL = "/client/accountDetail.jsp";  
+    private final String DEBTOR = "/client/debtor.jsp"; 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,6 +63,7 @@ public class DebtorController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         //TAO SESSION
+        
         HttpSession session = request.getSession();
 
         String action = request.getParameter("action") == null

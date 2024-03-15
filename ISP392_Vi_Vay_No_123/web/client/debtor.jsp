@@ -582,6 +582,7 @@
                             </tbody>
                         </c:forEach>
                     </table>
+                    <input type="hidden" name="uri" value="/client/debtor.jsp">
                 </div>
             </div>        
         </div>
