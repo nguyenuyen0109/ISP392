@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Debtor;
 import model.PageControl;
+import model.PagingModel;
 import utils.Pagination;
 
 /**
@@ -41,6 +42,12 @@ public class DebtorController extends HttpServlet {
             response.sendRedirect("login"); // Example redirection to login page
             return; // Stop further execution in this case.
         }
+        String act = request.getParameter("act");
+        if (act != null && "delete".equals(act)) {
+            handleDelete(request);
+            response.getWriter().write("SUCCESS");
+            return;
+        }
 
         // Now use this accountId to get data from the database
         List<Debtor> listDebtor = pagination(request, pageControl);
@@ -62,10 +69,8 @@ public class DebtorController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        //TAO SESSION
-        
+        //TAO SESSION       
         HttpSession session = request.getSession();
-
         String action = request.getParameter("action") == null
                 ? ""
                 : request.getParameter("action");
@@ -78,14 +83,12 @@ public class DebtorController extends HttpServlet {
                 break;
             default:
                 throw new AssertionError();
-
         }
         response.sendRedirect("debtor");
     }
 
     private void add(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Add new debtor
-
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         String phone = request.getParameter("phone");
@@ -111,6 +114,18 @@ public class DebtorController extends HttpServlet {
             request.setAttribute("errorMessage", "Debt cannot be added.");
             request.getRequestDispatcher("client/debtor.jsp").forward(request, response);
 
+        }
+    }
+    
+    //delete
+    private void handleDelete(HttpServletRequest request) {
+        try {
+            int debtorId = Integer.parseInt(request.getParameter("debtorId"));
+            if (debtorId > 0) {
+                DebtorDAO debtorDAO = new DebtorDAO();
+                debtorDAO.deleteDebtor(debtorId);
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -151,95 +166,36 @@ public class DebtorController extends HttpServlet {
         } catch (Exception e) {
             page = 1;
         }
-        int totalRecord = 0;
-        List<Debtor> listDebtor = null;
-        //get action hien tai muon lam gi
-        //tim xem co bao nhieu record va listDebtor by page
-        String action = request.getParameter("action") == null
-                ? "defaultFindAll"
-                : request.getParameter("action");
-        switch (action) {
-            case "search":
-                String searchType = request.getParameter("searchType");
-                String keyword = request.getParameter("searchQuery");
-                switch (searchType) {
-                    case "name":
-                        totalRecord = debtorDAO.findTotalRecordByName(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByName(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=name&searchQuery=" + keyword + "&");
-                        break;
-                    case "address":
-                        totalRecord = debtorDAO.findTotalRecordByAddress(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByAddress(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=address&searchQuery=" + keyword + "&");
-                        break;
-                    case "phone":
-                        totalRecord = debtorDAO.findTotalRecordByPhone(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByPhone(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=phone&searchQuery=" + keyword + "&");
-                        break;
-                    case "email":
-                        totalRecord = debtorDAO.findTotalRecordByEmail(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByEmail(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=email&searchQuery=" + keyword + "&");
-                        break;
-                    default:
-                        // Xử lý mặc định nếu không có lựa chọn nào phù hợp
-                        totalRecord = debtorDAO.findTotalRecord(accountId);
-                        //tim ve danh sach debt o trang chi dinh
-                        listDebtor = debtorDAO.findByPage(accountId, page);
-                        pageControl.setUrlPattern("debtor?");
-                        break;
-                }
-                break;
-            case "sortByOldest":
-                totalRecord = debtorDAO.findTotalRecord(accountId);
-                listDebtor = debtorDAO.findByPageAndSortByOldest(accountId, page);
-                pageControl.setUrlPattern("debtor?action=sortByOldest&");
-                //request.setAttribute("debtList", debtList);
-                break;
+        
+        String searchBy = request.getParameter("searchBy");
+        String sortby = request.getParameter("sortby");
+        String keyword = request.getParameter("keyword");
 
-            case "sortByNewest":
-                totalRecord = debtorDAO.findTotalRecord(accountId);
-                listDebtor = debtorDAO.findByPageAndSortByNewest(accountId, page);
-                pageControl.setUrlPattern("debtor?action=sortByNewest&");
-                //request.setAttribute("debtList", debtList);
+        request.setAttribute("searchBy", searchBy);
+        request.setAttribute("sortby", sortby);
+        request.setAttribute("keyword", keyword);
 
-                break;
-            case "sortByHighLow":
-                totalRecord = debtorDAO.findTotalRecord(accountId);
-                listDebtor = debtorDAO.findByPageAndSortDebtByAmountHighLow(accountId, page);
-                pageControl.setUrlPattern("debtor?action=sortByHighLow&");
-                //request.setAttribute("debtList", debtList);
-
-                break;
-            case "sortByLowHigh":
-                totalRecord = debtorDAO.findTotalRecord(accountId);
-                listDebtor = debtorDAO.findByPageAndSortDebtByAmountLowHigh(accountId, page);
-                pageControl.setUrlPattern("debtor?action=sortByLowHigh&");
-                //request.setAttribute("debtList", debtList);
-
-                break;
-
-            default:
-                //phan trang o trang home
-                //tim ve totalRecord
-                totalRecord = debtorDAO.findTotalRecord(accountId);
-                //tim ve danh sach teddybear o trang chi dinh
-                listDebtor = debtorDAO.findByPage(accountId, page);
-                pageControl.setUrlPattern("debtor?");
+        String queryString = "debtor?";
+        if (keyword != null) {
+            queryString += "keyword=" + keyword;
         }
 
-        //tim xem tong co bao nhieu page
-        int totalPage = (totalRecord % Pagination.RECORD_PER_PAGE) == 0
-                ? (totalRecord / Pagination.RECORD_PER_PAGE)
-                : (totalRecord / Pagination.RECORD_PER_PAGE) + 1;
+        if (searchBy != null) {
+            queryString += "&searchBy=" + searchBy;
+        }
+        if (sortby != null) {
+            queryString += "&sortby=" + sortby;
+        }
+        PagingModel<Debtor> pagingModel = debtorDAO.DebtorPagingnation(accountId, page, searchBy, sortby, keyword);
+
         //set nhung gia tri vao pageControl
         pageControl.setPage(page);
-        pageControl.setTotalPage(totalPage);
-        pageControl.setTotalRecord(totalRecord);
+        pageControl.setUrlPattern(queryString);
+        pageControl.setTotalPage(pagingModel.getTotalPage());
+        pageControl.setTotalRecord(pageControl.getTotalRecord());
 
-        return listDebtor;
-    }
+        return pagingModel.getData();
+
+       }
 
 }

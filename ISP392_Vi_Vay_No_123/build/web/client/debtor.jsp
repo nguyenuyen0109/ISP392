@@ -437,32 +437,31 @@
         </style>
         <script>
             $(document).ready(function () {
-                // Activate tooltip
-                $('[data-toggle="tooltip"]').tooltip();
-
-                // Select/Deselect checkboxes
-                var checkbox = $('table tbody input[type="checkbox"]');
-                $("#selectAll").click(function () {
-                    if (this.checked) {
-                        checkbox.each(function () {
-                            this.checked = true;
-                        });
-                    } else {
-                        checkbox.each(function () {
-                            this.checked = false;
-                        });
-                    }
-                });
-                checkbox.click(function () {
-                    if (!this.checked) {
-                        $("#selectAll").prop("checked", false);
-                    }
-                });
+            // Activate tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+            // Select/Deselect checkboxes
+            var checkbox = $('table tbody input[type="checkbox"]');
+            $("#selectAll").click(function () {
+            if (this.checked) {
+            checkbox.each(function () {
+            this.checked = true;
+            });
+            } else {
+            checkbox.each(function () {
+            this.checked = false;
+            });
+            }
+            });
+            checkbox.click(function () {
+            if (!this.checked) {
+            $("#selectAll").prop("checked", false);
+            }
+            });
             });
         </script>
-
-
-
+        <link href="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css
+              " rel="stylesheet">
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
@@ -475,57 +474,35 @@
                             <div class="col-sm-6">
                                 <h2>Debtor <b>List</b></h2>
                             </div>
-                            <form action="debtor" method="get" class="search">
-                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery">
+                            <form method="get" class="search">
+                                <input type="text" class="search-input" placeholder="Search Debtor" name="keyword" value="${keyword}">
                                 <div class="search-selection">
-                                    <select class="search-selection-label" name="searchType" >
-                                        <option class="search-selection-item">Search by</option>
-                                        <option class="search-selection-item" value="name">Name</option>
-                                        <option class="search-selection-item" value="address">Address</option>
-                                        <option class="search-selection-item" value="phone">Phone</option>
-                                        <option class="search-selection-item" value="email">Email</option>
+                                    <select class="search-selection-label" name="searchBy">
+                                        <option class="search-selection-item" value="">Search by</option>
+                                        <option class="search-selection-item" value="name" ${searchBy == 'name' ? 'selected' : ''}>Name</option>
+                                        <option class="search-selection-item" value="address" ${searchBy == 'address' ? 'selected' : ''}>Address</option>
+                                        <option class="search-selection-item" value="phone" ${searchBy == 'phone' ? 'selected' : ''}>Phone</option>
+                                        <option class="search-selection-item" value="email" ${searchBy == 'email' ? 'selected' : ''}>Email</option>
+                                    </select>
+                                </div>
+                                <div class="search-selection">
+                                    <select class="search-selection-label" name="sortby">
+                                        <option class="search-selection-item" value="">Sorted by</option>
+                                        <option class="search-selection-item" value="oldest" ${sortby == 'oldest' ? 'selected' : ''}>Oldest</option>
+                                        <option class="search-selection-item" value="newest" ${sortby == 'newest' ? 'selected' : ''}>Newest</option>
+                                        <option class="search-selection-item" value="lowhigh" ${sortby == 'lowhigh' ? 'selected' : ''}>Amount from low to high</option>
+                                        <option class="search-selection-item" value="highlow" ${sortby == 'highlow' ? 'selected' : ''}>Amount from high to low</option>
                                     </select>
                                 </div>
                                 <button class="search-btn" type="submit" name="action" value="search">
                                     <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                                 </button>
                             </form>
-
                             <div class="col-sm-6">
                                 <a href="#addDebtorModal" class="btn btn-success" id="add-new-debtor-btn" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debtor</span></a>
                             </div>
                         </div>
-
                     </div>
-
-
-                    <div class="home-filter">
-                        <div class="selection-input">
-                            <span class="select-input__label">Sorted by</span>
-                            <i class="sort-icon fa-solid fa-angle-down"></i>	
-                            <ul class="select-input__list">
-                                <li class="select-input_item">
-                                    <a href="debtor?action=sortByOldest" class="select-input__link">Oldest</a>
-                                </li>
-                                <li class="select-input_item">
-                                    <a href="debtor?action=sortByNewest" class="select-input__link">Newest</a>
-                                </li>
-                                <li class="select-input_item">
-                                    <a href="debtor?action=sortByHighLow" class="select-input__link">Amount from high to low</a>
-                                </li>
-                                <li class="select-input_item">
-                                    <a href="debtor?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-
-
-
-
-
-
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>                       
@@ -540,10 +517,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <c:forEach items="${listDebtor}" var="debtor">
-
-
-                            <tbody>
+                        <tbody>
+                            <c:forEach items="${listDebtor}" var="debtor">
                                 <tr>						
                                     <td>${debtor.id}</td>
                                     <td>${debtor.name}</td>
@@ -553,7 +528,6 @@
                                     <td>${debtor.totalDebt}</td>
                                     <td><fmt:formatDate value="${debtor.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td><fmt:formatDate value="${debtor.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>                                                                                                
-
                                     <td class="actions">
                                         <!--<a href="./debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
                                         <a href="/ISP392_Vi_Vay_No_123/debt?debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
@@ -561,28 +535,27 @@
                                         <!--                                    <a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
                                         <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
                                         <!-- Edit Debtor detail -->
-                                        <i class="fa fa-edit fa-2x"
-                                           style="color: #469408"
-                                           data-toggle="modal"
-                                           data-target="#editDebtorDetailModal"
-                                           onclick="editDebtorDetailModal(
+                                        <a href="javascript:void(0)" title="Edit detail" data-toggle="tooltip">
+                                            <i class="fa fa-edit fa-2x"
+                                               style="color: #469408"
+                                               data-toggle="modal"
+                                               data-target="#editDebtorDetailModal"
+                                               onclick="editDebtorDetailModal(
                                                            `${debtor.id}`,
                                                            `${debtor.name}`,
                                                            `${debtor.address}`,
                                                            `${debtor.phone}`,
                                                            `${debtor.email}`,
-                                           ${debtor.totalDebt})">
-                                        </i>
-
-
-                                        &nbsp;&nbsp;&nbsp;
+                                               ${debtor.totalDebt})">
+                                            </i>
+                                        </a>
+                                        <a href="javascript:void(0)" title="Delete" class="text-danger" data-toggle="tooltip" onclick="deleteDebtor('${debtor.id}', '${debtor.name}')"><i class="material-icons">&#xe872;</i></a>
                                     </td>
-
-                                </tr>					
-                            </tbody>
-                        </c:forEach>
+                                </tr>					                            
+                            </c:forEach>
+                        </tbody>
                     </table>
-                    <input type="hidden" name="uri" value="/client/debtor.jsp">
+                    
                 </div>
             </div>        
         </div>
@@ -594,14 +567,36 @@
 
             <!-- Pagination  -->
         <jsp:include page="../client/pagination.jsp"></jsp:include>
+        <script src="
+                https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js
+        "></script>
+        <script>
+                                                    function deleteDebtor(debId, debName) {
+                                                    Swal.fire({
+                                                    title: "Are you sure?",
+                                                            text: `Do you want to delete ` + debName + " !",
+                                                            icon: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: "#3085d6",
+                                                            cancelButtonColor: "#d33",
+                                                            confirmButtonText: "Yes, delete it!"
+                                                    }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                    const url = "debtor?act=delete&debtorId=" + debId;
+                                                    fetch(url)
+                                                            .then(rs => {
+                                                            Swal.fire(
+                                                                    "Deleted!",
+                                                                    "Your debtor " + debName + " has been deleted.",
+                                                                    "success"
+                                                                    ).then(() => {
+                                                            location.reload();
+                                                            });
+                                                            })
 
-
-
-
-
-
-
-
-
+                                                    }
+                                                    });
+                                                    }
+        </script>
     </body>
 </html>
