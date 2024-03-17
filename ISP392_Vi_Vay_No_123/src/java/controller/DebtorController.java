@@ -26,8 +26,9 @@ import utils.Pagination;
 public class DebtorController extends HttpServlet {
 
     DebtorDAO debtor = new DebtorDAO();
-    private final String ACCOUNT_DETAIL = "/client/accountDetail.jsp";  
-    private final String DEBTOR = "/client/debtor.jsp"; 
+    private final String ACCOUNT_DETAIL = "/client/accountDetail.jsp";
+    private final String DEBTOR = "/client/debtor.jsp";
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,6 +41,12 @@ public class DebtorController extends HttpServlet {
             // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
             response.sendRedirect("login"); // Example redirection to login page
             return; // Stop further execution in this case.
+        }
+        String act = request.getParameter("act");
+        if (act != null && "delete".equals(act)) {
+            handleDelete(request);
+            response.getWriter().write("SUCCESS");
+            return;
         }
 
         // Now use this accountId to get data from the database
@@ -63,9 +70,7 @@ public class DebtorController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         //TAO SESSION
-        
         HttpSession session = request.getSession();
-
         String action = request.getParameter("action") == null
                 ? ""
                 : request.getParameter("action");
@@ -78,7 +83,6 @@ public class DebtorController extends HttpServlet {
                 break;
             default:
                 throw new AssertionError();
-
         }
         response.sendRedirect("debtor");
     }
@@ -111,6 +115,18 @@ public class DebtorController extends HttpServlet {
             request.setAttribute("errorMessage", "Debt cannot be added.");
             request.getRequestDispatcher("client/debtor.jsp").forward(request, response);
 
+        }
+    }
+    
+    //delete
+    private void handleDelete(HttpServletRequest request) {
+        try {
+            int debtorId = Integer.parseInt(request.getParameter("debtorId"));
+            if (debtorId > 0) {
+                DebtorDAO debtorDAO = new DebtorDAO();
+                debtorDAO.deleteDebtor(debtorId);
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -162,6 +178,7 @@ public class DebtorController extends HttpServlet {
             case "search":
                 String searchType = request.getParameter("searchType");
                 String keyword = request.getParameter("searchQuery");
+                request.setAttribute("keyword", keyword);
                 switch (searchType) {
                     case "name":
                         totalRecord = debtorDAO.findTotalRecordByName(accountId, keyword);
@@ -185,9 +202,9 @@ public class DebtorController extends HttpServlet {
                         break;
                     default:
                         // Xử lý mặc định nếu không có lựa chọn nào phù hợp
-                        totalRecord = debtorDAO.findTotalRecord(accountId);
+                        totalRecord = debtorDAO.findTotalRecordBySearch(accountId, keyword);
                         //tim ve danh sach debt o trang chi dinh
-                        listDebtor = debtorDAO.findByPage(accountId, page);
+                        listDebtor = debtorDAO.findByPageBySearch(accountId, page, keyword);
                         pageControl.setUrlPattern("debtor?");
                         break;
                 }
