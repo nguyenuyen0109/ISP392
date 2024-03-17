@@ -11,6 +11,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+              integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/styleAccountList.css"/>
         <title>Account List</title>
     </head>
@@ -22,12 +25,35 @@
                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/ISP392_Vi_Vay_No_123/client/homepage.jsp">Home</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+                        <li class="breadcrumb-item"><a href="/ISP392_Vi_Vay_No_123/dashboardadmin?action=active">Active</a></li>
+                        <li class="breadcrumb-item"><a href="/ISP392_Vi_Vay_No_123/dashboardadmin?action=deactive">Deactive</a></li>
                         <li class="breadcrumb-item active" aria-current="page">User Grid</li>
                     </ol>
+
                 </nav>
                 <!-- /Breadcrumb -->
-
+                <div class="home-filter">
+                    <div class="selection-input">
+                        <span class="select-input__label">Sorted by <i class="sort-icon fa-solid fa-angle-down"></i></span>
+                        	
+                        <ul class="select-input__list">
+                            <li class="select-input_item">
+                                <a href="dashboardadmin?action=accountOldest" class="select-input__link">Account Oldest</a>
+                            </li>
+                            <li class="select-input_item">
+                                <a href="dashboardadmin?action=accountNewest" class="select-input__link">Account Newest</a>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                        <a href="dashboardadmin?action=mostDebtor" class="select-input__link" style="margin-right: 25% !important;"><span>Most Debtor</span></a>
+                    <div class="home-search">
+                        <form action="dashboardadmin" id="search-box">
+                            <input type="text" id="search-text" name="searchString" placeholder="Enter to search" required>
+                            <button id = "search-btn" type="submit" name="action" value="adminSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </div>
+                </div>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 gutters-sm">
                     <c:forEach items="${accounts}" var="acc">
                         <div class="col mb-3">
@@ -49,5 +75,6 @@
                 </div>
             </div>
         </div>
+        <jsp:include page="../client/pagination.jsp"></jsp:include>
     </body>
 </html>

@@ -9,5 +9,5 @@ package utils;
  * @author ADMIN
  */
 public class Pagination {
-    public static final int RECORD_PER_PAGE = 5;
+    public static final int RECORD_PER_PAGE = 8;
 }

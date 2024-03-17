@@ -206,8 +206,10 @@ public class DebtDAO {
 
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
-            String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.id LIMIT ? OFFSET ?";
+            String sql = "SELECT * FROM debtdetails ddt "
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                    + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.id LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -219,7 +221,7 @@ public class DebtDAO {
                 DebtDetail debt = new DebtDetail();
                 debt.setId(resultSet.getInt("id"));
                 debt.setDescription(resultSet.getString("description"));
-//                debt.setDebtorName(resultSet.getString("d.name"));
+                debt.setDebtorName(resultSet.getString("d.name"));
                 debt.setDebtTypeName(resultSet.getString("name"));
                 debt.setAmount(resultSet.getDouble("amount"));
                 debt.setCreateAt(resultSet.getTimestamp("createdAt"));
@@ -283,7 +285,9 @@ public class DebtDAO {
     public List<DebtDetail> findByPageToSearch(int accountId, int debtorId, String keyword, int page) {
         List<DebtDetail> debtList = new ArrayList<>();
         String sql = "SELECT * "
-                + "FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                + "FROM debtdetails ddt "
+                + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
                 + "WHERE debtor_account_id = ? AND debtor_id = ? AND (ddt.description LIKE ? OR amount = ? ) "
                 + "ORDER BY ddt.id "
                 + "LIMIT ? OFFSET ?";
@@ -301,8 +305,17 @@ public class DebtDAO {
                     DebtDetail debt = new DebtDetail();
                     debt.setId(resultSet.getInt("id"));
                     debt.setDescription(resultSet.getString("description"));
-                    debt.setDebtTypeId(resultSet.getInt("debtTypeId"));
+                    debt.setDebtorName(resultSet.getString("d.name"));
+                    debt.setDebtTypeName(resultSet.getString("name"));
                     debt.setAmount(resultSet.getDouble("amount"));
+                    debt.setCreateAt(resultSet.getTimestamp("createdAt"));
+                    //viet them
+                    debt.setInterestRate(resultSet.getDouble("interestRate"));
+                    debt.setDue(resultSet.getDouble("due"));
+                    debt.setImage(resultSet.getString("image"));
+                    debt.setDeletedAt(resultSet.getTimestamp("deleteAt"));
+                    debt.setIsDeleted(resultSet.getBoolean("isDeleted"));
+                    debt.setTotalAmount(resultSet.getDouble("totalAmount"));
                     debt.setDebtIssuance(resultSet.getDate("debtissuance"));
                     debtList.add(debt);
                 }
@@ -407,7 +420,9 @@ public class DebtDAO {
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.createdAt ASC LIMIT ? OFFSET ?";
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                    + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.createdAt ASC LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -418,7 +433,7 @@ public class DebtDAO {
                 DebtDetail debt = new DebtDetail();
                 debt.setId(resultSet.getInt("id"));
                 debt.setDescription(resultSet.getString("description"));
-//                debt.setDebtorName(resultSet.getString("d.name"));
+                debt.setDebtorName(resultSet.getString("d.name"));
                 debt.setDebtTypeName(resultSet.getString("name"));
                 debt.setAmount(resultSet.getDouble("amount"));
                 debt.setCreateAt(resultSet.getTimestamp("createdAt"));
@@ -457,7 +472,9 @@ public class DebtDAO {
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.createdAt DESC LIMIT ? OFFSET ?";
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                    + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.createdAt DESC LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -468,7 +485,7 @@ public class DebtDAO {
                 DebtDetail debt = new DebtDetail();
                 debt.setId(resultSet.getInt("id"));
                 debt.setDescription(resultSet.getString("description"));
-//                debt.setDebtorName(resultSet.getString("d.name"));
+                debt.setDebtorName(resultSet.getString("d.name"));
                 debt.setDebtTypeName(resultSet.getString("name"));
                 debt.setAmount(resultSet.getDouble("amount"));
                 debt.setCreateAt(resultSet.getTimestamp("createdAt"));
@@ -516,7 +533,9 @@ public class DebtDAO {
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY " + orderBy + " LIMIT ? OFFSET ?";
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                    + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY " + orderBy + " LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -528,7 +547,7 @@ public class DebtDAO {
                 DebtDetail debt = new DebtDetail();
                 debt.setId(resultSet.getInt("id"));
                 debt.setDescription(resultSet.getString("description"));
-//                debt.setDebtorName(resultSet.getString("d.name"));
+                debt.setDebtorName(resultSet.getString("d.name"));
                 debt.setDebtTypeName(resultSet.getString("name"));
                 debt.setAmount(resultSet.getDouble("amount"));
                 debt.setCreateAt(resultSet.getTimestamp("createdAt"));
@@ -592,7 +611,10 @@ public class DebtDAO {
 
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
-            String sql = "SELECT * FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? AND ddt.debtTypeId = ? LIMIT ? OFFSET ?";
+            String sql = "SELECT * FROM debtdetails ddt "
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                    + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? AND ddt.debtTypeId = ? LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -605,7 +627,7 @@ public class DebtDAO {
                 DebtDetail debt = new DebtDetail();
                 debt.setId(resultSet.getInt("id"));
                 debt.setDescription(resultSet.getString("description"));
-//                debt.setDebtorName(resultSet.getString("d.name"));
+                debt.setDebtorName(resultSet.getString("d.name"));
                 debt.setDebtTypeName(resultSet.getString("name"));
                 debt.setAmount(resultSet.getDouble("amount"));
                 debt.setCreateAt(resultSet.getTimestamp("createdAt"));

@@ -47,20 +47,17 @@
     </head>
     <body>
         <jsp:include page="/navigator/header.jsp" />
-        <%
-            ResultSet rsDebtorName = (ResultSet)session.getAttribute("debtorName");
-        %>
         <div class="container-xl">
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
-<!--                        <div>
+                        <div>
                             <h2>Debt List</h2>
-                            <h3 style="font-size: 13px; margin-top: 9px">Debtor Name: 
-                            <%if(rsDebtorName.next()){%>
-                                <%=rsDebtorName.getString("name")%>
-                                <%}%></h3>
-                        </div>-->
+                            <c:if test="${not empty debtList}">
+                                <c:set var="firstDebt" value="${debtList[0]}" />
+                                <h3 style="font-size: 13px; margin-top: 9px">Debtor Name: ${firstDebt.debtorName}</h3>
+                            </c:if>
+                        </div>
                         <form action="debt" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
                             <div class="search-selection">
@@ -102,6 +99,12 @@
                                 </li>
                                 <li class="select-input_item">
                                     <a href="debt?action=Debt" class="select-input__link">Debt</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debt?action=Loan" class="select-input__link">Loan</a>
+                                </li>
+                                <li class="select-input_item">
+                                    <a href="debt?action=Len" class="select-input__link">Lend</a>
                                 </li>
                             </ul>
                         </div>

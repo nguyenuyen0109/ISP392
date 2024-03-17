@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.sql.Timestamp;
+import utils.Pagination;
 
 /**
  *
@@ -73,7 +74,7 @@ public class AccountDAO {
         }
         return n;
     }
-    
+
     public Account findByUsernameAndPassword(String username, String password) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -170,6 +171,54 @@ public class AccountDAO {
         return null;
     }
 
+    public List<Account> haveMostDebtor() {
+        List<Account> accounts = new ArrayList<>();
+        String query = "SELECT * from account a\n"
+                + "inner join debtor d On a.id=d.account_id\n"
+                + "group by a.id, a.username\n"
+                + "having count(d.id)=(\n"
+                + "    Select MAX(totalDebtor)\n"
+                + "    from (\n"
+                + "        select count(d.id) as totalDebtor\n"
+                + "        from account a\n"
+                + "        inner join debtor d ON a.id = d.account_id\n"
+                + "        where a.isActive = true\n"
+                + "        group by a.id, a.username)TotalDebtor);";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String username = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String mobileNumber = resultSet.getString("mobileNumber");
+                    String emailAddress = resultSet.getString("emailAddress");
+                    String address = resultSet.getString("address");
+                    boolean isActive = resultSet.getBoolean("isActive");
+                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
+                    java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
+                    String avatarUrl = resultSet.getString("avatarUrl");
+                    boolean gender = resultSet.getBoolean("gender");
+                    int roleId = resultSet.getInt("role_id");
+                    java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
+                    String token = resultSet.getString("token");
+                    Date expiretime = resultSet.getDate("expiretime");
+                    boolean isDeleted = resultSet.getBoolean("isDeleted");
+
+                    Account account = new Account(id, username, password, name, mobileNumber, emailAddress,
+                            address, isActive, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
+                    accounts.add(account);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+
     public Account getAccountByEmail(String email) {
         String query = "SELECT * FROM account WHERE emailAddress = ?";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
@@ -222,33 +271,61 @@ public class AccountDAO {
         return null;
     }
 
-    public List<Account> getAllAccounts() {
-        List<Account> accounts = new ArrayList<>();
-        String query = "SELECT * FROM account";
-        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String username = resultSet.getString("username");
-                String password = resultSet.getString("password");
-                String name = resultSet.getString("name");
-                String mobileNumber = resultSet.getString("mobileNumber");
-                String emailAddress = resultSet.getString("emailAddress");
-                String address = resultSet.getString("address");
-                boolean isActive = resultSet.getBoolean("isActive");
-                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
-                java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
-                String avatarUrl = resultSet.getString("avatarUrl");
-                boolean gender = resultSet.getBoolean("gender");
-                int roleId = resultSet.getInt("role_id");
-                java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
-                String token = resultSet.getString("token");
-                Date expiretime = resultSet.getDate("expiretime");
-                boolean isDeleted = resultSet.getBoolean("isDeleted");
+    public int totalAccount() {
+        int totalRecord = 0;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
-                Account account = new Account(id, username, password, name, mobileNumber, emailAddress,
-                        address, isActive, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
-                accounts.add(account);
+        try {
+            String sql = "SELECT COUNT(*) FROM account WHERE isActive = true ";
+            statement = db.getConnection().prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                totalRecord = resultSet.getInt(1);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return totalRecord;
+    }
+
+    public List<Account> getAllAccounts(int page) {
+        List<Account> accounts = new ArrayList<>();
+        String query = "SELECT * FROM account WHERE isActive = true LIMIT ? OFFSET ? ";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
+            int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+            preparedStatement.setInt(1, Pagination.RECORD_PER_PAGE);
+            preparedStatement.setInt(2, offset);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String username = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String mobileNumber = resultSet.getString("mobileNumber");
+                    String emailAddress = resultSet.getString("emailAddress");
+                    String address = resultSet.getString("address");
+                    boolean isActive = resultSet.getBoolean("isActive");
+                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
+                    java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
+                    String avatarUrl = resultSet.getString("avatarUrl");
+                    boolean gender = resultSet.getBoolean("gender");
+                    int roleId = resultSet.getInt("role_id");
+                    java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
+                    String token = resultSet.getString("token");
+                    Date expiretime = resultSet.getDate("expiretime");
+                    boolean isDeleted = resultSet.getBoolean("isDeleted");
+
+                    Account account = new Account(id, username, password, name, mobileNumber, emailAddress,
+                            address, isActive, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
+                    accounts.add(account);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -700,5 +777,185 @@ public class AccountDAO {
         return email;
     }
 
+    public int totalRecordIsActive(boolean status) {
+        int totalRecord = 0;
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+
+        try {
+            String sql = "SELECT COUNT(*) AS total FROM account WHERE isActive = ?";
+            ps = db.getConnection().prepareStatement(sql);
+            ps.setBoolean(1, status);
+            resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                totalRecord = resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng resultSet và preparedStatement tại đây
+        }
+
+        return totalRecord;
+    }
+
+    public List<Account> filterAccount(boolean status, int page) {
+        List<Account> accounts = new ArrayList<>();
+
+        String sql = "select * from account where isActive = ? LIMIT ? OFFSET ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
+            int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+            preparedStatement.setBoolean(1, status);
+            preparedStatement.setInt(2, Pagination.RECORD_PER_PAGE);
+            preparedStatement.setInt(3, offset);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String username = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String mobileNumber = resultSet.getString("mobileNumber");
+                    String emailAddress = resultSet.getString("emailAddress");
+                    String address = resultSet.getString("address");
+                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
+                    java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
+                    String avatarUrl = resultSet.getString("avatarUrl");
+                    boolean gender = resultSet.getBoolean("gender");
+                    int roleId = resultSet.getInt("role_id");
+                    java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
+                    String token = resultSet.getString("token");
+                    Date expiretime = resultSet.getDate("expiretime");
+                    boolean isDeleted = resultSet.getBoolean("isDeleted");
+
+                    Account account = new Account(id, username, password, name, mobileNumber, emailAddress,
+                            address, status, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+
+    public List<Account> accountOldest(int page) {
+        return accountCreate(page, " createAt ASC ");
+
+    }
+
+    public List<Account> accountNewest(int page) {
+        return accountCreate(page, " createAt DESC ");
+    }
+
+    private List<Account> accountCreate(int page, String orderBy) {
+        List<Account> accounts = new ArrayList<>();
+
+        String sql = "select * from account WHERE isActive = true order by " + orderBy + " LIMIT ? OFFSET ? ";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
+            int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+            preparedStatement.setInt(1, Pagination.RECORD_PER_PAGE);
+            preparedStatement.setInt(2, offset);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String username = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String mobileNumber = resultSet.getString("mobileNumber");
+                    String emailAddress = resultSet.getString("emailAddress");
+                    String address = resultSet.getString("address");
+                    boolean isActive = resultSet.getBoolean("isActive");
+                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
+                    java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
+                    String avatarUrl = resultSet.getString("avatarUrl");
+                    boolean gender = resultSet.getBoolean("gender");
+                    int roleId = resultSet.getInt("role_id");
+                    java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
+                    String token = resultSet.getString("token");
+                    Date expiretime = resultSet.getDate("expiretime");
+                    boolean isDeleted = resultSet.getBoolean("isDeleted");
+
+                    Account account = new Account(id, username, password, name, mobileNumber, emailAddress,
+                            address, isActive, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
+    
+    public int totalRecordSearchUsername(String input) {
+        int totalRecord = 0;
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+
+        try {
+            String sql = "SELECT COUNT(*) AS total FROM account where username like ? or "
+                    + "name like ? or mobileNumber like ? or emailAddress like ? or createAt like ? ";
+            ps = db.getConnection().prepareStatement(sql);
+            ps.setString(1, "%"+input+"%");
+            ps.setString(2, "%"+input+"%");
+            ps.setString(3, "%"+input+"%");
+            ps.setString(4, "%"+input+"%");
+            ps.setString(5, "%"+input+"%");
+            resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                totalRecord = resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng resultSet và preparedStatement tại đây
+        }
+
+        return totalRecord;
+    }
+
+    public List<Account> getListByUsername(String input, int page) {
+        List<Account> accounts = new ArrayList<>();
+        String sql = "select * from account where username like ? or "
+                + "name like ? or mobileNumber like ? or emailAddress like ? or createAt like ? order by id LIMIT ? OFFSET ?";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
+            int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
+            preparedStatement.setString(1, "%"+input+"%");
+            preparedStatement.setString(2, "%"+input+"%");
+            preparedStatement.setString(3, "%"+input+"%");
+            preparedStatement.setString(4, "%"+input+"%");
+            preparedStatement.setString(5, "%"+input+"%");
+            preparedStatement.setInt(6, Pagination.RECORD_PER_PAGE);
+            preparedStatement.setInt(7, offset);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String username = resultSet.getString("username");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String mobileNumber = resultSet.getString("mobileNumber");
+                    String emailAddress = resultSet.getString("emailAddress");
+                    String address = resultSet.getString("address");
+                    boolean isActive = resultSet.getBoolean("isActive");
+                    java.sql.Timestamp updatedAt = resultSet.getTimestamp("updateAt");
+                    java.sql.Timestamp createdAt = resultSet.getTimestamp("createAt");
+                    String avatarUrl = resultSet.getString("avatarUrl");
+                    boolean gender = resultSet.getBoolean("gender");
+                    int roleId = resultSet.getInt("role_id");
+                    java.sql.Timestamp deleteAt = resultSet.getTimestamp("deleteAt");
+                    String token = resultSet.getString("token");
+                    Date expiretime = resultSet.getDate("expiretime");
+                    boolean isDeleted = resultSet.getBoolean("isDeleted");
+
+                    Account account = new Account(id, username, password, name, mobileNumber, emailAddress,
+                            address, isActive, updatedAt, createdAt, avatarUrl, gender, roleId, deleteAt, isDeleted, token, expiretime);
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accounts;
+    }
 
 }
