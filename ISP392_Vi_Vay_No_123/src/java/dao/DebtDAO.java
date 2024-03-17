@@ -4,7 +4,7 @@
  */
 package dao;
 
-import com.mysql.cj.xdevapi.Collection;
+
 import dal.DBContext;
 import model.DebtDetail;
 import java.sql.ResultSet;
