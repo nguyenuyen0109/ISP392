@@ -39,7 +39,7 @@
                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                         <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                         <a href="/ISP392_Vi_Vay_No_123/dashboardadmin">View Account List</a>
-                        <a href="/ISP392_Vi_Vay_No_123/feedback">View Feedback List</a>
+                        <a href="/ISP392_Vi_Vay_No_123/feedbacklist">View Feedback List</a>
                     </ul>
                 </nav>
                 <% if (session != null && session.getAttribute("USER") != null) {
