@@ -4,13 +4,19 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Edit Profile</title>
-        <link rel="stylesheet" href="/assets/css/editprofile.css">
+        <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/editprofile.css">
         <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css'>
+        <style>
+            .container bootstrap snippets bootdey{
+               
+            }
+            </style>
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
-        <jsp:include page="/navigator/header.jsp" />
-        <form action="editprofile" method="post" id = "editProfile">
+
+        <div class="container">
+            <form action="editprofile" method="post" id = "editProfile">
             <div class="container bootstrap snippets bootdey">
                 <h1 class="text-primary">Edit Profile</h1>
                 <div class="row">
@@ -94,6 +100,7 @@
                 </div>
             </div>
         </form>
+        </div>
         <script>
 
         function editDebtorDetailModal(address, phone) {

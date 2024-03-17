@@ -20,6 +20,10 @@ body, h1, nav, ul, li, a, button {
     justify-content: space-between;
 }
 
+.login-container {
+    margin-left: auto; /* Push the login button to the right */
+}
+
 h1 {
     font-size: 2em; /* Slightly larger font for the logo text */
     font-weight: bold;
@@ -56,9 +60,10 @@ nav ul li a {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .container {
+    .container, .login-container {
         flex-direction: column;
         text-align: center;
+        margin-left: 0; /* Reset the margin for mobile */
     }
     nav ul {
         padding-top: 20px;
@@ -68,6 +73,10 @@ nav ul li a {
         padding: 5px 0;
     }
 }
+
+/* Dropdown Menu CSS */
+/* No changes here, keep as is */
+
 
 /* Dropdown Menu CSS */
 .dropdown {

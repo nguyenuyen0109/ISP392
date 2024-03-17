@@ -1,14 +1,19 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page import="model.Account"%> <!-- Replace 'your.package' with the actual package name where the 'Account' class is defined -->
-
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="model.Account" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Debit Note</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Untree.co">
+        <link rel="shortcut icon" href="favicon.png">
 
+        <meta name="description" content="" />
+        <meta name="keywords" content="bootstrap, bootstrap5" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
 
@@ -27,53 +32,104 @@
 
         <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/header.css">
 
+
+
+        <title>DEBIT NOTE</title>
+        <style>
+            .container {
+                margin-bottom:  100px;
+            }
+       
+        
+        </style>
+
     </head>
     <body>
-        <header class="header-container">
+        <jsp:include page="/navigator/toast.jsp" />
+<!--            <div class="hero overlay">-->
+<div class="container">
+    <nav class="site-nav">
             <div class="container">
-                <h1><a href="/ISP392_Vi_Vay_No_123/client/homepage.jsp" class="logo">Debit Note<span class="text-primary">.</span></a></h1>
-                <nav>
-                    <ul>
-                        <li class="active"><a href="ISP392_Vi_Vay_No_123/client/homepage.jsp">Home</a></li>
-                         <a href="/ISP392_Vi_Vay_No_123/changepassword">Change Password</a>
-                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
-                        <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
-                        <a href="/ISP392_Vi_Vay_No_123/dashboardadmin">View Account List</a>
-                    </ul>
-                </nav>
-                <% if (session != null && session.getAttribute("USER") != null) {
-                    Account user = (Account) session.getAttribute("USER");
-                    Boolean isAdmin = (Boolean) session.getAttribute("Admin");
-                %>
-                <div class="dropdown">
-                    <button class="dropbtn">Hello, <%= user.getUsername() %></button>
-                    <div class="dropdown-content">
-                        <a href="/ISP392_Vi_Vay_No_123/changepassword">Change Password</a>
-                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
-                        <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
-                        <% if (isAdmin != null && isAdmin) { %>
-                        <a href="/ISP392_Vi_Vay_No_123/account">View Account List</a>
-                        <% } %>
-                        <a href="/ISP392_Vi_Vay_No_123/logout">Logout</a>
+                <div class="menu-bg-wrap">
+                    <div class="site-navigation">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-2">
+                                <a href="homepage.jsp" class="logo m-0 float-start" style="color : black">DEBIT NOTE<span class="text-primary">.</span></a>
+                            </div>
+                            <div class="col-8 text-center">
+                                <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
+                                    <li style="color : black" class="active"><a href="/ISP392_Vi_Vay_No_123/client/homepage.jsp">Home</a></li>
+                                    <li class="has-children">
+                                        <a href="#">Pages</a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Financing</a></li>
+                                            <li><a href="#">Blog Single</a></li>
+                                            <li><a href="#">Case Study Detail</a></li>
+                                            <li><a href="#">Menu One</a></li>
+                                            <li><a href="#">Menu Two</a></li>
+                                            <li class="has-children">
+                                                <a href="#">Dropdown</a>
+                                                <ul class="dropdown">
+                                                    <li><a href="#">Sub Menu One</a></li>
+                                                    <li><a href="#">Sub Menu Two</a></li>
+                                                    <li><a href="#">Sub Menu Three</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a style="color : black" href="blog.html">Blog</a></li>
+                                    <li><a style="color : black"  href="services.html">Services</a></li>
+                                    <li><a style="color : black" href="about.html">About</a></li>
+                                    <li><a style="color : black" href="contact.html">Contact Us</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-2 text-end">
+                                <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light">
+                                    <span></span>
+                                </a>
+                                <% if (session != null && session.getAttribute("USER") != null) {
+                                    Account user = (Account) session.getAttribute("USER");
+                                    Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
+                                %>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Hello, <%= user.getUsername() %>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="/ISP392_Vi_Vay_No_123/changepassword">Change Password</a></li>
+                                        <li><a class="dropdown-item" href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a></li>
+                                        <li><a class="dropdown-item" href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a></li>
+
+                                        <% if (isAdmin != null && isAdmin) { %>
+                                        <li><a class="dropdown-item" href="/ISP392_Vi_Vay_No_123/account">Dashboard</a></li>
+                                            <% } %>
+                                        <li><a class="dropdown-item" href="/ISP392_Vi_Vay_No_123/logout">Logout</a></li>
+                                    </ul>
+                                </div>
+                                <% } else { %>
+                                <a href="../login">
+                                    <button class="login-button d-flex align-items-center" style="background-color: #3056E8; color: #ffffff; padding: 10px 20px; border: 2px solid #ffffff; border-radius: 5px; cursor: pointer; transition: all 0.3s ease;">
+                                        <span class="bi bi-box-arrow-in-right" style="font-size: 24px; margin-right: 8px;"></span>
+                                        <span style="font-weight: bold; font-size: 16px;">Login</span>
+                                    </button>
+                                </a>
+                                <% } %>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <% } else { %>
-                <a href="../login">
-                    <button class="login-button">
-                        Login
-                    </button>
-                </a>
-                <% } %>
             </div>
-        </header>
+        </nav>
+</div>
+        
+    
 
-        <script src="ISP392_Vi_Vay_No_123/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="ISP392_Vi_Vay_No_123/assets/js/tiny-slider.js"></script>
-        <script src="ISP392_Vi_Vay_No_123/assets/js/flatpickr.min.js"></script>
-        <script src="ISP392_Vi_Vay_No_123/assets/js/aos.js"></script>
-        <script src="ISP392_Vi_Vay_No_123/assets/js/glightbox.min.js"></script>
-        <script src="ISP392_Vi_Vay_No_123/assets/js/navbar.js"></script>
-        <script src="ISP392_Vi_Vay_No_123/assets/js/counter.js"></script>
-        <script src="ISP392_Vi_Vay_No_123/assets/js/custom.js"></script>
-    </body>
-</html>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/tiny-slider.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/flatpickr.min.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/aos.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/glightbox.min.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/navbar.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/counter.js"></script>
+    <script src="ISP392_Vi_Vay_No_123/assets/js/custom.js"></script>
+</body>
