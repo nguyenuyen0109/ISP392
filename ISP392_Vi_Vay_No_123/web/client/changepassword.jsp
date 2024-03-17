@@ -118,13 +118,12 @@
             }
             document.getElementById("pass").onblur = validatePasswordConditions;
             document.getElementById("re_pass").onblur = validatePassword;
-
             document.getElementById("signupForm").addEventListener("submit", function (event) {
                 // Kiểm tra điều kiện của biểu mẫu ở đây
                 var pw = document.getElementById("passwordFeedback").textContent;
                 var pwc = document.getElementById("passwordConditionsFeedback").textContent;
                 var o = document.getElementById("password1").textContent;
-                if (pw !== '' || pwc !== '' || o === '') {
+                if (pw !== '' || pwc !== '' ) {
                     event.preventDefault();
                     // Hiển thị thông báo hoặc xử lý lỗi khác tùy thuộc vào trường hợp của bạn
                     alert('Please correct the information!'); // Thay bằng thông báo hoặc xử lý lỗi khác
