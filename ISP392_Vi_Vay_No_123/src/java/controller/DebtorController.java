@@ -177,39 +177,39 @@ public class DebtorController extends HttpServlet {
                 : request.getParameter("action");
         switch (action) {
             case "search":
-                String searchType = request.getParameter("searchType");
+//                String searchType = request.getParameter("searchType");
                 String keyword = request.getParameter("searchQuery");
                 request.setAttribute("keyword", keyword);
-                switch (searchType) {
-                    case "name":
-                        totalRecord = debtorDAO.findTotalRecordByName(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByName(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=name&searchQuery=" + keyword + "&");
-                        break;
-                    case "address":
-                        totalRecord = debtorDAO.findTotalRecordByAddress(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByAddress(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=address&searchQuery=" + keyword + "&");
-                        break;
-                    case "phone":
-                        totalRecord = debtorDAO.findTotalRecordByPhone(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByPhone(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=phone&searchQuery=" + keyword + "&");
-                        break;
-                    case "email":
-                        totalRecord = debtorDAO.findTotalRecordByEmail(accountId, keyword);
-                        listDebtor = debtorDAO.findByPageByEmail(accountId, keyword, page);
-                        pageControl.setUrlPattern("debtor?action=search&searchType=email&searchQuery=" + keyword + "&");
-                        break;
-                    default:
+//                switch (searchType) {
+//                    case "name":
+//                        totalRecord = debtorDAO.findTotalRecordByName(accountId, keyword);
+//                        listDebtor = debtorDAO.findByPageByName(accountId, keyword, page);
+//                        pageControl.setUrlPattern("debtor?action=search&searchType=name&searchQuery=" + keyword + "&");
+//                        break;
+//                    case "address":
+//                        totalRecord = debtorDAO.findTotalRecordByAddress(accountId, keyword);
+//                        listDebtor = debtorDAO.findByPageByAddress(accountId, keyword, page);
+//                        pageControl.setUrlPattern("debtor?action=search&searchType=address&searchQuery=" + keyword + "&");
+//                        break;
+//                    case "phone":
+//                        totalRecord = debtorDAO.findTotalRecordByPhone(accountId, keyword);
+//                        listDebtor = debtorDAO.findByPageByPhone(accountId, keyword, page);
+//                        pageControl.setUrlPattern("debtor?action=search&searchType=phone&searchQuery=" + keyword + "&");
+//                        break;
+//                    case "email":
+//                        totalRecord = debtorDAO.findTotalRecordByEmail(accountId, keyword);
+//                        listDebtor = debtorDAO.findByPageByEmail(accountId, keyword, page);
+//                        pageControl.setUrlPattern("debtor?action=search&searchType=email&searchQuery=" + keyword + "&");
+//                        break;
+//                    default:
                         // Xử lý mặc định nếu không có lựa chọn nào phù hợp
                         totalRecord = debtorDAO.findTotalRecordBySearch(accountId, keyword);
                         //tim ve danh sach debt o trang chi dinh
                         listDebtor = debtorDAO.findByPageBySearch(accountId, page, keyword);
                         pageControl.setUrlPattern("debtor?");
-                        break;
-                }
-                break;
+//                        break;
+//                }
+               break;
             case "sortByOldest":
                 totalRecord = debtorDAO.findTotalRecord(accountId);
                 listDebtor = debtorDAO.findByPageAndSortByOldest(accountId, page);

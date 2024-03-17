@@ -476,16 +476,12 @@
                                 <h2>Debtor <b>List</b></h2>
                             </div>
                             <form action="debtor" method="get" class="search">
-                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery" value="${keyword}">
-                                <div class="search-selection">
+                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery" >
+<!--                                <div class="search-selection">
                                     <select class="search-selection-label" name="searchType" >
-                                        <option class="search-selection-item">Search by</option>
-                                        <option class="search-selection-item" value="name">Name</option>
-                                        <option class="search-selection-item" value="address">Address</option>
-                                        <option class="search-selection-item" value="phone">Phone</option>
-                                        <option class="search-selection-item" value="email">Email</option>
+                                        <option class="search-selection-item"></option>
                                     </select>
-                                </div>
+                                </div>-->
                                 <button class="search-btn" type="submit" name="action" value="search">
                                     <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                                 </button>
