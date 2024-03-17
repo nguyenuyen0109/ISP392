@@ -476,7 +476,7 @@
                                 <h2>Debtor <b>List</b></h2>
                             </div>
                             <form action="debtor" method="get" class="search">
-                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery">
+                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery" value="${keyword}">
                                 <div class="search-selection">
                                     <select class="search-selection-label" name="searchType" >
                                         <option class="search-selection-item">Search by</option>
@@ -540,10 +540,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <c:forEach items="${listDebtor}" var="debtor">
-
-
-                            <tbody>
+                        <tbody>
+                            <c:forEach items="${listDebtor}" var="debtor">
                                 <tr>						
                                     <td>${debtor.id}</td>
                                     <td>${debtor.name}</td>
@@ -561,26 +559,25 @@
                                         <!--                                    <a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
                                         <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
                                         <!-- Edit Debtor detail -->
-                                        <i class="fa fa-edit fa-2x"
-                                           style="color: #469408"
-                                           data-toggle="modal"
-                                           data-target="#editDebtorDetailModal"
-                                           onclick="editDebtorDetailModal(
-                                                           `${debtor.id}`,
-                                                           `${debtor.name}`,
-                                                           `${debtor.address}`,
-                                                           `${debtor.phone}`,
-                                                           `${debtor.email}`,
-                                           ${debtor.totalDebt})">
-                                        </i>
-
-
-                                        &nbsp;&nbsp;&nbsp;
+                                        <a href="javascript:void(0)" title="Edit detail" data-toggle="tooltip">
+                                            <i class="fa fa-edit fa-2x"
+                                               style="color: #469408"
+                                               data-toggle="modal"
+                                               data-target="#editDebtorDetailModal"
+                                               onclick="editDebtorDetailModal(
+                                                               `${debtor.id}`,
+                                                               `${debtor.name}`,
+                                                               `${debtor.address}`,
+                                                               `${debtor.phone}`,
+                                                               `${debtor.email}`,
+                                               ${debtor.totalDebt})">
+                                            </i>
+                                        </a>
+                                        <a href="javascript:void(0)" title="Delete" class="text-danger" data-toggle="tooltip" onclick="deleteDebtor('${debtor.id}', '${debtor.name}')"><i class="material-icons">&#xe872;</i></a>
                                     </td>
-
-                                </tr>					
-                            </tbody>
-                        </c:forEach>
+                                </tr>					                           
+                            </c:forEach>
+                        </tbody>
                     </table>
                     <input type="hidden" name="uri" value="/client/debtor.jsp">
                 </div>
@@ -594,14 +591,36 @@
 
             <!-- Pagination  -->
         <jsp:include page="../client/pagination.jsp"></jsp:include>
+        <script src="
+                https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js
+        "></script>
+        <script>
+                                                    function deleteDebtor(debId, debName) {
+                                                    Swal.fire({
+                                                    title: "Are you sure?",
+                                                            text: `Do you want to delete ` + debName + " !",
+                                                            icon: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: "#3085d6",
+                                                            cancelButtonColor: "#d33",
+                                                            confirmButtonText: "Yes, delete it!"
+                                                    }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                    const url = "debtor?act=delete&debtorId=" + debId;
+                                                    fetch(url)
+                                                            .then(rs => {
+                                                            Swal.fire(
+                                                                    "Deleted!",
+                                                                    "Your debtor " + debName + " has been deleted.",
+                                                                    "success"
+                                                                    ).then(() => {
+                                                            location.reload();
+                                                            });
+                                                            })
 
-
-
-
-
-
-
-
-
+                                                    }
+                                                    });
+                                                    }
+        </script>
     </body>
 </html>
