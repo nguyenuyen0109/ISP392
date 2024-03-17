@@ -203,6 +203,16 @@ public class DebtController extends HttpServlet {
                 pageControl.setUrlPattern("debt?action=Debt&");
                 //request.setAttribute("debtList", debtList);
                 break;
+            case "Loan":
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 1);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 1, page);
+                pageControl.setUrlPattern("debt?action=Loan&");
+                break;
+            case "Len":
+                totalRecord = debtDAO.findTotalRecordByDebtType(accountId, debtorId, 2);
+                debtList = debtDAO.findByPageByDebtType(accountId, debtorId, 2, page);
+                pageControl.setUrlPattern("debt?action=Len&");
+                break;
             default:
                 //phan trang o trang home
                 //tim ve totalRecord

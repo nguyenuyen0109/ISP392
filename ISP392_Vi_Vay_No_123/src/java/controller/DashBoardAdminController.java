@@ -45,45 +45,55 @@ public class DashBoardAdminController extends HttpServlet {
             response.sendRedirect("login");
             return;
         }
-
-        String action = request.getParameter("action");
+        String action = request.getParameter("action") == null
+                ? "defaultFindAll"
+                : request.getParameter("action");
         AccountDAO acc = new AccountDAO();
         DebtorDAO debtorDao = new DebtorDAO();
-        if (action == null || action.equals("list")) {
-            handleListAccounts(request, response, acc);
-        } else {
-            switch (action) {
-                case "viewDetail":
-                    handleViewAccountDetail(request, response, acc, debtorDao);
-                    break;
-                case "adminViewDebtor":
-                case "sortByOldest":
-                case "sortByNewest":
-                case "sortByHighLow":
-                case "sortByLowHigh":
-                case "search":
-                    handleAdminViewDebtor(request, response, pageControl);
-                    break;
-                case "adminViewDebt":
-                case "sortByOldestDebt":
-                case "sortByNewestDebt":
-                case "sortByHighLowDebt":
-                case "sortByLowHighDebt":
-                case "ReceivableOfDebt":
-                case "DebtOfDebt":
-                case "LoanOfDebt":
-                case "LendOfDebt":
-                case "searchDebt":
-                    handleAdminViewDebt(request, response, pageControl);
-                    break;
-                // Các trường hợp khác
-            }
+        switch (action) {
+            case "active":
+            case "deactive":
+            case "accountOldest":
+            case "accountNewest":
+            case "mostDebtor":
+            case "adminSearch":
+                handleListAccounts(request, response, pageControl);
+                break;
+            case "viewDetail":
+                handleViewAccountDetail(request, response, acc, debtorDao);
+                break;
+            case "adminViewDebtor":
+            case "sortByOldest":
+            case "sortByNewest":
+            case "sortByHighLow":
+            case "sortByLowHigh":
+            case "search":
+                handleAdminViewDebtor(request, response, pageControl);
+                break;
+            case "adminViewDebt":
+            case "sortByOldestDebt":
+            case "sortByNewestDebt":
+            case "sortByHighLowDebt":
+            case "sortByLowHighDebt":
+            case "ReceivableOfDebt":
+            case "DebtOfDebt":
+            case "LoanOfDebt":
+            case "LendOfDebt":
+            case "searchDebt":
+                handleAdminViewDebt(request, response, pageControl);
+                break;
+            default:
+                handleListAccounts(request, response, pageControl);
+                break;
+            // Các trường hợp khác
+//            }
         }
     }
 
-    private void handleListAccounts(HttpServletRequest request, HttpServletResponse response, AccountDAO acc) throws ServletException, IOException {
-        List<Account> accounts = acc.getAllAccounts();
+    private void handleListAccounts(HttpServletRequest request, HttpServletResponse response, PageControl pageControl) throws ServletException, IOException {
+        List<Account> accounts = paginationAccount(request, pageControl);
         request.setAttribute("accounts", accounts);
+        request.setAttribute("pageControl", pageControl);
         request.getRequestDispatcher("client/accountList.jsp").forward(request, response);
     }
 
@@ -129,6 +139,75 @@ public class DashBoardAdminController extends HttpServlet {
             throws ServletException, IOException {
     }
 
+    private List<Account> paginationAccount(HttpServletRequest request, PageControl pageControl) {
+        //get page
+        String pageRaw = request.getParameter("page");
+        AccountDAO accDAO = new AccountDAO();
+        //valid page
+        int page;
+        try {
+            page = Integer.parseInt(pageRaw);
+        } catch (Exception e) {
+            page = 1;
+        }
+        int totalRecord = 0;
+        List<Account> accountList = null;
+        String action = request.getParameter("action") == null
+                ? "defaultFindAll"
+                : request.getParameter("action");
+        switch (action) {
+            case "active":
+                totalRecord = accDAO.totalRecordIsActive(true);
+                accountList = accDAO.filterAccount(true, page);
+                pageControl.setUrlPattern("dashboardadmin?action=active&");
+                break;
+            case "deactive":
+                totalRecord = accDAO.totalRecordIsActive(false);
+                accountList = accDAO.filterAccount(false, page);
+                pageControl.setUrlPattern("dashboardadmin?action=deactive&");                
+                break;
+            case "accountOldest":
+                totalRecord = accDAO.totalAccount();
+                accountList = accDAO.accountOldest(page);
+                pageControl.setUrlPattern("dashboardadmin?action=accountOldest&");
+                break;
+            case "accountNewest":
+                totalRecord = accDAO.totalAccount();
+                accountList = accDAO.accountNewest(page);
+                pageControl.setUrlPattern("dashboardadmin?action=accountNewest&");
+                break;
+            case "mostDebtor":
+                accountList = accDAO.haveMostDebtor();
+                pageControl.setUrlPattern("dashboardadmin?action=mostDebtor&");
+                break;
+            case "adminSearch":
+                String keyword = request.getParameter("searchString");
+                totalRecord = accDAO.totalRecordSearchUsername(keyword);
+                accountList = accDAO.getListByUsername(keyword, page);
+                pageControl.setUrlPattern("dashboardadmin?action=adminSearch&searchString="+keyword+"&");
+                break;
+            default:
+                //phan trang o trang home
+                //tim ve totalRecord
+                totalRecord = accDAO.totalAccount();
+                accountList = accDAO.getAllAccounts(page);
+                pageControl.setUrlPattern("dashboardadmin?action=adminViewAccount&");
+                break;
+        }
+
+        //tim xem tong co bao nhieu page
+        int totalPage = (totalRecord % Pagination.RECORD_PER_PAGE) == 0
+                ? (totalRecord / Pagination.RECORD_PER_PAGE)
+                : (totalRecord / Pagination.RECORD_PER_PAGE) + 1;
+        //set nhung gia tri vao pageControl
+        pageControl.setPage(page);
+        pageControl.setTotalPage(totalPage);
+        pageControl.setTotalRecord(totalRecord);
+
+        return accountList;
+
+    }
+
     private List<Debtor> paginationDebtor(HttpServletRequest request, PageControl pageControl) {
         int idAccount = Integer.parseInt(request.getParameter("idAccounts"));
         String pageRaw = request.getParameter("page");
@@ -155,22 +234,22 @@ public class DashBoardAdminController extends HttpServlet {
                     case "name":
                         totalRecord = debtorDAO.findTotalRecordByName(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByName(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=name&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=name&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
                         break;
                     case "address":
                         totalRecord = debtorDAO.findTotalRecordByAddress(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByAddress(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=address&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=address&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
                         break;
                     case "phone":
                         totalRecord = debtorDAO.findTotalRecordByPhone(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByPhone(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=phone&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=phone&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
                         break;
                     case "email":
                         totalRecord = debtorDAO.findTotalRecordByEmail(idAccount, keyword);
                         listDebtor = debtorDAO.findByPageByEmail(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=email&searchQuery=" + keyword + "&idAccount="+idAccount+"&");
+                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=email&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
                         break;
                     default:
                         // Xử lý mặc định nếu không có lựa chọn nào phù hợp
@@ -256,7 +335,7 @@ public class DashBoardAdminController extends HttpServlet {
                 String keyword = request.getParameter("searchQuery");
                 totalRecord = debtDAO.findTotalRecordToSearch(accountId, debtorId, keyword);
                 debtList = debtDAO.findByPageToSearch(accountId, debtorId, keyword, page);
-                pageControl.setUrlPattern("dashboardadmin?action=searchDebt&idAccountDebtor="+accountId + "&debtorid=" + debtorId + "&");
+                pageControl.setUrlPattern("dashboardadmin?action=searchDebt&idAccountDebtor=" + accountId + "&debtorid=" + debtorId + "&");
                 break;
             case "sortByOldestDebt":
                 totalRecord = debtDAO.findTotalRecord(accountId, debtorId);

@@ -47,12 +47,18 @@
     </head>
     <body>
         <jsp:include page="/navigator/header.jsp" />
-        
+
         <div class="container-xl">
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
-                        <div><h2>DebtList</h2></div>
+                        <div>
+                            <h2>DebtList</h2>
+                            <c:if test="${not empty listDebt}">
+                                <c:set var="firstDebt" value="${listDebt[0]}" />
+                                <h3 style="font-size: 13px; margin-top: 9px">Debtor Name: ${firstDebt.debtorName}</h3>
+                            </c:if>
+                        </div>
                         <form action="dashboardadmin" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
                             <input type="hidden" class="search-input" name="idAccountDebtor" value="${idAccount}">
@@ -218,60 +224,60 @@
         <!-- Pagination -->
         <jsp:include page="../client/pagination.jsp"></jsp:include>
 
-            <script>
-                $(document).ready(function () {
-                    $('.view-details-btn').click(function () {
-                        var description = $(this).data('description');
-                        var amount = $(this).data('amount');
-                        var debtType = $(this).data('debttype');
-                        var createAt = $(this).data('createat');
+        <script>
+            $(document).ready(function () {
+                $('.view-details-btn').click(function () {
+                    var description = $(this).data('description');
+                    var amount = $(this).data('amount');
+                    var debtType = $(this).data('debttype');
+                    var createAt = $(this).data('createat');
 
-                        // C?p nh?t modal
-                        $('#viewDebtDetailModal').find('.modal-body .description').text(description);
-                        $('#viewDebtDetailModal').find('.modal-body .amount').text(amount);
-                        $('#viewDebtDetailModal').find('.modal-body .debt-type').text(debtType);
-                        $('#viewDebtDetailModal').find('.modal-body .create-at').text(createAt);
+                    // C?p nh?t modal
+                    $('#viewDebtDetailModal').find('.modal-body .description').text(description);
+                    $('#viewDebtDetailModal').find('.modal-body .amount').text(amount);
+                    $('#viewDebtDetailModal').find('.modal-body .debt-type').text(debtType);
+                    $('#viewDebtDetailModal').find('.modal-body .create-at').text(createAt);
 
-                        // Hi?n th? modal
-                        $('#viewDebtDetailModal').modal('show');
-                    });
+                    // Hi?n th? modal
+                    $('#viewDebtDetailModal').modal('show');
                 });
-            </script>
-            <!-- View Debt Details Modal -->
-            <div id="viewDebtDetailModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">                        
-                            <h4 class="modal-title">Debt Details</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            });
+        </script>
+        <!-- View Debt Details Modal -->
+        <div id="viewDebtDetailModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">                        
+                        <h4 class="modal-title">Debt Details</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">                    
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <p class="form-control-static description"></p>
                         </div>
-                        <div class="modal-body">                    
-                            <div class="form-group">
-                                <label>Description:</label>
-                                <p class="form-control-static description"></p>
-                            </div>
-                            <div class="form-group">
-                                <label>Amount:</label>
-                                <p class="form-control-static amount"></p>
-                            </div>
-                            <div class="form-group">
-                                <label>Debt Type:</label>
-                                <p class="form-control-static amount"></p>
-                            </div>
-                            <div class="form-group">
-                                <label>Create At:</label>
-                                <p class="form-control-static create-at"></p>
-                            </div>                  
+                        <div class="form-group">
+                            <label>Amount:</label>
+                            <p class="form-control-static amount"></p>
                         </div>
+                        <div class="form-group">
+                            <label>Debt Type:</label>
+                            <p class="form-control-static amount"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Create At:</label>
+                            <p class="form-control-static create-at"></p>
+                        </div>                  
+                    </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
                     </div>
+
                 </div>
             </div>
+        </div>
     </body>
 </html>
 </html>
