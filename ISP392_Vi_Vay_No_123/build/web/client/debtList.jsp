@@ -54,13 +54,13 @@
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
-<!--                        <div>
-                            <h2>Debt List</h2>
-                            <h3 style="font-size: 13px; margin-top: 9px">Debtor Name: 
-                            <%if(rsDebtorName.next()){%>
-                                <%=rsDebtorName.getString("name")%>
-                                <%}%></h3>
-                        </div>-->
+                        <!--                        <div>
+                                                    <h2>Debt List</h2>
+                                                    <h3 style="font-size: 13px; margin-top: 9px">Debtor Name: 
+                        <%if(rsDebtorName.next()){%>
+                        <%=rsDebtorName.getString("name")%>
+                        <%}%></h3>
+                </div>-->
                         <form action="debt" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
                             <div class="search-selection">
@@ -119,6 +119,7 @@
                                 <th>Due</th>
                                 <th>Total Amount</th>
                                 <th>Debt issuance</th>
+
                             </tr>
                         </thead>
                         <c:forEach items="${debtList}" var="debt">
@@ -130,20 +131,44 @@
                                 <td>${debt.interestRate}</td>
                                 <td>${debt.due}</td>
                                 <td><fmt:formatNumber value="${debt.totalAmount}" pattern="#,##0"/></td>
-                                <td><fmt:formatDate value="${debt.debtIssuance}" pattern="yyyy-MM-dd" /></td>                                                                                             
+                                <td><fmt:formatDate value="${debt.debtIssuance}" pattern="yyyy-MM-dd" /></td>       
+
                                 <td>
                                     <button class="btn btn-info view-details-btn" 
                                             data-id="${debt.id}" 
                                             data-description="${debt.description}" 
                                             data-amount="${debt.amount}" 
-                                            data-debttype="${debt.debtTypeId}" 
-                                            data-createat="<fmt:formatDate value="${debt.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />">
+                                            data-debttype="${debt.debtTypeName}" 
+                                            data-img="${debt.image}"
+                                            data-debtissuance="<fmt:formatDate value='${debt.debtIssuance}' pattern='yyyy-MM-dd' />">
                                         View Details
                                     </button>
-                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report <i class="fa fa-flag"></i></button>
+
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#reportModal${debt.id}">Delete </button>
                                 </td>
 
-                            </tr>					
+                            </tr>	
+
+                            <!-- Report Modal -->
+                            <div id="reportModal${debt.id}" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="IsDeleteDebt" method="get" >
+                                            <div class="modal-header">                        
+                                                <h4 class="modal-title">Are you sure to delete this records?</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-body">    
+                                                <input type="hidden" name="debtId" id="debtId" value="${debt.id}">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </c:forEach>
 
                     </table>
@@ -170,47 +195,6 @@
                             });
                         });
                     </script>
-                    <script>
-                        $(document).ready(function () {
-                            $('.btn-report').click(function () {
-                                var debtId = $(this).attr('data-id');
-                                $('#debtId').val(debtId);
-                                $('#reportModal').modal('show');
-                            });
-                        });
-                    </script>
-                    <!-- Report Modal -->
-                    <div id="reportModal" class="modal fade">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <form action="report" method="post" enctype="multipart/form-data">
-                                    <div class="modal-header">                        
-                                        <h4 class="modal-title">Report Issue</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    </div>
-                                    <div class="modal-body">    
-                                        <input type="hidden" name="debtId" id="debtId" value="">
-                                        <div class="form-group">
-                                            <label>Description</label>
-                                            <textarea class="form-control" name="description" required></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="imageUpload">Choose an image:</label>
-                                            <input type="file" id="imageUpload" name="img" class="form-control-file" accept="image/*">
-                                        </div>
-                                        <div class="form-group text-center">
-                                            <img id="previewImage" src="#" alt="Image preview" class="img-fluid" style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;"/>
-                                        </div>             
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-danger">Submit Report</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
 
                 </div>
             </div>        
@@ -227,13 +211,15 @@
                         var description = $(this).data('description');
                         var amount = $(this).data('amount');
                         var debtType = $(this).data('debttype');
-                        var createAt = $(this).data('createat');
+                        var debtIssuance = $(this).data('debtissuance');
+                        var img = $(this).data('img');
 
                         // C?p nh?t modal
                         $('#viewDebtDetailModal').find('.modal-body .description').text(description);
                         $('#viewDebtDetailModal').find('.modal-body .amount').text(amount);
                         $('#viewDebtDetailModal').find('.modal-body .debt-type').text(debtType);
-                        $('#viewDebtDetailModal').find('.modal-body .create-at').text(createAt);
+                        $('#viewDebtDetailModal').find('.modal-body .debt-issuance').text(debtIssuance);
+                        $('#viewDebtDetailModal').find('.modal-body .img').attr('src', img);
 
                         // Hi?n th? modal
                         $('#viewDebtDetailModal').modal('show');
@@ -250,21 +236,29 @@
                         </div>
                         <div class="modal-body">                    
                             <div class="form-group">
-                                <label>Description:</label>
+                                <p>Description:</p>
                                 <p class="form-control-static description"></p>
                             </div>
                             <div class="form-group">
-                                <label>Amount:</label>
+                                <p>Amount:</p>
                                 <p class="form-control-static amount"></p>
                             </div>
                             <div class="form-group">
-                                <label>Debt Type:</label>
-                                <p class="form-control-static amount"></p>
+                                <p>Debt Type:</p>
+                                <p class="form-control-static debt-type"></p>
                             </div>
                             <div class="form-group">
-                                <label>Create At:</label>
-                                <p class="form-control-static create-at"></p>
-                            </div>                  
+                                <p>Debt Issuance:</p>
+                                <p class="form-control-static debt-issuance"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <p>Image:</p>
+                                <image  class="form-control-static img" src="" style="
+                                        height: 100%;
+                                        width: 100%;
+                                        ">
+                            </div> 
                         </div>
 
                         <div class="modal-footer">
@@ -289,11 +283,11 @@
                         </div>
                         <div class="modal-body">					
                             <div class="form-group">
-                                <label>Description</label>
+                                <p>Description</p>
                                 <input type="text" class="form-control" name="description" required>
                             </div>
                             <div class="search-selection-item">
-                                <label>Debt Type:</label>
+                                <p>Debt Type:</p>
                                 <select name="debtType">
                                     <%while(rsDebtname.next()){%>
                                     <option value="<%=rsDebtname.getInt(1)%>"><%=rsDebtname.getString(2)%></option>
@@ -301,29 +295,29 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="Image">Image</label>
+                                <p for="Image">Image</p>
                                 <img class="w-100 rounded mt-2 mb-2" id="previewimage" src="" alt="Preview Image">
                                 <input type="file" class="form-control-file" id="FileInput" onchange="handleFileSelect(event)">
                                 <input type="hidden" name="Image">
                             </div>
                             <div class="form-group">
-                                <label>Amount</label>
+                                <p>Amount</p>
                                 <input type="number" class="form-control" name="amount" required>
                             </div>
                             <div class="form-group">
-                                <label>Interest Rate (%/year)</label>
+                                <p>Interest Rate (%/year)</p>
                                 <input type="number" class="form-control" name="interest" required>
                             </div>
                             <div class="form-group">
-                                <label>Due(month)</label>
+                                <p>Due(month)</p>
                                 <input type="number" class="form-control" name="due" required>
                             </div>
                             <div class="form-group">
-                                <label>Date issuance </label>
+                                <p>Date issuance </p>
                                 <input type="date" class="form-control" name="dateIssuance">
                             </div>
                             <div class="form-group">
-                                <label>Total Amount</label>
+                                <p>Total Amount</p>
                                 <input type="double" class="form-control" id="totalAmount" readonly>
                             </div>
                         </div>
