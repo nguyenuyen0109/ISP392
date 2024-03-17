@@ -55,8 +55,6 @@
                     <input type="hidden" value="${param["e"]}" name="email">
                     <input type="hidden" value="${param["t"]}" name="token">
                     <input type="hidden" value="/client/resetpassword.jsp" name ="uri">
-                    
-        
                     <div class="buttonWrapper">
                         <button type="submit" id="submitButton"  class="submitButton pure-button pure-button-primary">
                             <span>Continue</span>

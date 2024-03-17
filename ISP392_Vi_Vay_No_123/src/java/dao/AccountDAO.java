@@ -700,5 +700,4 @@ public class AccountDAO {
         return email;
     }
 
-
 }

@@ -21,7 +21,7 @@
                 <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="main-breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/ISP392_Vi_Vay_No_123/client/homepage.jsp">Home</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
                         <li class="breadcrumb-item active" aria-current="page">User Grid</li>
                     </ol>
