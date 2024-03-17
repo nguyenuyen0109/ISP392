@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <filter>
+     <filter>
         <filter-name>AdminFilter</filter-name>
         <filter-class>controller.AdminFilter</filter-class>
     </filter>
@@ -75,8 +75,8 @@
         <servlet-class>controller.FeedbackController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>IsDeleteDebt</servlet-name>
-        <servlet-class>controller.IsDeleteDebt</servlet-class>
+        <servlet-name>FeedbackListController</servlet-name>
+        <servlet-class>controller.FeedbackListController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -139,7 +139,8 @@
         <url-pattern>/feedback</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>IsDeleteDebt</servlet-name>
-        <url-pattern>/IsDeleteDebt</url-pattern>
+        <servlet-name>FeedbackListController</servlet-name>
+        <url-pattern>/feedbacklist</url-pattern>
     </servlet-mapping>
+    
 </web-app>

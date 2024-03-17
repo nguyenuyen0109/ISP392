@@ -473,8 +473,8 @@
                             <div class="col-sm-6">
                                 <h2>Feedback <b>List</b></h2>
                             </div>
-                            <form action="debtor" method="get" class="search">
-                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery">
+                            <form action="feedbacklist" method="get" class="search">
+                                <input type="text" class="search-input" placeholder="Search Feedback" name="searchQuery">
                                 <div class="search-selection">
                                     <select class="search-selection-label" name="searchType" >
                                         <option class="search-selection-item">Search by</option>
@@ -496,16 +496,16 @@
                             <i class="sort-icon fa-solid fa-angle-down"></i>	
                             <ul class="select-input__list">
                                 <li class="select-input_item">
-                                    <a href="feedback?action=sortByOldest" class="select-input__link">Oldest</a>
+                                    <a href="feedbacklist?action=sortByOldest" class="select-input__link">Oldest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="feedback?action=sortByNewest" class="select-input__link">Newest</a>
+                                    <a href="feedbacklist?action=sortByNewest" class="select-input__link">Newest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="feedback?action=sortByLowRate" class="select-input__link">Low Rate</a>
+                                    <a href="feedbacklist?action=sortByLowRate" class="select-input__link">Low Rate</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="feedback?action=sortByHighRate" class="select-input__link">High Rate</a>
+                                    <a href="feedbacklist?action=sortByHighRate" class="select-input__link">High Rate</a>
                                 </li>
                             </ul>
                         </div>
