@@ -63,7 +63,7 @@ public class DebtDAO {
 
     public List<DebtDetail> getDebtByIdAccountAndIdDebtor(int idDebtor, int accountid) {
         List<DebtDetail> debtList = new ArrayList<>();
-        String sql = "select * from debtdetails where debtor_id=? and debtor_account_id = ?";
+        String sql = "select * from debtdetails where debtor_id=? and debtor_account_id = ? and isDeleted = 0 ";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, idDebtor);
             preparedStatement.setInt(2, accountid);
@@ -91,10 +91,11 @@ public class DebtDAO {
         }
         return debtList;
     }
+
     public List<DebtDetail> searchDebtByAmount(int idDebtor, int accountid, String input) {
         List<DebtDetail> debtList = new ArrayList<>();
 //        String sql = "SELECT * FROM debtdetails WHERE amount LIKE '%"+ inputAmount +"%'";
-        String sql = "select * from debtdetails where debtor_id= ? and debtor_account_id = ?  and amount like ?";
+        String sql = "select * from debtdetails where debtor_id= ? and debtor_account_id = ?  and amount like ? and isDeleted = 0 ";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, idDebtor);
             preparedStatement.setInt(2, accountid);
@@ -122,7 +123,7 @@ public class DebtDAO {
 
     public List<DebtDetail> searchDebtByDescription(int idDebtor, int accountid, String input) {
         List<DebtDetail> debtList = new ArrayList<>();
-        String sql = "select * from debtdetails where debtor_id= ? and debtor_account_id = ? and description like ?";
+        String sql = "select * from debtdetails where debtor_id= ? and debtor_account_id = ? and description like ? and isDeleted = 0 ";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(2, accountid);
             preparedStatement.setInt(1, idDebtor);
@@ -150,7 +151,7 @@ public class DebtDAO {
 
     public List<DebtDetail> filterByReceivable(int idDebtor, int accountid, String action) {
         List<DebtDetail> debtList = new ArrayList<>();
-        String sql = "select * from debtdetails where debtor_id= and debtor_account_id and debtTypeId like ?";
+        String sql = "select * from debtdetails where debtor_id= and debtor_account_id and debtTypeId like ? and isDeleted = 0 ";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(2, accountid);
             preparedStatement.setInt(1, idDebtor);
@@ -181,23 +182,22 @@ public class DebtDAO {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
-    try {
-        String sql = "SELECT COUNT(*) FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ?";
-        statement = db.getConnection().prepareStatement(sql);
-        statement.setInt(1, accountId);
-        statement.setInt(2, debtorId);
-        resultSet = statement.executeQuery();
+        try {
+            String sql = "SELECT COUNT(*) FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0 ";
+            statement = db.getConnection().prepareStatement(sql);
+            statement.setInt(1, accountId);
+            statement.setInt(2, debtorId);
+            resultSet = statement.executeQuery();
 
-        if (resultSet.next()) {
-            totalRecord = resultSet.getInt(1);
+            if (resultSet.next()) {
+                totalRecord = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } 
 
-    return totalRecord;
-}
-
+        return totalRecord;
+    }
 
     public List<DebtDetail> findByPage(int accountId, int debtorId, int page) {
         List<DebtDetail> debtList = new ArrayList<>();
@@ -207,7 +207,7 @@ public class DebtDAO {
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.id LIMIT ? OFFSET ?";
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0  ORDER BY ddt.id LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -261,7 +261,7 @@ public class DebtDAO {
         try {
 
             String sql = "Select Count(*) as totalRecord from debtdetails where debtor_account_id=? and debtor_id=? \n"
-                    + "                                                  and (description like ? or amount = ? )";
+                    + "                                                  and (description like ? or amount = ? ) and isDeleted = 0 ";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -282,39 +282,35 @@ public class DebtDAO {
 
     public List<DebtDetail> findByPageToSearch(int accountId, int debtorId, String keyword, int page) {
         List<DebtDetail> debtList = new ArrayList<>();
-
-        PreparedStatement ps = null;
-        ResultSet resultSet = null;
-
-        try {
-
+        String sql = "SELECT * "
+                + "FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                + "WHERE debtor_account_id = ? AND debtor_id = ? AND (ddt.description LIKE ? OR amount = ? ) and isDeleted = 0  "
+                + "ORDER BY ddt.id "
+                + "LIMIT ? OFFSET ?";
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
-            String sql = "SELECT * "
-                    + "FROM debtdetails "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ? AND (description LIKE ? OR amount = ? ) "
-                    + "ORDER BY id "
-                    + "LIMIT ? OFFSET ?";
-            ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
             ps.setString(3, "%" + keyword + "%");
             ps.setString(4, keyword);
             ps.setInt(5, Pagination.RECORD_PER_PAGE);
             ps.setInt(6, offset);
+            try (ResultSet resultSet = ps.executeQuery()) {
 
-            resultSet = ps.executeQuery();
-
-            while (resultSet.next()) {
-                DebtDetail debt = new DebtDetail();
-                debt.setId(resultSet.getInt("id"));
-                debt.setDescription(resultSet.getString("description"));
-                debt.setDebtTypeId(resultSet.getInt("debtTypeId"));
-                debt.setAmount(resultSet.getDouble("amount"));
-                debt.setDebtIssuance(resultSet.getDate("debtissuance"));
-                debtList.add(debt);
+                while (resultSet.next()) {
+                    DebtDetail debt = new DebtDetail();
+                    debt.setId(resultSet.getInt("id"));
+                    debt.setDescription(resultSet.getString("description"));
+                    debt.setDebtTypeId(resultSet.getInt("debtTypeId"));
+                    debt.setAmount(resultSet.getDouble("amount"));
+                    debt.setDebtIssuance(resultSet.getDate("debtissuance"));
+                    debtList.add(debt);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
 
         return debtList;
@@ -330,9 +326,9 @@ public class DebtDAO {
 
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * "
-                    + "FROM debtdetails "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ? AND description LIKE ? "
-                    + "ORDER BY id "
+                    + "FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? AND description LIKE ? and isDeleted = 0 "
+                    + "ORDER BY ddt.id "
                     + "LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
@@ -360,7 +356,7 @@ public class DebtDAO {
     }
 
     public int findTotalRecordByAmount(int accountId, int debtorId, double amount) {
-        String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ?";
+        String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ? and isDeleted = 0 ";
         try (
                 PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setInt(1, accountId);
@@ -379,7 +375,7 @@ public class DebtDAO {
     public List<DebtDetail> findByPageByAmount(int accountId, int debtorId, double amount, int page) {
         List<DebtDetail> debtList = new ArrayList<>();
         int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
-        String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ? ORDER BY id LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ? and isDeleted = 0 ORDER BY ddt.id LIMIT ? OFFSET ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -411,7 +407,7 @@ public class DebtDAO {
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.createdAt ASC LIMIT ? OFFSET ?";
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0   ORDER BY ddt.createdAt ASC LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -453,7 +449,6 @@ public class DebtDAO {
         }
         return debtList;
     }
-    
 
     public List<DebtDetail> findByPageAndSortByNewest(int accountId, int debtorId, int page) {
         List<DebtDetail> debtList = new ArrayList<>();
@@ -462,7 +457,7 @@ public class DebtDAO {
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY ddt.createdAt DESC LIMIT ? OFFSET ?";
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0 ORDER BY ddt.createdAt DESC LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -521,7 +516,7 @@ public class DebtDAO {
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
             String sql = "SELECT * FROM debtdetails ddt\n"
-                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? ORDER BY " + orderBy + " LIMIT ? OFFSET ?";
+                    + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0 ORDER BY " + orderBy + " LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -565,17 +560,17 @@ public class DebtDAO {
         return debtList;
     }
 
-    public int findTotalRecordByDebtType(int accountId, int debtorId, boolean isDebtType) {
+    public int findTotalRecordByDebtType(int accountId, int debtorId, int idDebtType) {
         int totalRecord = 0;
         PreparedStatement ps = null;
         ResultSet resultSet = null;
 
         try {
-            String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtType = ?";
+            String sql = "SELECT COUNT(*) AS total FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtTypeId = ? and isDeleted = 0 ";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
-            ps.setBoolean(3, isDebtType);
+            ps.setInt(3, idDebtType);
             resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
@@ -590,18 +585,18 @@ public class DebtDAO {
         return totalRecord;
     }
 
-    public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, boolean isDebtType, int page) {
+    public List<DebtDetail> findByPageByDebtType(int accountId, int debtorId, int idDebtType, int page) {
         List<DebtDetail> debtList = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet resultSet = null;
 
         try {
             int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
-            String sql = "SELECT * FROM debtdetails WHERE debtor_account_id = ? AND debtor_id = ? AND debtType = ? LIMIT ? OFFSET ?";
+            String sql = "SELECT * FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? AND ddt.debtTypeId = ?  and isDeleted = 0 LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
-            ps.setBoolean(3, isDebtType);
+            ps.setInt(3, idDebtType);
             ps.setInt(4, Pagination.RECORD_PER_PAGE);
             ps.setInt(5, offset);
             resultSet = ps.executeQuery();
@@ -610,9 +605,18 @@ public class DebtDAO {
                 DebtDetail debt = new DebtDetail();
                 debt.setId(resultSet.getInt("id"));
                 debt.setDescription(resultSet.getString("description"));
-                debt.setDebtTypeId(resultSet.getInt("debtTypeId"));
+//                debt.setDebtorName(resultSet.getString("d.name"));
+                debt.setDebtTypeName(resultSet.getString("name"));
                 debt.setAmount(resultSet.getDouble("amount"));
                 debt.setCreateAt(resultSet.getTimestamp("createdAt"));
+                //viet them
+                debt.setInterestRate(resultSet.getDouble("interestRate"));
+                debt.setDue(resultSet.getDouble("due"));
+                debt.setImage(resultSet.getString("image"));
+                debt.setDeletedAt(resultSet.getTimestamp("deleteAt"));
+                debt.setIsDeleted(resultSet.getBoolean("isDeleted"));
+                debt.setTotalAmount(resultSet.getDouble("totalAmount"));
+                debt.setDebtIssuance(resultSet.getDate("debtissuance"));
                 debtList.add(debt);
             }
         } catch (SQLException e) {
@@ -624,8 +628,16 @@ public class DebtDAO {
         return debtList;
     }
 
-
-
+    public int isDeleteDebt(String id) {
+        int n = 0;
+        String sql = "update debtdetails set isDeleted = 1 where id = " + id;
+        try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
+            n = ps.executeUpdate();
+            System.out.println(sql);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return n;
     }
 
-
+}

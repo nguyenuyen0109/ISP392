@@ -14,7 +14,16 @@
         <link rel="stylesheet" href="/ISP392_Vi_Vay_No_123/assets/css/register.css">
 
     </head>
-    <body>
+      <body onload="loadCap()">
+        <script>
+            function loadCap() {
+                var myImage = document.getElementById("imgCap");
+                var curDateTime = new Date().getTime();
+                myImage.src = 'captcha?ac=' + curDateTime;
+                var myInput = document.getElementById("capchaKeyInput");
+                myInput.value = curDateTime;
+            }
+        </script>
 
 
         <jsp:include page="/navigator/toast.jsp" />
@@ -53,10 +62,11 @@
                                     <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"required="required"/>
                                     <div id="passwordFeedback" class="validation-feedback"></div>
                                 </div>
-                                <div class="captcha"> 
+                                  <div class="captcha"> 
+                                    <input type="hidden" name="capchaKey" id="capchaKeyInput">
                                     <input type="text" name="captcha" placeholder="Enter captcha" required>
-                                    <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000; width: 60%">
-                                    <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 15%; margin-left: 10px">
+                                    <img  id="imgCap" alt="CAPTCHA Image" style="border: 1px solid #000; width: 40%">
+                                    <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 10%; margin-left: 5 px">
                                 </div>
                                 <div class="form-group form-button">
                                     <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>

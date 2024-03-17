@@ -23,6 +23,7 @@ public class VerifyCaptchaController extends HttpServlet {
     private final String FORGOT_PAGE = "/client/forgotpassword.jsp";
     private final String CHANGEPASSWORD_PAGE = "/client/changepassword.jsp";
     private final String RESETPASSWORD_PAGE = "/client/resetpassword.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -77,6 +78,7 @@ public class VerifyCaptchaController extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
+        String capchaKey = request.getParameter("capchaKey");
         String uri = request.getParameter("uri");
         String jsp_uri;
         if (uri.equalsIgnoreCase(LOGIN_PAGE)) {
@@ -85,10 +87,10 @@ public class VerifyCaptchaController extends HttpServlet {
         } else if (uri.equalsIgnoreCase(REGISTER_PAGE)) {
             uri = "/register";
             jsp_uri = REGISTER_PAGE;
-        } else if (uri.equalsIgnoreCase(FORGOT_PAGE)){
+        } else if (uri.equalsIgnoreCase(FORGOT_PAGE)) {
             uri = "/forgot";
             jsp_uri = FORGOT_PAGE;
-        } else if (uri.equalsIgnoreCase(CHANGEPASSWORD_PAGE)){
+        } else if (uri.equalsIgnoreCase(CHANGEPASSWORD_PAGE)) {
             uri = "/changepassword";
             jsp_uri = CHANGEPASSWORD_PAGE;
         } else {
@@ -96,11 +98,17 @@ public class VerifyCaptchaController extends HttpServlet {
             jsp_uri = RESETPASSWORD_PAGE;
         }
         String captchaInput = (String) request.getParameter("captcha");
-        String captchaText = (String) session.getAttribute("captchaText");
+        String captchaText = (String) session.getAttribute(capchaKey);
         if (!captchaInput.equalsIgnoreCase(captchaText)) {
             request.setAttribute("alert", "Invalid captcha!");
             request.getRequestDispatcher(jsp_uri).forward(request, response);
-        }
+//            response.getWriter().println("capchaKey: " + capchaKey);
+//            response.getWriter().println("captchaInput: " + captchaInput);
+//            response.getWriter().println("captchaText: " + captchaText);
+//            response.getWriter().println("False");
+        } 
+        session.removeAttribute(capchaKey);
+    //    nho remove
         request.getRequestDispatcher(uri).forward(request, response);
     }
 

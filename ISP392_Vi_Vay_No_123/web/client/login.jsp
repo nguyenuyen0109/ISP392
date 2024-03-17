@@ -8,10 +8,19 @@
         <title>Login Page</title>
         <!-- Font Icon -->
         <link rel="stylesheet" href="./assets/css/login.css"/>
-    
+
     </head>
-    <body>
-       <jsp:include page="/navigator/toast.jsp" />
+    <body onload="loadCap()">
+        <script>
+            function loadCap() {
+                var myImage = document.getElementById("imgCap");
+                var curDateTime = new Date().getTime();
+                myImage.src = 'captcha?ac=' + curDateTime;
+                var myInput = document.getElementById("capchaKeyInput");
+                myInput.value = curDateTime;
+            }
+        </script>
+        <jsp:include page="/navigator/toast.jsp" />
         <div class="main">
             <section class="sign-in">
                 <div class="container">
@@ -36,8 +45,9 @@
                                 </div>
                                 <!--<div class="h-captcha" data-sitekey="de38ed28-e8a8-48a6-890f-640dd1bd2553"></div>-->
                                 <div class="captcha"> 
+                                    <input type="hidden" name="capchaKey" id="capchaKeyInput">
                                     <input type="text" name="captcha" placeholder="Enter captcha" required>
-                                    <img src="captcha" alt="CAPTCHA Image" style="border: 1px solid #000; width: 40%">
+                                    <img  id="imgCap" alt="CAPTCHA Image" style="border: 1px solid #000; width: 40%">
                                     <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 10%; margin-left: 5 px">
                                 </div>
 
@@ -47,12 +57,13 @@
 
                                 <input type="hidden" name="uri" value="/client/login.jsp">
                             </form>
-                            
+
                         </div>
                     </div>
                 </div>
             </section>
         </div>
+
         <script src="./assets/boostrap/vendor/jquery/jquery.min.js"></script>
         <script src="./assets/boostrap/js/main.js"></script>
 

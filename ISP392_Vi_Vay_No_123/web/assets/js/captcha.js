@@ -4,7 +4,12 @@
  */
 function refreshCaptcha() {
     var captchaImage = document.querySelector('.captcha img');
-    captchaImage.src = 'captcha?' + new Date().getTime();
+    var curDateTime = new Date().getTime();
+    
+    captchaImage.src = 'captcha?ac=' + curDateTime;
+    var myInput = document.getElementById("capchaKeyInput");
+    myInput.value = curDateTime;
+
 }
 
 function validateSignupForm() {
