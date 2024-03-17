@@ -776,12 +776,10 @@ public class AccountDAO {
         }
         return email;
     }
-
     public int totalRecordIsActive(boolean status) {
         int totalRecord = 0;
         PreparedStatement ps = null;
         ResultSet resultSet = null;
-
         try {
             String sql = "SELECT COUNT(*) AS total FROM account WHERE isActive = ?";
             ps = db.getConnection().prepareStatement(sql);

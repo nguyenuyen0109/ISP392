@@ -57,7 +57,7 @@
                             <form action="dashboardadmin" method="get" class="search">
                                 <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery">
                                 <input type="hidden" class="search-input" name="idAccounts" value="${idAccount}">
-                                <div class="search-selection">
+<!--                                <div class="search-selection">
                                     <select class="search-selection-label" name="searchType" >
                                         <option class="search-selection-item">Search by</option>
                                         <option class="search-selection-item" value="name">Name</option>
@@ -65,7 +65,7 @@
                                         <option class="search-selection-item" value="phone">Phone</option>
                                         <option class="search-selection-item" value="email">Email</option>
                                     </select>
-                                </div>
+                                </div>-->
                                 <button class="search-btn" type="submit" name="action" value="search">
                                     <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                                 </button>

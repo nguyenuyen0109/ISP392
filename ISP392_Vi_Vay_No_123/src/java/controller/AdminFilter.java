@@ -114,7 +114,7 @@ public class AdminFilter implements Filter {
             if (u.getRole_id() == 1) {
                 chain.doFilter(request, response);
             } else {
-                res.getWriter().println("<h1>You cant access this page </h1>");
+                res.getWriter().println("<h1>You cant access this page</h1>");
             }
         }
     }

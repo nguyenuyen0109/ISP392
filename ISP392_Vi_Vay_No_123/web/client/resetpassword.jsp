@@ -48,17 +48,13 @@
                     <div class="inputDiv">
                         <label class="inputLabel">Captcha</label>
                         <input type="text" id="captcha" name="captcha" placeholder="Enter captcha" required>
+                        <img  id="imgCap" alt="CAPTCHA Image" style="border: 1px solid #000; width: 40%">
+                        <input type="hidden" name="capchaKey" id="capchaKeyInput">
+                        <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 10%; margin-left: 5 px">
                     </div>
                     <input type="hidden" value="${param["e"]}" name="email">
                     <input type="hidden" value="${param["t"]}" name="token">
                     <input type="hidden" value="/client/resetpassword.jsp" name ="uri">
-
-                    <div class="captcha"> 
-                        <input type="hidden" name="capchaKey" id="capchaKeyInput">
-                        <input type="text" name="captcha" placeholder="Enter captcha" required>
-                        <img  id="imgCap" alt="CAPTCHA Image" style="border: 1px solid #000; width: 40%">
-                        <img src="./assets/images/refresh.png" alt="Refresh Captcha" onclick="refreshCaptcha()" style="width: 10%; margin-left: 5 px">
-                    </div>
                     <div class="buttonWrapper">
                         <button type="submit" id="submitButton"  class="submitButton pure-button pure-button-primary">
                             <span>Continue</span>

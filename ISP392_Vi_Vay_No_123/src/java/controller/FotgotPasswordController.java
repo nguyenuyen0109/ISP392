@@ -37,7 +37,6 @@ public class FotgotPasswordController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         try {
             String email = request.getParameter("email");
 
@@ -59,7 +58,6 @@ public class FotgotPasswordController extends HttpServlet {
             } else {
                 url1 = "/client/forgotpassword.jsp";
                 alert = "Email is invalid";
-
             }
             request.setAttribute("alert", alert);
             request.getRequestDispatcher(url1).forward(request, response);

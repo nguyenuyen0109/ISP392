@@ -164,7 +164,7 @@ public class DashBoardAdminController extends HttpServlet {
             case "deactive":
                 totalRecord = accDAO.totalRecordIsActive(false);
                 accountList = accDAO.filterAccount(false, page);
-                pageControl.setUrlPattern("dashboardadmin?action=deactive&");                
+                pageControl.setUrlPattern("dashboardadmin?action=deactive&");
                 break;
             case "accountOldest":
                 totalRecord = accDAO.totalAccount();
@@ -184,7 +184,7 @@ public class DashBoardAdminController extends HttpServlet {
                 String keyword = request.getParameter("searchString");
                 totalRecord = accDAO.totalRecordSearchUsername(keyword);
                 accountList = accDAO.getListByUsername(keyword, page);
-                pageControl.setUrlPattern("dashboardadmin?action=adminSearch&searchString="+keyword+"&");
+                pageControl.setUrlPattern("dashboardadmin?action=adminSearch&searchString=" + keyword + "&");
                 break;
             default:
                 //phan trang o trang home
@@ -228,37 +228,14 @@ public class DashBoardAdminController extends HttpServlet {
                 : request.getParameter("action");
         switch (action) {
             case "search":
-                String searchType = request.getParameter("searchType");
+//                String searchType = request.getParameter("searchType");
                 String keyword = request.getParameter("searchQuery");
-                switch (searchType) {
-                    case "name":
-                        totalRecord = debtorDAO.findTotalRecordByName(idAccount, keyword);
-                        listDebtor = debtorDAO.findByPageByName(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=name&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-                        break;
-                    case "address":
-                        totalRecord = debtorDAO.findTotalRecordByAddress(idAccount, keyword);
-                        listDebtor = debtorDAO.findByPageByAddress(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=address&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-                        break;
-                    case "phone":
-                        totalRecord = debtorDAO.findTotalRecordByPhone(idAccount, keyword);
-                        listDebtor = debtorDAO.findByPageByPhone(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=phone&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-                        break;
-                    case "email":
-                        totalRecord = debtorDAO.findTotalRecordByEmail(idAccount, keyword);
-                        listDebtor = debtorDAO.findByPageByEmail(idAccount, keyword, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=email&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-                        break;
-                    default:
-                        // Xử lý mặc định nếu không có lựa chọn nào phù hợp
-                        totalRecord = debtorDAO.findTotalRecord(idAccount);
-                        //tim ve danh sach debt o trang chi dinh
-                        listDebtor = debtorDAO.findByPage(idAccount, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=adminViewDebtor&idAccounts=" + idAccount + "&");
-                        break;
-                }
+                totalRecord = debtorDAO.findTotalRecord(idAccount);
+                //tim ve danh sach debt o trang chi dinh
+                listDebtor = debtorDAO.findByPage(idAccount, page);
+                pageControl.setUrlPattern("dashboardadmin?action=adminViewDebtor&idAccounts=" + idAccount + "&");
+//                        break;
+//                }
                 break;
             case "sortByOldest":
 //                int idAccount = Integer.parseInt(request.getParameter("idAccount"));
@@ -408,7 +385,6 @@ public class DashBoardAdminController extends HttpServlet {
         pageControl.setTotalRecord(totalRecord);
 
         return debtList;
-
     }
 
     @Override

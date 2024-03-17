@@ -39,6 +39,7 @@
                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                         <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                         <a href="/ISP392_Vi_Vay_No_123/dashboardadmin">View Account List</a>
+                        <a href="/ISP392_Vi_Vay_No_123/feedbacklist">View Feedback List</a>
                     </ul>
                 </nav>
                 <% if (session != null && session.getAttribute("USER") != null) {
@@ -52,7 +53,8 @@
                         <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
                         <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
                         <% if (isAdmin != null && isAdmin) { %>
-                        <a href="/ISP392_Vi_Vay_No_123/account">View Account List</a>
+                        <a href="/ISP392_Vi_Vay_No_123/dashboard">View Account List</a>
+                        <a href="/ISP392_Vi_Vay_No_123/feedback">View Feedback List</a>
                         <% } %>
                         <a href="/ISP392_Vi_Vay_No_123/logout">Logout</a>
                     </div>

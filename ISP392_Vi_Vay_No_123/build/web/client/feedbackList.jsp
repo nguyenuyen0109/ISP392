@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>DEBTOR LIST</title>
+        <title>FEEDBACK LIST</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -15,6 +15,7 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/5bd22a55e3.js" crossorigin="anonymous"></script>
+        
         <style>
             .actions {
                 display: flex;
@@ -460,9 +461,6 @@
                 });
             });
         </script>
-
-
-
     </head>
     <body>
         <jsp:include page="/navigator/toast.jsp" />
@@ -473,150 +471,127 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h2>Debtor <b>List</b></h2>
+                                <h2>Feedback <b>List</b></h2>
                             </div>
-                            <form action="debtor" method="get" class="search">
-                                <input type="text" class="search-input" placeholder="Search Debtor" name="searchQuery" >
-<!--                                <div class="search-selection">
+                            <form action="feedbacklist" method="get" class="search">
+                                <input type="text" class="search-input" placeholder="Search Feedback" name="searchQuery">
+                                <div class="search-selection">
                                     <select class="search-selection-label" name="searchType" >
-                                        <option class="search-selection-item"></option>
+                                        <option class="search-selection-item">Search by</option>
+                                        <option class="search-selection-item" value="name">Name</option>
+                                        <option class="search-selection-item" value="address">Address</option>
+                                        <option class="search-selection-item" value="phone">Phone</option>
+                                        <option class="search-selection-item" value="email">Email</option>
                                     </select>
-                                </div>-->
+                                </div>
                                 <button class="search-btn" type="submit" name="action" value="search">
                                     <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                                 </button>
                             </form>
-
-                            <div class="col-sm-6">
-                                <a href="#addDebtorModal" class="btn btn-success" id="add-new-debtor-btn" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debtor</span></a>
-                            </div>
                         </div>
-
                     </div>
-
-
                     <div class="home-filter">
                         <div class="selection-input">
                             <span class="select-input__label">Sorted by</span>
                             <i class="sort-icon fa-solid fa-angle-down"></i>	
                             <ul class="select-input__list">
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByOldest" class="select-input__link">Oldest</a>
+                                    <a href="feedbacklist?action=sortByOldest" class="select-input__link">Oldest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByNewest" class="select-input__link">Newest</a>
+                                    <a href="feedbacklist?action=sortByNewest" class="select-input__link">Newest</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByHighLow" class="select-input__link">Amount from high to low</a>
+                                    <a href="feedbacklist?action=sortByLowRate" class="select-input__link">Low Rate</a>
                                 </li>
                                 <li class="select-input_item">
-                                    <a href="debtor?action=sortByLowHigh" class="select-input__link">Amount from low to high</a>
+                                    <a href="feedbacklist?action=sortByHighRate" class="select-input__link">High Rate</a>
                                 </li>
                             </ul>
                         </div>
-
                     </div>
-
-
-
-
-
-
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>                       
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Total Debt</th>
-                                <th>Created At</th>
-                                <th>Update At</th>
+                                <th>Rate</th>
+                                <th>Feedback</th>
+                                <th>CreatedAt</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <c:forEach items="${listDebtor}" var="debtor">
-                                <tr>						
-                                    <td>${debtor.id}</td>
-                                    <td>${debtor.name}</td>
-                                    <td>${debtor.address}</td>
-                                    <td>${debtor.phone}</td>
-                                    <td>${debtor.email}</td>
-                                    <td>${debtor.totalDebt}</td>
-                                    <td><fmt:formatDate value="${debtor.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                    <td><fmt:formatDate value="${debtor.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>                                                                                                
+                        <c:forEach items="${listFeedback}" var="feedback">
 
-                                    <td class="actions">
-                                        <!--<a href="./debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                        <a href="/ISP392_Vi_Vay_No_123/debt?debtorid=${debtor.id}" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
-                                        <!--<a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                        <!--                                    <a href="/ISP392_Vi_Vay_No_123/debt" class="view action-btn" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>-->
-                                        <a href="debtNotePath/${debtor.id}" class="add action-btn" title="Add Debt Note" data-toggle="tooltip"><i class="material-icons">&#xE147;</i></a>
-                                        <!-- Edit Debtor detail -->
-                                        <a href="javascript:void(0)" title="Edit detail" data-toggle="tooltip">
-                                            <i class="fa fa-edit fa-2x"
-                                               style="color: #469408"
-                                               data-toggle="modal"
-                                               data-target="#editDebtorDetailModal"
-                                               onclick="editDebtorDetailModal(
-                                                               `${debtor.id}`,
-                                                               `${debtor.name}`,
-                                                               `${debtor.address}`,
-                                                               `${debtor.phone}`,
-                                                               `${debtor.email}`,
-                                               ${debtor.totalDebt})">
-                                            </i>
-                                        </a>
-                                        <a href="javascript:void(0)" title="Delete" class="text-danger" data-toggle="tooltip" onclick="deleteDebtor('${debtor.id}', '${debtor.name}')"><i class="material-icons">&#xe872;</i></a>
+
+                            <tbody>
+                                <tr>						
+                                    <td>${feedback.id}</td>
+                                    <td>${feedback.rate}</td>
+                                    <td>${feedback.feedback}</td>
+                                    <td><fmt:formatDate value="${feedback.createAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>  
+                                   <td>
+                                        <button class="btn btn-info view-details-btn" 
+                                                data-id="${feedback.id}" 
+                                                data-rate="${feedback.rate}" 
+                                                data-feedback="${feedback.feedback}" 
+                                                data-createat="<fmt:formatDate value="${feedback.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />">
+                                            View Details
+                                        </button>
                                     </td>
-                                </tr>					                           
-                            </c:forEach>
-                        </tbody>
+
+                                </tr>					
+                            </tbody>
+                        </c:forEach>
                     </table>
-                    <input type="hidden" name="uri" value="/client/debtor.jsp">
                 </div>
             </div>        
         </div>
-        <!-- Add Modal HTML -->
-        <jsp:include page="../client/addDebtorModal.jsp"></jsp:include>
-
-            <!-- Edit Debtor detail Modal  -->
-        <jsp:include page="../client/editDebtorDetailModal.jsp"></jsp:include>
-
-            <!-- Pagination  -->
+        <!-- Pagination  -->
         <jsp:include page="../client/pagination.jsp"></jsp:include>
-        <script src="
-                https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js
-        "></script>
         <script>
-                                                    function deleteDebtor(debId, debName) {
-                                                    Swal.fire({
-                                                    title: "Are you sure?",
-                                                            text: `Do you want to delete ` + debName + " !",
-                                                            icon: "warning",
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: "#3085d6",
-                                                            cancelButtonColor: "#d33",
-                                                            confirmButtonText: "Yes, delete it!"
-                                                    }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                    const url = "debtor?act=delete&debtorId=" + debId;
-                                                    fetch(url)
-                                                            .then(rs => {
-                                                            Swal.fire(
-                                                                    "Deleted!",
-                                                                    "Your debtor " + debName + " has been deleted.",
-                                                                    "success"
-                                                                    ).then(() => {
-                                                            location.reload();
-                                                            });
-                                                            })
+    $(document).ready(function () {
+        $('.view-details-btn').click(function () {
+            var rate = $(this).data('rate');
+            var feedback = $(this).data('feedback');
+            var createAt = $(this).data('createat');
 
-                                                    }
-                                                    });
-                                                    }
+            // C?p nh?t modal
+            $('#viewFeedbackModal').find('.modal-body .rate').text(rate);
+            $('#viewFeedbackModal').find('.modal-body .feedback').text(feedback);
+            $('#viewFeedbackModal').find('.modal-body .create-at').text(createAt);
+
+            // Hi?n th? modal
+            $('#viewFeedbackModal').modal('show');
+        });
+    });
         </script>
+        <!-- View Feedback Modal -->
+            <div id="viewFeedbackModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">                        
+                            <h4 class="modal-title">Feedback Details</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">                    
+                            <div class="form-group">
+                                <label>Rate:</label>
+                                <p class="form-control-static rate"></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Feedback:</label>
+                                <p class="form-control-static feedback"></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Create At:</label>
+                                <p class="form-control-static create-at"></p>
+                            </div>                  
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </body>
 </html>
