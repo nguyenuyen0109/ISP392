@@ -51,6 +51,7 @@ public class FeedbackDAO {
             return false;
         }
     }
+
     public static void main(String[] args) {
         // Tạo một đối tượng Feedback
         Feedback feedback = new Feedback();
@@ -70,6 +71,7 @@ public class FeedbackDAO {
             System.out.println("Failed to add feedback.");
         }
     }
+
     public int findTotalRecord() {
         int totalRecords = 0;
         PreparedStatement statement = null;
