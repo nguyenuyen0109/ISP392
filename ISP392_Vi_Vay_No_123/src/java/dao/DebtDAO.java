@@ -281,12 +281,14 @@ public class DebtDAO {
         try {
 
             String sql = "Select Count(*) as totalRecord from debtdetails where debtor_account_id=? and debtor_id=? \n"
-                    + "                                                  and (description like ? or amount = ? ) and isDeleted = 0 ";
+                    + "                                                  and (description LIKE ? or amount like ? or debtissuance like ? or totalAmount like ? ) and isDeleted = 0 ";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
             ps.setString(3, "%" + keyword + "%");
-            ps.setString(4, keyword);
+            ps.setString(4, "%" + keyword + "%");
+            ps.setString(5, "%" + keyword + "%");
+            ps.setString(6, "%" + keyword + "%");
 
             resultSet = ps.executeQuery();
 
@@ -306,7 +308,7 @@ public class DebtDAO {
                 + "FROM debtdetails ddt "
                 + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                 + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                + "WHERE debtor_account_id = ? AND debtor_id = ? AND (ddt.description LIKE ? OR amount = ? ) and ddt.isDeleted = 0 "
+                + "WHERE debtor_account_id = ? AND debtor_id = ? AND (ddt.description LIKE ? or ddt.amount like ? or ddt.debtissuance like ? or ddt.totalAmount like ? ) and ddt.isDeleted = 0 "
                 + "ORDER BY ddt.id "
                 + "LIMIT ? OFFSET ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
@@ -314,9 +316,11 @@ public class DebtDAO {
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
             ps.setString(3, "%" + keyword + "%");
-            ps.setString(4, keyword);
-            ps.setInt(5, Pagination.RECORD_PER_PAGE);
-            ps.setInt(6, offset);
+            ps.setString(4, "%" + keyword + "%");
+            ps.setString(5, "%" + keyword + "%");
+            ps.setString(6, "%" + keyword + "%");
+            ps.setInt(7, Pagination.RECORD_PER_PAGE);
+            ps.setInt(8, offset);
             try (ResultSet resultSet = ps.executeQuery()) {
 
                 while (resultSet.next()) {
