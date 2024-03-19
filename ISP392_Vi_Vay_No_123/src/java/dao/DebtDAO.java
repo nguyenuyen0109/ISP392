@@ -4,7 +4,6 @@
  */
 package dao;
 
-
 import dal.DBContext;
 import model.DebtDetail;
 import java.sql.ResultSet;
@@ -47,7 +46,14 @@ public class DebtDAO {
             ps.setString(1, debt.getDescription());
             ps.setInt(2, debt.getDebtTypeId()); //true=Debt, false= Receivable
             ps.setString(3, debt.getImage());
-            ps.setDouble(4, debt.getAmount());
+
+            // Kiểm tra nếu debtTypeId là 2 hoặc 4 thì thêm dấu trừ vào amount
+            double amount = debt.getAmount();
+            if (debt.getDebtTypeId() == 2 || debt.getDebtTypeId() == 4) {
+                amount = -amount;
+            }
+            ps.setDouble(4, amount);
+
             ps.setDouble(5, debt.getInterestRate());
             ps.setDouble(6, debt.getDue());
             ps.setDate(7, (java.sql.Date) debt.getDebtIssuance());
@@ -209,7 +215,7 @@ public class DebtDAO {
             String sql = "SELECT * FROM debtdetails ddt "
                     + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                     + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ?  and isDeleted = 0 ORDER BY ddt.id LIMIT ? OFFSET ?";
+                    + "WHERE debtor_account_id = ? AND debtor_id = ?  and ddt.isDeleted = 0 ORDER BY ddt.id LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
