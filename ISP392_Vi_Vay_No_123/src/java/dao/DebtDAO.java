@@ -4,7 +4,6 @@
  */
 package dao;
 
-
 import dal.DBContext;
 import model.DebtDetail;
 import java.sql.ResultSet;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 //import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import model.DebtType;
 import utils.Pagination;
 
 /**
@@ -90,6 +90,24 @@ public class DebtDAO {
             System.out.println(ex);
         }
         return debtList;
+    }
+
+    public List<DebtType> getDebtType() {
+        List<DebtType> debtType = new ArrayList<>();
+        String sql = "SELECT * from debttype ";
+        try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    DebtType debttype =  new DebtType(id, name);
+                    debtType.add(debttype);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return debtType;
     }
 
     public List<DebtDetail> searchDebtByAmount(int idDebtor, int accountid, String input) {
@@ -209,7 +227,7 @@ public class DebtDAO {
             String sql = "SELECT * FROM debtdetails ddt "
                     + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                     + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ?  and isDeleted = 0 ORDER BY ddt.id LIMIT ? OFFSET ?";
+                    + "WHERE debtor_account_id = ? AND debtor_id = ?  and ddt.isDeleted = 0 ORDER BY ddt.id LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -288,7 +306,7 @@ public class DebtDAO {
                 + "FROM debtdetails ddt "
                 + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                 + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                + "WHERE debtor_account_id = ? AND debtor_id = ? AND (ddt.description LIKE ? OR amount = ? ) and isDeleted = 0 "
+                + "WHERE debtor_account_id = ? AND debtor_id = ? AND (ddt.description LIKE ? OR amount = ? ) and ddt.isDeleted = 0 "
                 + "ORDER BY ddt.id "
                 + "LIMIT ? OFFSET ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
@@ -422,7 +440,7 @@ public class DebtDAO {
             String sql = "SELECT * FROM debtdetails ddt\n"
                     + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                     + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0 ORDER BY ddt.createdAt ASC LIMIT ? OFFSET ?";
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? and ddt.isDeleted = 0 ORDER BY ddt.createdAt ASC LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -474,7 +492,7 @@ public class DebtDAO {
             String sql = "SELECT * FROM debtdetails ddt\n"
                     + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                     + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0 ORDER BY ddt.createdAt DESC LIMIT ? OFFSET ?";
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? and ddt.isDeleted = 0 ORDER BY ddt.createdAt DESC LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -535,7 +553,7 @@ public class DebtDAO {
             String sql = "SELECT * FROM debtdetails ddt\n"
                     + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                     + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ? and isDeleted = 0 ORDER BY " + orderBy + " LIMIT ? OFFSET ?";
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? and ddt.isDeleted = 0 ORDER BY " + orderBy + " LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
@@ -614,7 +632,7 @@ public class DebtDAO {
             String sql = "SELECT * FROM debtdetails ddt "
                     + "INNER JOIN debttype dt ON ddt.debtTypeId = dt.id "
                     + "INNER JOIN debtor d ON ddt.debtor_id=d.id "
-                    + "WHERE debtor_account_id = ? AND debtor_id = ? AND ddt.debtTypeId = ? and isDeleted = 0 LIMIT ? OFFSET ?";
+                    + "WHERE debtor_account_id = ? AND debtor_id = ? AND ddt.debtTypeId = ? and ddt.isDeleted = 0 LIMIT ? OFFSET ?";
             ps = db.getConnection().prepareStatement(sql);
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);

@@ -252,23 +252,23 @@ table.table .avatar {
     padding: 0 16px;
     border-radius: 2px;
 }
-.search-selection{
+/*.search-selection{
     color: #757575;
     position: relative;
     border-left: 1px solid #ccc;
     padding-left: 14px;
-}
-.search-selection-label{
+}*/
+/*.search-selection-label{
     font-size: 14px;
     color: #757575;
     border: none !important;
     outline: none !important;
-}
+}*/
 
-.search-selection-item{
+/*.search-selection-item{
     background-color: #fff;
     padding: 8px 8px;
-}
+}*/
 .search-selection-icon{
     font-size: 10px;
     margin: 0 8px 0 2px;

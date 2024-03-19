@@ -20,6 +20,11 @@ public class DebtType {
     public DebtType() {
     }
 
+    public DebtType(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
     public DebtType(int id, String name, Timestamp createAt, boolean isDelete, Timestamp deleteAt) {
         this.id = id;
         this.name = name;

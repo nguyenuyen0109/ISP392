@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import model.Account;
 import model.DebtDetail;
+import model.DebtType;
 import model.Debtor;
 import model.PageControl;
 import utils.Pagination;
@@ -126,8 +127,10 @@ public class DashBoardAdminController extends HttpServlet {
         int idAccount = Integer.parseInt(request.getParameter("idAccountDebtor"));
         int idDebtor = Integer.parseInt(request.getParameter("debtorid"));
         List<DebtDetail> listDebt = paginationDebt(request, pageControl);
+        List<DebtType> listDebttype = debtDAO.getDebtType();
         request.setAttribute("idAccount", idAccount);
         request.setAttribute("idDebtor", idDebtor);
+        request.setAttribute("debtType", listDebttype);
         request.setAttribute("listDebt", listDebt);
         request.setAttribute("pageControl", pageControl);
         System.out.println(pageControl);
@@ -230,9 +233,9 @@ public class DashBoardAdminController extends HttpServlet {
             case "search":
 //                String searchType = request.getParameter("searchType");
                 String keyword = request.getParameter("searchQuery");
-                totalRecord = debtorDAO.findTotalRecord(idAccount);
+                totalRecord = debtorDAO.findTotalRecordBySearch(idAccount, keyword);
                 //tim ve danh sach debt o trang chi dinh
-                listDebtor = debtorDAO.findByPage(idAccount, page);
+                listDebtor = debtorDAO.findByPageBySearch(idAccount, page, keyword);
                 pageControl.setUrlPattern("dashboardadmin?action=adminViewDebtor&idAccounts=" + idAccount + "&");
 //                        break;
 //                }
@@ -264,9 +267,7 @@ public class DashBoardAdminController extends HttpServlet {
                 listDebtor = debtorDAO.findByPageAndSortDebtByAmountLowHigh(idAccount, page);
                 pageControl.setUrlPattern("dashboardadmin?action=sortByLowHigh&idAccounts=" + idAccount + "&");
                 //request.setAttribute("debtList", debtList);
-
                 break;
-
             default:
                 //phan trang o trang home
                 //tim ve totalRecord

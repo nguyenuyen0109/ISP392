@@ -60,7 +60,7 @@
                         </div>
                         <form action="debt" method="get" class="search">
                             <input type="text" class="search-input" placeholder="Search Debt" name="searchQuery">
-                           
+
                             <button class="search-btn" type="submit" name="action" value="search">
                                 <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                             </button>
@@ -267,9 +267,6 @@
                 </div>
             </div>
 
-        <%
-            ResultSet rsDebtname = (ResultSet)request.getAttribute("debtTypeName");
-        %>
         <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -286,9 +283,9 @@
                             <div class="search-selection-item">
                                 <p>Debt Type:</p>
                                 <select name="debtType">
-                                    <%while(rsDebtname.next()){%>
-                                    <option value="<%=rsDebtname.getInt(1)%>"><%=rsDebtname.getString(2)%></option>
-                                    <%}%>
+                                    <c:forEach items="${debtType}" var="debttype">
+                                        <option value="${debttype.id}">${debttype.name}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <div class="form-group">
