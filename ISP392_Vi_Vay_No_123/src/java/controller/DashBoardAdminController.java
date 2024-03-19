@@ -228,31 +228,6 @@ public class DashBoardAdminController extends HttpServlet {
                 : request.getParameter("action");
         switch (action) {
             case "search":
-//                String searchType = request.getParameter("searchType");
-                String keyword = request.getParameter("searchQuery");
-//                switch (searchType) {
-//                    case "name":
-//                        totalRecord = debtorDAO.findTotalRecordByName(idAccount, keyword);
-//                        listDebtor = debtorDAO.findByPageByName(idAccount, keyword, page);
-//                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=name&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-//                        break;
-//                    case "address":
-//                        totalRecord = debtorDAO.findTotalRecordByAddress(idAccount, keyword);
-//                        listDebtor = debtorDAO.findByPageByAddress(idAccount, keyword, page);
-//                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=address&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-//                        break;
-//                    case "phone":
-//                        totalRecord = debtorDAO.findTotalRecordByPhone(idAccount, keyword);
-//                        listDebtor = debtorDAO.findByPageByPhone(idAccount, keyword, page);
-//                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=phone&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-//                        break;
-//                    case "email":
-//                        totalRecord = debtorDAO.findTotalRecordByEmail(idAccount, keyword);
-//                        listDebtor = debtorDAO.findByPageByEmail(idAccount, keyword, page);
-//                        pageControl.setUrlPattern("dashboardadmin?action=search&searchType=email&searchQuery=" + keyword + "&idAccount=" + idAccount + "&");
-//                        break;
-//                    default:
-//                        // Xử lý mặc định nếu không có lựa chọn nào phù hợp
                         totalRecord = debtorDAO.findTotalRecord(idAccount);
                         //tim ve danh sach debt o trang chi dinh
                         listDebtor = debtorDAO.findByPage(idAccount, page);
