@@ -157,6 +157,7 @@
                                             </div>
                                             <div class="modal-body">    
                                                 <input type="hidden" name="debtId" id="debtId" value="${debt.id}">
+                                                <input type="hidden" name="debtorid" id="debtorid" value="${param.debtorid}">
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

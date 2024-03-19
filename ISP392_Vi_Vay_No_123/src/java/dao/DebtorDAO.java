@@ -721,10 +721,10 @@ public class DebtorDAO {
         }
     }
 
-    public double calculateAndUpdateTotalDebt() {
+    public double calculateAndUpdateTotalDebt(String id) {
         double totalDebt = 0;
-        String selectSql = "SELECT debtor_id, SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false GROUP BY debtor_id";
-        String updateSql = "UPDATE Debtor SET totalDebt = " + selectSql + "WHERE id = ?";
+        String selectSql = "SELECT debtor_id, SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = "+id+" GROUP BY debtor_id";
+        String updateSql = "UPDATE Debtor SET totalDebt = ? WHERE id = ?"; 
         try (Connection conn = db.getConnection(); PreparedStatement selectPs = conn.prepareStatement(selectSql); PreparedStatement updatePs = conn.prepareStatement(updateSql)) {
 
             try (ResultSet rs = selectPs.executeQuery()) {
@@ -744,17 +744,19 @@ public class DebtorDAO {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println("Error calculating and updating total debt: " + ex.getMessage());
+            ex.printStackTrace();
         }
         return totalDebt;
     }
+    
 
     public static void main(String[] args) {
-        DebtorDAO debtorDAO = new DebtorDAO();
+    DebtorDAO debtorDAO = new DebtorDAO();
 
-        // Call calculateAndUpdateTotalDebt method to update total debt for all debtors
-        double totalDebt = debtorDAO.calculateAndUpdateTotalDebt();
-        System.out.println("Total debt calculated and updated for all debtors: " + totalDebt);
-    }
+    // Call calculateAndUpdateTotalDebt method to update total debt for all debtors
+    double totalDebt = debtorDAO.calculateAndUpdateTotalDebt("153");
+  //  System.out.println("Total debt calculated and updated for all debtors: " + totalDebt);
+}
+
 
 }

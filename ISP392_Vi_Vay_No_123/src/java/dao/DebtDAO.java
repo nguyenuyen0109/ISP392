@@ -5,6 +5,7 @@
 package dao;
 
 import dal.DBContext;
+import java.sql.Connection;
 import model.DebtDetail;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -42,6 +43,7 @@ public class DebtDAO {
                 + "debtor_id,"
                 + "debtor_account_id)"
                 + "values (?,?,?,?,?,?,?,?,?);";
+
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setString(1, debt.getDescription());
             ps.setInt(2, debt.getDebtTypeId()); //true=Debt, false= Receivable
@@ -60,6 +62,15 @@ public class DebtDAO {
             ps.setInt(8, debtorid);
             ps.setInt(9, accountid);
             n = ps.executeUpdate();
+
+            sql = "  UPDATE Debtor SET totalDebt = ( SELECT SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = " + debtorid + " GROUP BY debtor_id ) WHERE id = " + debtorid;
+            try (PreparedStatement ps2 = db.getConnection().prepareStatement(sql)) {
+
+                n = ps2.executeUpdate();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
             System.out.println(sql);
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -656,16 +667,42 @@ public class DebtDAO {
         return debtList;
     }
 
-    public int isDeleteDebt(String id) {
+    public int isDeleteDebt(String id, String debtor_id) {
         int n = 0;
-        String sql = "update debtdetails set isDeleted = 1 where id = " + id;
+        String sql = "update debtdetails set isDeleted = 1 where id = " + id + ";";
+        System.out.println(sql);
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             n = ps.executeUpdate();
+            sql = "  UPDATE Debtor SET totalDebt = ( SELECT SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = " + debtor_id + " GROUP BY debtor_id ) WHERE id = " + debtor_id;
+            try (PreparedStatement ps2 = db.getConnection().prepareStatement(sql)) {
+
+                n = ps2.executeUpdate();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             System.out.println(sql);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return n;
+    }
+
+    public double calculateAndUpdateTotalDebt(String id) {
+        double totalDebt = 0;
+        String updateSql = "";
+        try (Connection conn = db.getConnection(); PreparedStatement updatePs = conn.prepareStatement(updateSql)) {
+            System.out.println(updateSql);
+
+            int rowsAffected = updatePs.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Total debt updated successfully for debtor with ID: " + id);
+            } else {
+                System.out.println("Failed to update total debt for debtor with ID: " + id);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return totalDebt;
     }
 
 }

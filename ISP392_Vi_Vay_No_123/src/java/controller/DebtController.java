@@ -102,11 +102,13 @@ public class DebtController extends HttpServlet {
         java.sql.Date dateSql = new java.sql.Date(dateUtil.getTime()); //chuyen tu util.Date sang sql.Date de luu vao database
         DebtDAO dao = new DebtDAO();
         DebtDetail debt = new DebtDetail(description, amount, image, debtorId, accountId,
-                interest_rate, due, debtTypeId, dateSql );
+                interest_rate, due, debtTypeId, dateSql);
         int n = dao.addDebt(debt, accountId, debtorId);
+    //    dao.calculateAndUpdateTotalDebt(String.valueOf((String)session.getAttribute("debtorid")));
+
         response.sendRedirect("debt");
     }
-    
+
     private List<DebtDetail> pagination(HttpServletRequest request, PageControl pageControl) {
         HttpSession session = request.getSession();
         Integer accountId = (Integer) session.getAttribute("account_id");
