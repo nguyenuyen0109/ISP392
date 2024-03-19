@@ -87,7 +87,7 @@ public class AccountController extends HttpServlet {
             } else if (action.equals("deleted")) {
                 int idAccount = Integer.parseInt(req.getParameter("idAccountOfDebtor"));
                 int debtorId = Integer.parseInt(req.getParameter("idDebtor"));
-                debtDao.isDeleteDebt(req.getParameter("debtId"));
+                debtDao.isDeleteDebt(req.getParameter("debtId"), req.getParameter("idDebtor"));
                 resp.sendRedirect("dashboardadmin?action=adminViewDebt&idAccountDebtor=" + idAccount + "&debtorid=" + debtorId);
             } else if (action.equals("addDebtor")) {
                 String name = req.getParameter("name");
