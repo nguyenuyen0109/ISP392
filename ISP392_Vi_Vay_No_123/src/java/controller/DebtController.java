@@ -105,6 +105,8 @@ public class DebtController extends HttpServlet {
         DebtDetail debt = new DebtDetail(description, amount, image, debtorId, accountId,
                 interest_rate, due, debtTypeId, dateSql);
         int n = dao.addDebt(debt, accountId, debtorId);
+    //    dao.calculateAndUpdateTotalDebt(String.valueOf((String)session.getAttribute("debtorid")));
+
         response.sendRedirect("debt");
     }
 

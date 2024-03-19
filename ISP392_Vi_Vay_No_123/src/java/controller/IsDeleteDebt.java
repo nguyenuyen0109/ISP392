@@ -33,7 +33,8 @@ public class IsDeleteDebt extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             DebtDAO debtDAO = new DebtDAO();
-            debtDAO.isDeleteDebt(request.getParameter("debtId"));
+            debtDAO.isDeleteDebt(request.getParameter("debtId"), request.getParameter("debtorid"));
+
             response.getWriter().print(request.getParameter("debtId"));
 //            response.sendRedirect("debt?page=" + 1);
         }
@@ -52,7 +53,9 @@ public class IsDeleteDebt extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DebtDAO debtDAO = new DebtDAO();
-        debtDAO.isDeleteDebt(request.getParameter("debtId"));
+        debtDAO.isDeleteDebt(request.getParameter("debtId"), request.getParameter("debtorid"));
+
+        // debtDAO.calculateAndUpdateTotalDebt(request.getParameter("debtId"));
 //        response.getWriter().print(request.getParameter("debtId"));
         response.sendRedirect("debt?page=" + 1);
     }

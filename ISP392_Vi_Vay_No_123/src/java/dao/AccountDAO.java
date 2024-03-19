@@ -99,6 +99,7 @@ public class AccountDAO {
                 String email = rs.getString("emailAddress");
                 String mobileNumber = rs.getString("mobileNumber");
                 String address = rs.getString("address");
+                String avatarURL = rs.getString("avatarURL");
 
                 account.setId(id);
                 account.setUsername(un);
@@ -108,6 +109,7 @@ public class AccountDAO {
                 account.setMobileNumber(mobileNumber);
                 account.setAddress(address);
                 account.setRole_id(rs.getInt("role_id"));
+                account.setAvatarUrl(avatarURL);
                 // Ví dụ: account.setUsername(rs.getString("username"));
                 //        account.setPassword(rs.getString("password"));
                 // Thêm các trường khác tương tự

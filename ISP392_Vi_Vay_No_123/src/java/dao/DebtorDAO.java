@@ -29,9 +29,7 @@ public class DebtorDAO {
     public DebtorDAO() {
         db = DBContext.getInstance();
     }
-    // DebtorDAO.java
 
-    // Trong DebtorDAO.java
     public boolean addDebtor(Debtor debtor) {
         String sql = "INSERT INTO debtor "
                 + "(name, address, phone, email,totalDebt,account_id ) VALUES (?, ?, ?, ?, ?, ?)";
@@ -107,133 +105,6 @@ public class DebtorDAO {
         return debtors;
     }
 
-//    public List<Debtor> sortDebtorByNewest(int account_id) {
-//        List<Debtor> list = getAllDebtors(account_id);
-//        // Sắp xếp theo ngày tạo mới nhất (giảm dần)
-//        Collections.sort(list, Collections.reverseOrder(Comparator.comparing(Debtor::getCreatedAt)));
-//        return list;
-//    }
-//
-//    public List<Debtor> sortDebtorByTotalDebtLargest(int account_id) {
-//        List<Debtor> list = getAllDebtors(account_id);
-//        Collections.sort(list, new Comparator<Debtor>() {
-//            @Override
-//            public int compare(Debtor o1, Debtor o2) {
-//                return Double.compare(o2.getTotalDebt(), o1.getTotalDebt());
-//            }
-//        });
-//        return list;
-//    }
-//
-//    public List<Debtor> sortDebtorByTotalDebtSmallest(int account_id) {
-//        List<Debtor> list = getAllDebtors(account_id);
-//        Collections.sort(list, new Comparator<Debtor>() {
-//            @Override
-//            public int compare(Debtor o1, Debtor o2) {
-//                return Double.compare(o1.getTotalDebt(), o2.getTotalDebt());
-//            }
-//        });
-//        return list;
-//    }
-    public static void main(String[] args) {
-        // Instantiate the DebtorDAO class
-        DebtorDAO debtorDAO = new DebtorDAO();
-
-        // Create a Debtor object with sample data
-        // Assuming there is a constructor in Debtor class that takes all these parameters
-//        Debtor newDebtor = new Debtor(
-//                // Assuming the Debtor constructor does not require an ID because it's auto-incremented in the database
-//                "John Doe", // name
-//                "123 Main St, Melbourne", // address
-//                "0400000000", // phone
-//                "johndoe@example.com",
-//                5000,// email
-//                2
-//        //                new java.sql.Timestamp(System.currentTimeMillis()), // createdAt, assuming this will be overwritten by the database or constructor
-//        //                new java.sql.Timestamp(System.currentTimeMillis()), // updatedAt, assuming this will be overwritten by the constructor
-//
-//        );
-        // Call the addDebtor method
-//        boolean result = debtorDAO.addDebtor(newDebtor);
-//
-//        // Print the result
-//        if (result) {
-//            System.out.println("Debtor added successfully.");
-//        } else {
-//            System.out.println("Failed to add debtor.");
-//        }
-//
-//        // Get all debtors
-        List<Debtor> allDebtors = debtorDAO.getAllDebtors(4);
-
-        // Print the list of debtors
-        if (allDebtors.isEmpty()) {
-            System.out.println("No debtors found.");
-        } else {
-            System.out.println("List of Debtors:");
-            for (Debtor debtor : allDebtors) {
-                System.out.println(debtor);
-            }
-//        }
-
-            //sắp xếp theo mới nhất
-//        List<Debtor> allDebtors = debtorDAO.sortDebtorByNewest(4);
-//        for (Debtor debtor : allDebtors) {
-//            System.out.println(debtor);
-//        }
-            //sắp xếp theo totalDebt lớn nhất
-//        List<Debtor> allDebtors = debtorDAO.sortDebtorByTotalDebtLargest(4);
-//        for (Debtor debtor : allDebtors) {
-//            System.out.println(debtor);
-//        } 
-            //sắp xếp theo totalDebt bé nhất
-//        List<Debtor> allDebtors = debtorDAO.sortDebtorByTotalDebtSmallest(4);
-//        for (Debtor debtor : allDebtors) {
-//            System.out.println(debtor);
-//        }
-            //List<Debtor> allDebtors1 = debtorDAO.getDebtorsByName(2, );
-//        if (allDebtors1.isEmpty()) {
-//            System.out.println("No debtors found.");
-//        } else {
-//            System.out.println("List of Debtors:");
-//            for (Debtor debtor : allDebtors1) {
-//                System.out.println(debtor);
-//            }
-//        }
-        }
-    }
-
-//public List<Debtor> getDebtorsByName(int accountid,String keyword) {
-//        //here
-//        List<Debtor> debtors = new ArrayList<>();
-//        String query = "select * from debtor\n"
-//                + "         where account_id = ? and " + keyword;
-//        try(PreparedStatement preparedStatement = db.getConnection().prepareStatement(query)) {
-//            
-//            preparedStatement.setObject(1, accountid);
-//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-//
-//            while (resultSet.next()) {
-//                int id = resultSet.getInt("id");
-//                String name = resultSet.getString("name");
-//                String address = resultSet.getString("address");
-//                String phone = resultSet.getString("phone");
-//                String email = resultSet.getString("email");
-//                double totalDebt = resultSet.getDouble("totalDebt");
-//                java.sql.Timestamp createdAt = resultSet.getTimestamp("createdAt");
-//                java.sql.Timestamp updatedAt = resultSet.getTimestamp("updatedAt");
-//                //int account_id = resultSet.getInt("account_id");
-//                int creditor_account_id = resultSet.getInt("creditor_account_id");
-//                //Account account = new Account();
-//                Debtor debtor;
-//                debtor = new Debtor(id, name, address, phone, email, totalDebt, createdAt, updatedAt, accountid, creditor_account_id);
-//                debtors.add(debtor);
-//            }
-//        }} catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return debtors;
-//    }
     public int findTotalRecordBySearch(int accountid, String search) {
         int totalRecord = 0;
         String sql = "SELECT COUNT(*) FROM debtor WHERE account_id = ? and isDeleted = false and (address like ? or "
@@ -242,7 +113,7 @@ public class DebtorDAO {
                 + "                         phone like ?)";
         try (PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql)) {
             search = "%" + search + "%";
-            preparedStatement.setInt(1, accountid);     
+            preparedStatement.setInt(1, accountid);
             preparedStatement.setString(2, search);
             preparedStatement.setString(3, search);
             preparedStatement.setString(4, search);
@@ -849,5 +720,43 @@ public class DebtorDAO {
             return 0;
         }
     }
+
+    public double calculateAndUpdateTotalDebt(String id) {
+        double totalDebt = 0;
+        String selectSql = "SELECT debtor_id, SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = "+id+" GROUP BY debtor_id";
+        String updateSql = "UPDATE Debtor SET totalDebt = ? WHERE id = ?"; 
+        try (Connection conn = db.getConnection(); PreparedStatement selectPs = conn.prepareStatement(selectSql); PreparedStatement updatePs = conn.prepareStatement(updateSql)) {
+
+            try (ResultSet rs = selectPs.executeQuery()) {
+                while (rs.next()) {
+                    int debtorId = rs.getInt("debtor_id");
+                    totalDebt = rs.getDouble("totalDebt");
+
+                    // Update totalDebt for the current debtor
+                    updatePs.setDouble(1, totalDebt);
+                    updatePs.setInt(2, debtorId);
+                    int rowsAffected = updatePs.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Total debt updated successfully for debtor with ID: " + debtorId);
+                    } else {
+                        System.out.println("Failed to update total debt for debtor with ID: " + debtorId);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return totalDebt;
+    }
+    
+
+    public static void main(String[] args) {
+    DebtorDAO debtorDAO = new DebtorDAO();
+
+    // Call calculateAndUpdateTotalDebt method to update total debt for all debtors
+    double totalDebt = debtorDAO.calculateAndUpdateTotalDebt("153");
+  //  System.out.println("Total debt calculated and updated for all debtors: " + totalDebt);
+}
+
 
 }
