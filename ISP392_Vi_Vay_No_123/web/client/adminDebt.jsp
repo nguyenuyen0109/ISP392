@@ -64,11 +64,11 @@
                             <input type="hidden" class="search-input" name="idAccountDebtor" value="${idAccount}">
                             <input type="hidden" class="search-input" name="debtorid" value="${idDebtor}">
                             <div class="search-selection">
-                                <select class="search-selection-label" name="searchType" >
+<!--                                <select class="search-selection-label" name="searchType" >
                                     <option class="search-selection-item">Search by</option>
                                     <option class="search-selection-item" value="description">Description</option>
                                     <option class="search-selection-item" value="amount">Amount</option>
-                                </select>
+                                </select>-->
                             </div>
                             <button class="search-btn" type="submit" name="action" value="searchDebt">
                                 <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
