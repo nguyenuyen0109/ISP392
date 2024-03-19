@@ -388,7 +388,7 @@ public class DebtDAO {
     public List<DebtDetail> findByPageByAmount(int accountId, int debtorId, double amount, int page) {
         List<DebtDetail> debtList = new ArrayList<>();
         int offset = (page - 1) * Pagination.RECORD_PER_PAGE;
-        String sql = "SELECT * FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ? and isDeleted = 0 ORDER BY ddt.id LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM debtdetails ddt INNER JOIN debttype dt ON ddt.debtTypeId = dt.id WHERE debtor_account_id = ? AND debtor_id = ? AND amount = ? and ddt.isDeleted = 0 ORDER BY ddt.id LIMIT ? OFFSET ?";
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             ps.setInt(1, accountId);
             ps.setInt(2, debtorId);
