@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.DebtDetail;
+import model.DebtType;
 import model.PageControl;
 import utils.Pagination;
 
@@ -65,8 +66,8 @@ public class DebtController extends HttpServlet {
         }
         List<DebtDetail> debtList = pagination(request, pageControl);
         session.setAttribute("debtList", debtList);
-        ResultSet rsDebttype = db.getData("select * from debttype");
-        request.setAttribute("debtTypeName", rsDebttype);
+        List<DebtType> listDebttype = dao.getDebtType();
+        request.setAttribute("debtType", listDebttype);
         request.setAttribute("pageControl", pageControl);
         System.out.println(pageControl);
         RequestDispatcher dispatch = request.getRequestDispatcher("/client/debtList.jsp");
@@ -102,11 +103,11 @@ public class DebtController extends HttpServlet {
         java.sql.Date dateSql = new java.sql.Date(dateUtil.getTime()); //chuyen tu util.Date sang sql.Date de luu vao database
         DebtDAO dao = new DebtDAO();
         DebtDetail debt = new DebtDetail(description, amount, image, debtorId, accountId,
-                interest_rate, due, debtTypeId, dateSql );
+                interest_rate, due, debtTypeId, dateSql);
         int n = dao.addDebt(debt, accountId, debtorId);
         response.sendRedirect("debt");
     }
-    
+
     private List<DebtDetail> pagination(HttpServletRequest request, PageControl pageControl) {
         HttpSession session = request.getSession();
         Integer accountId = (Integer) session.getAttribute("account_id");

@@ -74,7 +74,9 @@
                                 <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                             </button>
                         </form>
-
+                        <div>
+                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Debt</span></a>
+                        </div>
                     </div>
 
                     <div class="home-filter">
@@ -143,10 +145,32 @@
                                             data-createat="<fmt:formatDate value="${debt.createAt}" pattern="yyyy-MM-dd HH:mm:ss" />">
                                         View Details
                                     </button>
-                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report <i class="fa fa-flag"></i></button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#reportModal${debt.id}">Delete </button>
                                 </td>
 
-                            </tr>					
+                            </tr>
+                            <div id="reportModal${debt.id}" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="account" method="post" >
+                                            <input type="hidden" name="action" value="deleted">
+                                            <input type="hidden" name="idAccountOfDebtor" id="idAccountOfDebtor" value="${idAccount}">
+                                            <input type="hidden" name="idDebtor" id="idDebtor" value="${idDebtor}">
+                                            <input type="hidden" name="debtId" id="debtId" value="${debt.id}">
+                                            <div class="modal-header">                        
+                                                <h4 class="modal-title">Are you sure to delete this records?</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-body">    
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </c:forEach>
 
                     </table>
@@ -224,57 +248,115 @@
         <!-- Pagination -->
         <jsp:include page="../client/pagination.jsp"></jsp:include>
 
-        <script>
-            $(document).ready(function () {
-                $('.view-details-btn').click(function () {
-                    var description = $(this).data('description');
-                    var amount = $(this).data('amount');
-                    var debtType = $(this).data('debttype');
-                    var createAt = $(this).data('createat');
+            <script>
+                $(document).ready(function () {
+                    $('.view-details-btn').click(function () {
+                        var description = $(this).data('description');
+                        var amount = $(this).data('amount');
+                        var debtType = $(this).data('debttype');
+                        var createAt = $(this).data('createat');
 
-                    // C?p nh?t modal
-                    $('#viewDebtDetailModal').find('.modal-body .description').text(description);
-                    $('#viewDebtDetailModal').find('.modal-body .amount').text(amount);
-                    $('#viewDebtDetailModal').find('.modal-body .debt-type').text(debtType);
-                    $('#viewDebtDetailModal').find('.modal-body .create-at').text(createAt);
+                        // C?p nh?t modal
+                        $('#viewDebtDetailModal').find('.modal-body .description').text(description);
+                        $('#viewDebtDetailModal').find('.modal-body .amount').text(amount);
+                        $('#viewDebtDetailModal').find('.modal-body .debt-type').text(debtType);
+                        $('#viewDebtDetailModal').find('.modal-body .create-at').text(createAt);
 
-                    // Hi?n th? modal
-                    $('#viewDebtDetailModal').modal('show');
+                        // Hi?n th? modal
+                        $('#viewDebtDetailModal').modal('show');
+                    });
                 });
-            });
-        </script>
-        <!-- View Debt Details Modal -->
-        <div id="viewDebtDetailModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">                        
-                        <h4 class="modal-title">Debt Details</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">                    
-                        <div class="form-group">
-                            <label>Description:</label>
-                            <p class="form-control-static description"></p>
+            </script>
+            <!-- View Debt Details Modal -->
+            <div id="viewDebtDetailModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">                        
+                            <h4 class="modal-title">Debt Details</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="form-group">
-                            <label>Amount:</label>
-                            <p class="form-control-static amount"></p>
+                        <div class="modal-body">                    
+                            <div class="form-group">
+                                <label>Description:</label>
+                                <p class="form-control-static description"></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount:</label>
+                                <p class="form-control-static amount"></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Debt Type:</label>
+                                <p class="form-control-static amount"></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Create At:</label>
+                                <p class="form-control-static create-at"></p>
+                            </div>                  
                         </div>
-                        <div class="form-group">
-                            <label>Debt Type:</label>
-                            <p class="form-control-static amount"></p>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
                         </div>
-                        <div class="form-group">
-                            <label>Create At:</label>
-                            <p class="form-control-static create-at"></p>
-                        </div>                  
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
                     </div>
-
+                </div>
+            </div>
+            <div id="addEmployeeModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="account?action=adminAddDebt" method="post">
+                            <input type="hidden" name="idAccounts" value="${idAccount}">
+                            <input type="hidden" name="idDebtor" value="${idDebtor}">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Add New Debt</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <p>Description</p>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
+                            <div class="search-selection-item">
+                                <p>Debt Type:</p>
+                                <select name="debtType">
+                                    <c:forEach items="${debtType}" var="debttype">
+                                        <option value="${debttype.id}">${debttype.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <p for="Image">Image</p>
+                                <img class="w-100 rounded mt-2 mb-2" id="previewimage" src="" alt="Preview Image">
+                                <input type="file" class="form-control-file" id="FileInput" onchange="handleFileSelect(event)">
+                                <input type="hidden" name="Image">
+                            </div>
+                            <div class="form-group">
+                                <p>Amount</p>
+                                <input type="number" class="form-control" name="amount" required>
+                            </div>
+                            <div class="form-group">
+                                <p>Interest Rate (%/year)</p>
+                                <input type="number" class="form-control" name="interest" required>
+                            </div>
+                            <div class="form-group">
+                                <p>Due(month)</p>
+                                <input type="number" class="form-control" name="due" required>
+                            </div>
+                            <div class="form-group">
+                                <p>Date issuance </p>
+                                <input type="date" class="form-control" name="dateIssuance">
+                            </div>
+                            <div class="form-group">
+                                <p>Total Amount</p>
+                                <input type="double" class="form-control" id="totalAmount" readonly>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input name="submit" type="submit" class="btn btn-success" value="Add">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

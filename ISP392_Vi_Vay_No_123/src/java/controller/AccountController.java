@@ -4,9 +4,9 @@
  */
 package controller;
 
-
 import dal.DBContext;
 import dao.AccountDAO;
+import dao.DebtDAO;
 import dao.DebtorDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -15,10 +15,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.net.Authenticator;
 import java.sql.ResultSet;
 import java.security.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
+import model.DebtDetail;
+import model.Debtor;
 
 /**
  *
@@ -29,7 +37,9 @@ public class AccountController extends HttpServlet {
 
     private final AccountDAO accountDAO = new AccountDAO();
     private final DebtorDAO debtorDao = new DebtorDAO();
+    private final DebtDAO debtDao = new DebtDAO();
     DBContext db = DBContext.getInstance();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        HttpSession session = req.getSession();
@@ -68,12 +78,63 @@ public class AccountController extends HttpServlet {
                 createAccount(req, resp);
             } else if (action.equals("update")) {
                 updateAccount(req, resp);
-            } else if(action.equals("updateIsActive")){
+            } else if (action.equals("updateIsActive")) {
                 int idAccount = Integer.parseInt(req.getParameter("idAccount"));
                 String userName = req.getParameter("userName");
                 boolean isActive = Boolean.parseBoolean(req.getParameter("status"));
                 accountDAO.updateIsActive(userName, isActive);
-                resp.sendRedirect("dashboardadmin?action=viewDetail&idAccount="+idAccount);
+                resp.sendRedirect("dashboardadmin?action=viewDetail&idAccount=" + idAccount);
+            } else if (action.equals("deleted")) {
+                int idAccount = Integer.parseInt(req.getParameter("idAccountOfDebtor"));
+                int debtorId = Integer.parseInt(req.getParameter("idDebtor"));
+                debtDao.isDeleteDebt(req.getParameter("debtId"));
+                resp.sendRedirect("dashboardadmin?action=adminViewDebt&idAccountDebtor=" + idAccount + "&debtorid=" + debtorId);
+            } else if (action.equals("addDebtor")) {
+                String name = req.getParameter("name");
+                String address = req.getParameter("address");
+                String phone = req.getParameter("phone");
+                String email = req.getParameter("email");
+                double totalDebt = 0;
+                HttpSession session = req.getSession();
+                int idAccount = Integer.parseInt(req.getParameter("idAccounts"));
+                Debtor newDebtor = new Debtor();
+                newDebtor.setName(name);
+                newDebtor.setAddress(address);
+                newDebtor.setPhone(phone);
+                newDebtor.setEmail(email);
+                newDebtor.setTotalDebt(totalDebt);
+                newDebtor.setAccount_id(idAccount);
+
+                // Save the new debtor
+                boolean success = debtorDao.addDebtor(newDebtor);
+                resp.sendRedirect("dashboardadmin?action=adminViewDebtor&idAccounts=" + idAccount);
+            } else if (action.equals("adminAddDebt")) {
+                int accountId = Integer.parseInt(req.getParameter("idAccounts"));
+                int debtorId = Integer.parseInt(req.getParameter("idDebtor"));
+                String description = req.getParameter("description");
+                int debtTypeId = Integer.parseInt(req.getParameter("debtType"));
+                String image = req.getParameter("Image");
+                double amount = Double.parseDouble(req.getParameter("amount"));
+                double interest_rate = Double.parseDouble(req.getParameter("interest"));
+                double due = Double.parseDouble(req.getParameter("due"));
+                String dateIssuanceStr = req.getParameter("dateIssuance");
+                Date dateUtil = null; // Sử dụng java.util.Date để parse hoặc khởi tạo
+                if (dateIssuanceStr != null && !dateIssuanceStr.isEmpty()) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        dateUtil = formatter.parse(dateIssuanceStr);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(DebtController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    dateUtil = new Date(); // ngay hien tai
+                }
+                java.sql.Date dateSql = new java.sql.Date(dateUtil.getTime()); //chuyen tu util.Date sang sql.Date de luu vao database
+                DebtDAO dao = new DebtDAO();
+                DebtDetail debt = new DebtDetail(description, amount, image, debtorId, accountId,
+                        interest_rate, due, debtTypeId, dateSql);
+                int n = dao.addDebt(debt, accountId, debtorId);
+                resp.sendRedirect("dashboardadmin?action=adminViewDebt&idAccountDebtor=" + accountId + "&debtorid=" + debtorId);
             }
         }
     }
@@ -83,14 +144,14 @@ public class AccountController extends HttpServlet {
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         String mobileNumber = req.getParameter("mobileNumber");
-        
+
         String emailAddress = req.getParameter("emailAddress");
         String address = req.getParameter("address");
         boolean isActive = Boolean.parseBoolean(req.getParameter("isActive"));
         String avatarUrl = req.getParameter("avatarUrl");
         boolean gender = Boolean.parseBoolean(req.getParameter("gender"));
         int role = Integer.parseInt(req.getParameter("roleId"));
-       
+
         Account newAccount = new Account();
         newAccount.setUsername(username);
         newAccount.setPassword(password);
@@ -104,7 +165,6 @@ public class AccountController extends HttpServlet {
         newAccount.setId(role);
 
 //        Account createdAccount = accountDAO.createAccount(newAccount);
-
 //        if (createdAccount != null) {
 //            resp.sendRedirect(req.getContextPath() + "/account");
 //        } else {
@@ -143,9 +203,11 @@ public class AccountController extends HttpServlet {
             existingAccount.setUpdateAt(updateAt);
             Account updatedAccount = accountDAO.updateAccount(existingAccount);
 
-            if (updatedAccount != null)
+            if (updatedAccount != null) {
                 resp.sendRedirect("account?updateSuccess");
-            else resp.sendRedirect("account?updateFailed");
+            } else {
+                resp.sendRedirect("account?updateFailed");
+            }
 
         } else {
             resp.sendRedirect("account?updateFailed");

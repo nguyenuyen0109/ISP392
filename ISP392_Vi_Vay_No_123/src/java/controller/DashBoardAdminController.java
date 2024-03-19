@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import model.Account;
 import model.DebtDetail;
+import model.DebtType;
 import model.Debtor;
 import model.PageControl;
 import utils.Pagination;
@@ -126,8 +127,10 @@ public class DashBoardAdminController extends HttpServlet {
         int idAccount = Integer.parseInt(request.getParameter("idAccountDebtor"));
         int idDebtor = Integer.parseInt(request.getParameter("debtorid"));
         List<DebtDetail> listDebt = paginationDebt(request, pageControl);
+        List<DebtType> listDebttype = debtDAO.getDebtType();
         request.setAttribute("idAccount", idAccount);
         request.setAttribute("idDebtor", idDebtor);
+        request.setAttribute("debtType", listDebttype);
         request.setAttribute("listDebt", listDebt);
         request.setAttribute("pageControl", pageControl);
         System.out.println(pageControl);
@@ -164,7 +167,7 @@ public class DashBoardAdminController extends HttpServlet {
             case "deactive":
                 totalRecord = accDAO.totalRecordIsActive(false);
                 accountList = accDAO.filterAccount(false, page);
-                pageControl.setUrlPattern("dashboardadmin?action=deactive&");                
+                pageControl.setUrlPattern("dashboardadmin?action=deactive&");
                 break;
             case "accountOldest":
                 totalRecord = accDAO.totalAccount();
@@ -184,7 +187,7 @@ public class DashBoardAdminController extends HttpServlet {
                 String keyword = request.getParameter("searchString");
                 totalRecord = accDAO.totalRecordSearchUsername(keyword);
                 accountList = accDAO.getListByUsername(keyword, page);
-                pageControl.setUrlPattern("dashboardadmin?action=adminSearch&searchString="+keyword+"&");
+                pageControl.setUrlPattern("dashboardadmin?action=adminSearch&searchString=" + keyword + "&");
                 break;
             default:
                 //phan trang o trang home
@@ -228,10 +231,12 @@ public class DashBoardAdminController extends HttpServlet {
                 : request.getParameter("action");
         switch (action) {
             case "search":
-                        totalRecord = debtorDAO.findTotalRecord(idAccount);
-                        //tim ve danh sach debt o trang chi dinh
-                        listDebtor = debtorDAO.findByPage(idAccount, page);
-                        pageControl.setUrlPattern("dashboardadmin?action=adminViewDebtor&idAccounts=" + idAccount + "&");
+//                String searchType = request.getParameter("searchType");
+                String keyword = request.getParameter("searchQuery");
+                totalRecord = debtorDAO.findTotalRecordBySearch(idAccount, keyword);
+                //tim ve danh sach debt o trang chi dinh
+                listDebtor = debtorDAO.findByPageBySearch(idAccount, page, keyword);
+                pageControl.setUrlPattern("dashboardadmin?action=adminViewDebtor&idAccounts=" + idAccount + "&");
 //                        break;
 //                }
                 break;
@@ -262,9 +267,7 @@ public class DashBoardAdminController extends HttpServlet {
                 listDebtor = debtorDAO.findByPageAndSortDebtByAmountLowHigh(idAccount, page);
                 pageControl.setUrlPattern("dashboardadmin?action=sortByLowHigh&idAccounts=" + idAccount + "&");
                 //request.setAttribute("debtList", debtList);
-
                 break;
-
             default:
                 //phan trang o trang home
                 //tim ve totalRecord
