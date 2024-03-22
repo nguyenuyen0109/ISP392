@@ -101,7 +101,7 @@ public class AdminFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
@@ -114,7 +114,7 @@ public class AdminFilter implements Filter {
             if (u.getRole_id() == 1) {
                 chain.doFilter(request, response);
             } else {
-                res.getWriter().println("<h1>You cant access this page</h1>");
+                request.getRequestDispatcher("/client/404.jsp").forward(request, response);
             }
         }
     }

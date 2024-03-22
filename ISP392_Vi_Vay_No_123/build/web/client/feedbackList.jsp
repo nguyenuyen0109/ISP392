@@ -475,16 +475,7 @@
                             </div>
                             <form action="feedbacklist" method="get" class="search">
                                 <input type="text" class="search-input" placeholder="Search Feedback" name="searchQuery">
-                                <div class="search-selection">
-                                    <select class="search-selection-label" name="searchType" >
-                                        <option class="search-selection-item">Search by</option>
-                                        <option class="search-selection-item" value="name">Name</option>
-                                        <option class="search-selection-item" value="address">Address</option>
-                                        <option class="search-selection-item" value="phone">Phone</option>
-                                        <option class="search-selection-item" value="email">Email</option>
-                                    </select>
-                                </div>
-                                <button class="search-btn" type="submit" name="action" value="search">
+                                                                <button class="search-btn" type="submit" name="action" value="search">
                                     <i class="search-btn-icon fa-solid fa-magnifying-glass"></i>
                                 </button>
                             </form>

@@ -22,6 +22,7 @@ import utils.Pagination;
  * @author admin
  */
 public class FeedbackController extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,13 +31,14 @@ public class FeedbackController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("USER") == null) {
-            response.sendRedirect("login.jsp");
+            request.getRequestDispatcher("/client/login.jsp").forward(request, response);
             return;
         }
         Integer account_id = (Integer) session.getAttribute("account_id");
         if (account_id == null) {
 
-            response.sendRedirect("login.jsp");
+            request.getRequestDispatcher("/client/login.jsp").forward(request, response);
+
             return;
         }
         try {
@@ -53,7 +55,8 @@ public class FeedbackController extends HttpServlet {
             feedback.setIsDeleted(false);
             dao.addFeedback(feedback);
 
-            response.sendRedirect("client/homepage.jsp");
+            request.getRequestDispatcher("/client/homepage.jsp").forward(request, response);
+
         } catch (Exception e) {
 
             throw new ServletException(e);

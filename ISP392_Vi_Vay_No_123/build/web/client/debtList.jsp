@@ -127,7 +127,7 @@
                                 <td><fmt:formatNumber value="${debt.amount}" pattern="#,##0"/></td>
                                 <td>${debt.interestRate}</td>
                                 <td>${debt.due}</td>
-                                <td><fmt:formatNumber value="${debt.totalAmount}" pattern="#,##0"/></td>
+                                <td><fmt:formatNumber value="${debt.totalAmount}" pattern="#,##0.00"/></td>
                                 <td><fmt:formatDate value="${debt.debtIssuance}" pattern="yyyy-MM-dd" /></td>       
 
                                 <td>
@@ -268,22 +268,22 @@
                 </div>
             </div>
 
-        <div id="addEmployeeModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="debt" method="post">
-                        <div class="modal-header">						
-                            <h4 class="modal-title">Add New Debt</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">					
-                            <div class="form-group">
-                                <p>Description</p>
-                                <input type="text" class="form-control" name="description" required>
+            <div id="addEmployeeModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="debt" method="post" onsubmit="return validateInterestRate();">
+                            <div class="modal-header">						
+                                <h4 class="modal-title">Add New Debt</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
-                            <div class="search-selection-item">
-                                <p>Debt Type:</p>
-                                <select name="debtType">
+                            <div class="modal-body">					
+                                <div class="form-group">
+                                    <p>Description</p>
+                                    <input type="text" class="form-control" name="description" required>
+                                </div>
+                                <div class="search-selection-item">
+                                    <p>Debt Type:</p>
+                                    <select name="debtType">
                                     <c:forEach items="${debtType}" var="debttype">
                                         <option value="${debttype.id}">${debttype.name}</option>
                                     </c:forEach>
@@ -301,7 +301,7 @@
                             </div>
                             <div class="form-group">
                                 <p>Interest Rate (%/year)</p>
-                                <input type="number" class="form-control" name="interest" required>
+                                <input type="number" class="form-control" name="interest" id="interestRate" required>
                             </div>
                             <div class="form-group">
                                 <p>Due(month)</p>
@@ -324,6 +324,17 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function validateInterestRate() {
+                var interestRateInput = document.getElementById('interestRate').value;
+                if (interestRateInput < 0) {
+                    alert("Interest rate cannot be negative.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
 
     </body>
 </html>

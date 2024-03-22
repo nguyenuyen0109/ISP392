@@ -48,6 +48,17 @@ public class DebtorController extends HttpServlet {
             response.getWriter().write("SUCCESS");
             return;
         }
+//        int debtorId;
+//        try {
+//            debtorId = Integer.parseInt(request.getParameter("debtorid"));
+//        } catch (NumberFormatException e) {
+//            request.getRequestDispatcher("/client/404.jsp").forward(request, response);
+//        }
+//        Debtor debtor = this.debtor.getDebtorById(debtorId);
+//        if(debtor == null || debtor.getAccount_id() == null || != accountId ){
+//             request.getRequestDispatcher("/client/404.jsp").forward(request, response);
+//             return;
+//        }
 
         // Now use this accountId to get data from the database
         List<Debtor> listDebtor = pagination(request, pageControl);

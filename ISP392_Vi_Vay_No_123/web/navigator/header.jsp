@@ -34,12 +34,13 @@
                 <h1><a href="/ISP392_Vi_Vay_No_123/client/homepage.jsp" class="logo">Debit Note<span class="text-primary">.</span></a></h1>
                 <nav>
                     <ul>
-                        <li class="active"><a href="ISP392_Vi_Vay_No_123/client/homepage.jsp">Home</a></li>
-                         <a href="/ISP392_Vi_Vay_No_123/changepassword">Change Password</a>
-                        <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
-                        <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
-                        <a href="/ISP392_Vi_Vay_No_123/dashboardadmin">View Account List</a>
-                        <a href="/ISP392_Vi_Vay_No_123/feedbacklist">View Feedback List</a>
+                        <li class="active"><a href="ISP392_Vi_Vay_No_123/client/homepage.jsp">Home</a>
+                            <a href="/ISP392_Vi_Vay_No_123/changepassword">Change Password</a>
+                            <a href="/ISP392_Vi_Vay_No_123/debtor">View Debtor List</a>
+                            <a href="/ISP392_Vi_Vay_No_123/editprofile">Edit Profile</a>
+                            <a href="/ISP392_Vi_Vay_No_123/dashboardadmin">View Account List</a>
+                            <a href="/ISP392_Vi_Vay_No_123/feedbacklist">View Feedback List</a>
+                            <a href="/ISP392_Vi_Vay_No_123/client/feedback.jsp"> Feedback </a>
                     </ul>
                 </nav>
                 <% if (session != null && session.getAttribute("USER") != null) {

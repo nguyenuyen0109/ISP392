@@ -64,7 +64,7 @@ public class DebtDAO {
             ps.setInt(9, accountid);
             n = ps.executeUpdate();
 
-            sql = "  UPDATE Debtor SET totalDebt = ( SELECT SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = " + debtorid + " GROUP BY debtor_id ) WHERE id = " + debtorid;
+            sql = "  UPDATE Debtor SET totalDebt = ( SELECT SUM(totalAmount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = " + debtorid + " GROUP BY debtor_id ) WHERE id = " + debtorid;
             try (PreparedStatement ps2 = db.getConnection().prepareStatement(sql)) {
 
                 n = ps2.executeUpdate();
@@ -118,7 +118,7 @@ public class DebtDAO {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String name = rs.getString("name");
-                    DebtType debttype =  new DebtType(id, name);
+                    DebtType debttype = new DebtType(id, name);
                     debtType.add(debttype);
                 }
             }
@@ -696,7 +696,7 @@ public class DebtDAO {
         System.out.println(sql);
         try (PreparedStatement ps = db.getConnection().prepareStatement(sql)) {
             n = ps.executeUpdate();
-            sql = "  UPDATE Debtor SET totalDebt = ( SELECT SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = " + debtor_id + " GROUP BY debtor_id ) WHERE id = " + debtor_id;
+            sql = "  UPDATE Debtor SET totalDebt = ( SELECT SUM(totalAmount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = " + debtor_id + " GROUP BY debtor_id ) WHERE id = " + debtor_id;
             try (PreparedStatement ps2 = db.getConnection().prepareStatement(sql)) {
 
                 n = ps2.executeUpdate();
@@ -728,4 +728,20 @@ public class DebtDAO {
         return totalDebt;
     }
 
+    public boolean isDebtorBeLongToAccount(int debtorId, int accountId) {
+        DBContext db = DBContext.getInstance();
+        try (Connection conn = db.getConnection(); PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) AS count FROM debtor Where id=? AND account_id=?")) {
+            ps.setInt(1, debtorId);
+            ps.setInt(2, accountId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt("count");
+                    return count > 0;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

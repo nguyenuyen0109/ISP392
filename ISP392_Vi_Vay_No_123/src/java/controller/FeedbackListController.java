@@ -78,8 +78,8 @@ public class FeedbackListController extends HttpServlet {
             case "search":
 //                String searchType = request.getParameter("searchType");
                 String keyword = request.getParameter("searchQuery");
-//                totalRecord = feedbackDAO.findTotalRecordToSearch(accountId, debtorId, keyword);
-//                listFeedback = feedbackDAO.findByPageToSearch(accountId, debtorId, keyword, page);
+                totalRecord = feedbackDAO.findTotalRecordToSearch(keyword);
+               listFeedback = feedbackDAO.findByPageToSearch(keyword, page);
                 pageControl.setUrlPattern("feedbacklist?");
                 break;
             case "sortByOldest":

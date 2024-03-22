@@ -38,18 +38,17 @@ public class DebtController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Giữ nguyên phần code cũ
         DebtDAO dao = new DebtDAO();
         DBContext db = DBContext.getInstance();
         PageControl pageControl = new PageControl();
         HttpSession session = request.getSession();
-        // Assuming 'accountId' is stored in session, retrieve it.
         Integer accountId = (Integer) session.getAttribute("account_id");
         String debtorId = request.getParameter("debtorid");
 
         if (accountId == null) {
-            // Handle case where accountId is not set in session, perhaps redirecting to a login page or showing an error message.
-            response.sendRedirect("login"); // Example redirection to login page
-            return; // Stop further execution in this case.
+            response.sendRedirect("login");
+            return;
         }
 
         if (debtorId != null && !debtorId.isEmpty()) {
@@ -58,12 +57,16 @@ public class DebtController extends HttpServlet {
                 ResultSet rsDebtorName = db.getData("select name from debtor where id = " + debtorId1);
                 session.setAttribute("debtorid", debtorId1);
                 session.setAttribute("debtorName", rsDebtorName);
-                //Integer accountId = (Integer) session.getAttribute("debtor_account_id");
-                // Integer debtorId = (Integer) session.getAttribute("debtor_id");
             } catch (NumberFormatException e) {
-                // Handle the exception if debtorId is not a valid integer
+
             }
         }
+        if (debtorId == null || debtorId.isEmpty()) {
+
+            request.getRequestDispatcher("/client/404.jsp").forward(request, response);
+            return;
+        }
+
         List<DebtDetail> debtList = pagination(request, pageControl);
         session.setAttribute("debtList", debtList);
         List<DebtType> listDebttype = dao.getDebtType();
@@ -105,7 +108,7 @@ public class DebtController extends HttpServlet {
         DebtDetail debt = new DebtDetail(description, amount, image, debtorId, accountId,
                 interest_rate, due, debtTypeId, dateSql);
         int n = dao.addDebt(debt, accountId, debtorId);
-    //    dao.calculateAndUpdateTotalDebt(String.valueOf((String)session.getAttribute("debtorid")));
+        //    dao.calculateAndUpdateTotalDebt(String.valueOf((String)session.getAttribute("debtorid")));
 
         response.sendRedirect("debt");
     }

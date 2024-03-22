@@ -12,13 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
-//import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-//import java.util.Base64;
-import javax.imageio.ImageIO;
-import model.Account;
-import utils.Captcha;
 import utils.Hash;
 import utils.Validate;
 

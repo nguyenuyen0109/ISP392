@@ -544,7 +544,7 @@
                                     <td>${debtor.address}</td>
                                     <td>${debtor.phone}</td>
                                     <td>${debtor.email}</td>
-                                    <td>${debtor.totalDebt}</td>
+                                   <td><fmt:formatNumber value="${debtor.totalDebt}" pattern="#,##0.00"/></td>
                                     <td><fmt:formatDate value="${debtor.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td><fmt:formatDate value="${debtor.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>                                                                                                
 

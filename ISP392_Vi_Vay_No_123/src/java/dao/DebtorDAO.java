@@ -723,7 +723,7 @@ public class DebtorDAO {
 
     public double calculateAndUpdateTotalDebt(String id) {
         double totalDebt = 0;
-        String selectSql = "SELECT debtor_id, SUM(amount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = "+id+" GROUP BY debtor_id";
+        String selectSql = "SELECT debtor_id, SUM(totalAmount) AS totalDebt FROM debtdetails WHERE isDeleted = false and debtor_id = "+id+" GROUP BY debtor_id";
         String updateSql = "UPDATE Debtor SET totalDebt = ? WHERE id = ?"; 
         try (Connection conn = db.getConnection(); PreparedStatement selectPs = conn.prepareStatement(selectSql); PreparedStatement updatePs = conn.prepareStatement(updateSql)) {
 
@@ -757,6 +757,8 @@ public class DebtorDAO {
     double totalDebt = debtorDAO.calculateAndUpdateTotalDebt("153");
   //  System.out.println("Total debt calculated and updated for all debtors: " + totalDebt);
 }
+
+  
 
 
 }

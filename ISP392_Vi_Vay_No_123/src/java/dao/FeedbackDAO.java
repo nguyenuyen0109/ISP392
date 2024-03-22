@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import utils.Pagination;
 
-
 /**
  *
  * @author admin
@@ -97,7 +96,7 @@ public class FeedbackDAO {
         return totalRecords;
     }
 
-     public List<Feedback> findByPage(int pageNumber) {
+    public List<Feedback> findByPage(int pageNumber) {
         List<Feedback> listFeedback = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet resultSet = null;
@@ -203,7 +202,7 @@ public class FeedbackDAO {
         return listFeedback;
     }
 
-     public List<Feedback> findByPageAndSortByHightRate() {
+    public List<Feedback> findByPageAndSortByHightRate() {
         List<Feedback> listFeedback = new ArrayList<>();
         try {
             try (PreparedStatement statement = db.getConnection().prepareStatement(
@@ -225,6 +224,68 @@ public class FeedbackDAO {
             // Xử lý hoặc ghi log cho exception
             e.printStackTrace();
         }
+        return listFeedback;
+    }
+
+    public int findTotalRecordToSearch(String keyword) {
+        int totalRecords = 0;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Tạo truy vấn SQL để tìm kiếm trong cả hai cột rate và feedback
+            String sql = "SELECT COUNT(*) FROM feedback WHERE rate LIKE ? OR feedback LIKE ?";
+            statement = db.getConnection().prepareStatement(sql);
+            // Gán giá trị tham số cho câu truy vấn
+            statement.setString(1, "%" + keyword + "%");
+            statement.setString(2, "%" + keyword + "%");
+            // Thực thi truy vấn
+            resultSet = statement.executeQuery();
+            // Lấy kết quả từ ResultSet
+            if (resultSet.next()) {
+                totalRecords = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Xử lý lỗi khi thực hiện truy vấn
+        }
+        // Trả về tổng số bản ghi
+        return totalRecords;
+    }
+
+    public List<Feedback> findByPageToSearch(String keyword, int pageNumber) {
+        List<Feedback> listFeedback = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Tính chỉ số bắt đầu của bản ghi trong trang hiện tại
+            int offset = (pageNumber - 1) * Pagination.RECORD_PER_PAGE;
+            // Tạo truy vấn SQL để tìm kiếm và phân trang
+            String sql = "SELECT * FROM feedback WHERE rate LIKE ? OR feedback LIKE ? LIMIT ? OFFSET ?";
+            statement = db.getConnection().prepareStatement(sql);
+            // Gán giá trị tham số cho câu truy vấn
+            statement.setString(1, "%" + keyword + "%");
+            statement.setString(2, "%" + keyword + "%");
+            statement.setInt(3, Pagination.RECORD_PER_PAGE);
+            statement.setInt(4, offset);
+            // Thực thi truy vấn
+            resultSet = statement.executeQuery();
+            // Lặp qua kết quả và thêm vào danh sách feedbacks
+            while (resultSet.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(resultSet.getInt("id"));
+                feedback.setRate(resultSet.getDouble("rate"));
+                feedback.setCreateAt(resultSet.getTimestamp("createAt"));
+                feedback.setFeedback(resultSet.getString("feedback"));
+
+                listFeedback.add(feedback);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Xử lý lỗi khi thực hiện truy vấn
+        }
+        // Trả về danh sách các feedbacks trên trang hiện tại
         return listFeedback;
     }
 
